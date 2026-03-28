@@ -107,3 +107,5 @@
 - Refonte visuelle majeure de la vitrine publique avec une direction "ferme moderne du futur": nouvelle home a `/`, hero premium, surfaces glass legeres, palette plus haut de gamme, header/footer redesignes, catalogue renforce, cartes produit plus vendeuses, fiche produit plus premium et pages de reassurance harmonisees.
 - Modernisation du design system frontend sans casser la logique metier: ajustement global des tokens visuels dans `app/globals.css`, boutons, cartes, badges, inputs, et harmonisation du rendu sur mobile et desktop.
 - Verification finale de la refonte frontend: `npm run lint` OK, `npm run build` OK, `npm run test:smoke` OK.
+- Finalisation du tunnel d achat premium pour aligner le panier et le checkout sur la nouvelle DA e-commerce: `CartPageClient`, `CartSidebar`, `CheckoutPageClient` et `/checkout` ont ete retravailles pour offrir plus de hierarchie, de reassurance, de lisibilite prix/livraison/paiement et une experience globalement plus haut de gamme sans toucher aux mutations serveur.
+- Verification finale apres refonte du panier et du checkout: `npm run lint` OK, `npm run build` OK, `npm run test:smoke` OK.

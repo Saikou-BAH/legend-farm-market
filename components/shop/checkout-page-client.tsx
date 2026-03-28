@@ -3,28 +3,32 @@
 import Link from 'next/link'
 import { useEffect, useMemo, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import {
+  CheckCircle2,
+  Clock3,
+  Gift,
+  MapPinned,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+  Wallet,
+} from 'lucide-react'
 import { ProductVisual } from '@/components/shop/product-visual'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from '@/hooks/use-toast'
 import { useCart } from '@/hooks/use-cart'
 import { createCheckoutOrder } from '@/lib/actions/checkout'
-import { getCheckoutFinancialSummary } from '@/lib/checkout-pricing'
 import {
   CHECKOUT_DELIVERY_TYPES,
   findRecommendedDeliveryZone,
   SUPPORTED_CHECKOUT_PAYMENT_METHODS,
 } from '@/lib/checkout'
+import { getCheckoutFinancialSummary } from '@/lib/checkout-pricing'
 import { getCartItemLineTotal, getCartItemUnitPrice, validateCartItem } from '@/lib/cart'
 import { getDeliveryTypeLabel, getPaymentMethodLabel } from '@/lib/order-display'
 import { getProductPrimaryImage } from '@/lib/shop-catalog'
@@ -47,6 +51,15 @@ interface CheckoutPageClientProps {
   minOrderAmount: number
 }
 
+const controlClassName =
+  'h-12 rounded-[1rem] border border-border/70 bg-white/86 shadow-[0_14px_36px_rgba(18,52,34,0.05)] transition-all placeholder:text-muted-foreground/80 focus-visible:ring-primary/25 focus-visible:ring-offset-0'
+
+const textAreaClassName =
+  'min-h-28 w-full rounded-[1rem] border border-border/70 bg-white/86 px-4 py-3 text-sm shadow-[0_14px_36px_rgba(18,52,34,0.05)] transition-all placeholder:text-muted-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50'
+
+const selectClassName =
+  'flex h-12 w-full rounded-[1rem] border border-border/70 bg-white/86 px-4 text-sm shadow-[0_14px_36px_rgba(18,52,34,0.05)] ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50'
+
 function SelectableCard({
   active,
   children,
@@ -61,18 +74,58 @@ function SelectableCard({
   return (
     <button
       type="button"
+      aria-pressed={active}
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        'w-full rounded-[1.5rem] border p-4 text-left transition-colors',
+        'surface-panel w-full rounded-[1.55rem] border p-4 text-left transition-all duration-200',
         active
-          ? 'border-primary bg-primary/5 shadow-sm'
-          : 'border-border/70 bg-background hover:border-primary/40 hover:bg-muted/20',
-        disabled && 'cursor-not-allowed opacity-60 hover:border-border/70 hover:bg-background'
+          ? 'border-primary/35 bg-[linear-gradient(180deg,rgba(241,250,241,0.96),rgba(230,244,230,0.92))] shadow-[0_24px_60px_rgba(31,83,52,0.14)]'
+          : 'border-white/80 bg-white/80 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_24px_60px_rgba(22,54,36,0.1)]',
+        disabled && 'cursor-not-allowed opacity-60 hover:translate-y-0 hover:border-white/80 hover:shadow-none'
       )}
     >
       {children}
     </button>
+  )
+}
+
+function SummaryMetric({
+  label,
+  value,
+}: {
+  label: string
+  value: string
+}) {
+  return (
+    <div className="rounded-[1.3rem] border border-border/70 bg-white/72 p-4 text-sm">
+      <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        {label}
+      </p>
+      <p className="mt-2 font-serif text-3xl">{value}</p>
+    </div>
+  )
+}
+
+function CheckoutTrustCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode
+  title: string
+  description: string
+}) {
+  return (
+    <div className="rounded-[1.35rem] border border-border/70 bg-white/72 p-4">
+      <div className="flex items-start gap-3">
+        <div className="rounded-full border border-primary/15 bg-primary/10 p-2 text-primary">{icon}</div>
+        <div className="space-y-1">
+          <p className="text-sm font-semibold text-foreground">{title}</p>
+          <p className="text-sm leading-6 text-muted-foreground">{description}</p>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -203,25 +256,46 @@ export function CheckoutPageClient({
 
   if (!hydrated) {
     return (
-      <Card>
-        <CardContent className="p-6 text-sm text-muted-foreground">
-          Chargement de votre recapitulatif et de vos options de commande...
-        </CardContent>
-      </Card>
+      <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-3">
+            <Badge variant="secondary">Checkout intelligent</Badge>
+            <h2 className="font-serif text-3xl md:text-4xl">Preparation de votre recapitulatif</h2>
+            <p className="max-w-2xl text-base leading-7 text-muted-foreground">
+              Nous reconstituons votre panier, vos avantages client et vos options de livraison pour une validation propre.
+            </p>
+          </div>
+          <Card className="surface-panel-strong border-white/80">
+            <CardContent className="p-6 text-sm text-muted-foreground">
+              Chargement de votre recapitulatif et de vos options de commande...
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     )
   }
 
   if (items.length === 0) {
     return (
-      <div className="space-y-6">
-        <EmptyState
-          title="Votre panier est vide"
-          description="Ajoutez d'abord des produits a votre panier avant de passer commande."
-        />
-        <Button asChild>
-          <Link href="/products">Retourner au catalogue</Link>
-        </Button>
-      </div>
+      <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-4">
+            <Badge variant="secondary">Checkout intelligent</Badge>
+            <h2 className="font-serif text-3xl md:text-4xl">Votre panier est vide</h2>
+            <p className="max-w-2xl text-base leading-7 text-muted-foreground">
+              Ajoutez d abord des produits depuis le catalogue pour construire une commande claire et rassurante.
+            </p>
+            <Button asChild>
+              <Link href="/products">Retourner au catalogue</Link>
+            </Button>
+          </div>
+
+          <EmptyState
+            title="Aucune ligne disponible"
+            description="Le checkout devient actif des qu au moins un produit valide est present dans votre panier."
+          />
+        </div>
+      </section>
     )
   }
 
@@ -247,7 +321,7 @@ export function CheckoutPageClient({
       toast({
         title: 'Checkout incomplet',
         description:
-          "Corrigez les lignes invalides et completez les informations de livraison avant de valider la commande.",
+          'Corrigez les lignes invalides et completez les informations de livraison avant de valider la commande.',
         variant: 'destructive',
       })
       return
@@ -292,42 +366,86 @@ export function CheckoutPageClient({
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+    <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
       <section className="space-y-6">
-        <Card>
-          <CardHeader>
+        <div className="surface-panel section-grid rounded-[2rem] px-6 py-7 md:px-8">
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="secondary">Tunnel d achat premium</Badge>
+              <Badge variant="outline">{summary.totalQuantity} article(s)</Badge>
+            </div>
+            <div className="space-y-3">
+              <h2 className="font-serif text-3xl md:text-4xl">
+                Finalisez votre commande avec une lecture claire et rassurante
+              </h2>
+              <p className="max-w-3xl text-base leading-7 text-muted-foreground">
+                Tout est repense pour aller vite: informations client visibles, livraison claire, paiement lisible et validation serveur avant creation de commande.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <SummaryMetric label="Articles" value={String(summary.totalQuantity)} />
+            <SummaryMetric label="Sous-total" value={formatGNF(summary.subtotal)} />
+            <SummaryMetric label="Solde estime" value={formatGNF(financialSummary.remainingPaymentAmount)} />
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <CheckoutTrustCard
+              icon={<ShieldCheck className="h-4 w-4" />}
+              title="Prix reverifies"
+              description="Le serveur revalide les prix, remises et disponibilites avant creation."
+            />
+            <CheckoutTrustCard
+              icon={<Truck className="h-4 w-4" />}
+              title="Livraison claire"
+              description="Zone, frais et creneau sont visibles avant validation de la commande."
+            />
+            <CheckoutTrustCard
+              icon={<Sparkles className="h-4 w-4" />}
+              title="Parcours premium"
+              description="Une experience plus nette et plus fiable pour acheter sans hesitation."
+            />
+          </div>
+        </div>
+
+        <Card className="surface-panel border-white/80">
+          <CardHeader className="pb-4">
             <div className="flex flex-wrap items-center gap-2">
               <CardTitle>Informations client</CardTitle>
               <Badge variant="secondary">Compte authentifie</Badge>
             </div>
             <CardDescription>
-              La commande sera rattachee au profil client connecte.
+              La commande sera rattachee au profil client connecte, sans ressaisie inutile.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 text-sm md:grid-cols-2">
-            <div className="rounded-[1.25rem] border border-border/70 bg-muted/15 p-4">
+            <div className="rounded-[1.35rem] border border-border/70 bg-white/72 p-4">
               <p className="text-muted-foreground">Client</p>
               <p className="mt-1 font-medium">{profile.full_name}</p>
               <p className="text-muted-foreground">{profile.email}</p>
             </div>
-            <div className="rounded-[1.25rem] border border-border/70 bg-muted/15 p-4">
+            <div className="rounded-[1.35rem] border border-border/70 bg-white/72 p-4">
               <p className="text-muted-foreground">Telephone</p>
-              <p className="mt-1 font-medium">
-                {profile.phone ?? 'A completer dans votre profil client'}
-              </p>
-              <p className="text-muted-foreground">
-                Type de compte: {profile.customer_type}
-              </p>
+              <p className="mt-1 font-medium">{profile.phone ?? 'A completer dans votre profil client'}</p>
+              <p className="text-muted-foreground">Type de compte: {profile.customer_type}</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Mode de retrait</CardTitle>
-            <CardDescription>
-              Choisissez entre la livraison et le retrait a la ferme.
-            </CardDescription>
+        <Card className="surface-panel border-white/80">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full border border-primary/15 bg-primary/10 p-2 text-primary">
+                <Truck className="h-4 w-4" />
+              </div>
+              <div>
+                <CardTitle>Mode de retrait</CardTitle>
+                <CardDescription>
+                  Choisissez entre la livraison et le retrait a la ferme.
+                </CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             {CHECKOUT_DELIVERY_TYPES.map((option) => {
@@ -344,12 +462,12 @@ export function CheckoutPageClient({
                 >
                   <div className="space-y-1">
                     <p className="font-medium">{option.label}</p>
-                    <p className="text-sm text-muted-foreground">{option.description}</p>
+                    <p className="text-sm leading-6 text-muted-foreground">{option.description}</p>
                     {disabled ? (
                       <p className="text-sm text-destructive">
                         {addresses.length === 0
                           ? 'Ajoutez une adresse client pour activer la livraison.'
-                          : 'Aucune zone de livraison active nest encore configuree.'}
+                          : 'Aucune zone de livraison active n est encore configuree.'}
                       </p>
                     ) : null}
                   </div>
@@ -361,12 +479,19 @@ export function CheckoutPageClient({
 
         {deliveryType === 'delivery' ? (
           <>
-            <Card>
-              <CardHeader>
-                <CardTitle>Adresse de livraison</CardTitle>
-                <CardDescription>
-                  Selectionnez une adresse deja enregistree pour cette commande.
-                </CardDescription>
+            <Card className="surface-panel border-white/80">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-full border border-primary/15 bg-primary/10 p-2 text-primary">
+                    <MapPinned className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <CardTitle>Adresse de livraison</CardTitle>
+                    <CardDescription>
+                      Selectionnez une adresse deja enregistree pour cette commande.
+                    </CardDescription>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent className="space-y-4">
                 {addresses.length > 0 ? (
@@ -381,36 +506,38 @@ export function CheckoutPageClient({
                         <div className="space-y-1 text-sm">
                           <div className="flex flex-wrap items-center gap-2">
                             <p className="font-medium">{address.label ?? 'Adresse'}</p>
-                            {address.is_default ? (
-                              <Badge variant="secondary">Par defaut</Badge>
-                            ) : null}
+                            {address.is_default ? <Badge variant="secondary">Par defaut</Badge> : null}
                           </div>
-                          <p className="text-muted-foreground">{address.full_address}</p>
+                          <p className="leading-6 text-muted-foreground">{address.full_address}</p>
                           <p className="text-muted-foreground">
                             {address.city} • {address.zone}
                           </p>
-                          {address.phone ? (
-                            <p className="text-muted-foreground">{address.phone}</p>
-                          ) : null}
+                          {address.phone ? <p className="text-muted-foreground">{address.phone}</p> : null}
                         </div>
                       </SelectableCard>
                     ))}
                   </div>
                 ) : (
-                  <div className="rounded-[1.25rem] border border-dashed border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
-                    Aucune adresse client n est encore enregistree. Pour cette iteration, le
-                    retrait a la ferme reste disponible immediatement.
+                  <div className="rounded-[1.35rem] border border-dashed border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+                    Aucune adresse client n est encore enregistree. Pour cette iteration, le retrait a la ferme reste disponible immediatement.
                   </div>
                 )}
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Zone et creneau</CardTitle>
-                <CardDescription>
-                  Les frais et le montant minimum varient selon la zone choisie.
-                </CardDescription>
+            <Card className="surface-panel border-white/80">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-full border border-primary/15 bg-primary/10 p-2 text-primary">
+                    <Clock3 className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <CardTitle>Zone et creneau</CardTitle>
+                    <CardDescription>
+                      Les frais et le montant minimum varient selon la zone choisie.
+                    </CardDescription>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent className="space-y-5">
                 <div className="grid gap-4 md:grid-cols-2">
@@ -424,18 +551,14 @@ export function CheckoutPageClient({
                       <div className="space-y-1 text-sm">
                         <p className="font-medium">{zone.name}</p>
                         <p className="text-muted-foreground">{zone.city}</p>
-                        <p className="text-muted-foreground">
-                          Frais: {formatGNF(zone.delivery_fee)}
-                        </p>
+                        <p className="text-muted-foreground">Frais: {formatGNF(zone.delivery_fee)}</p>
                         {zone.min_order_amount > 0 ? (
                           <p className="text-muted-foreground">
                             Minimum: {formatGNF(zone.min_order_amount)}
                           </p>
                         ) : null}
                         {zone.estimated_delay ? (
-                          <p className="text-muted-foreground">
-                            Delai estime: {zone.estimated_delay}
-                          </p>
+                          <p className="text-muted-foreground">Delai estime: {zone.estimated_delay}</p>
                         ) : null}
                       </div>
                     </SelectableCard>
@@ -450,7 +573,7 @@ export function CheckoutPageClient({
                       value={selectedSlot}
                       onChange={(event) => setSelectedSlot(event.target.value)}
                       disabled={isPending}
-                      className="flex h-12 w-full rounded-[1rem] border border-input bg-background px-4 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className={selectClassName}
                     >
                       {zoneSlots.map((slot) => (
                         <option key={slot} value={slot}>
@@ -471,6 +594,7 @@ export function CheckoutPageClient({
                       value={deliveryDate}
                       onChange={(event) => setDeliveryDate(event.target.value)}
                       disabled={isPending}
+                      className={controlClassName}
                     />
                   </div>
 
@@ -482,7 +606,7 @@ export function CheckoutPageClient({
                       onChange={(event) => setDeliveryInstructions(event.target.value)}
                       disabled={isPending}
                       placeholder="Repere, contact a prevenir, particularites d acces..."
-                      className="min-h-24 w-full rounded-[1rem] border border-input bg-background px-4 py-3 text-sm ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className={textAreaClassName}
                     />
                   </div>
                 </div>
@@ -490,17 +614,17 @@ export function CheckoutPageClient({
             </Card>
           </>
         ) : (
-          <Card>
-            <CardHeader>
+          <Card className="surface-panel border-white/80">
+            <CardHeader className="pb-4">
               <CardTitle>Retrait a la ferme</CardTitle>
               <CardDescription>
-                Aucun frais de livraison nest ajoute. Vous pourrez confirmer les details de retrait apres validation.
+                Aucun frais de livraison n est ajoute. Vous pourrez confirmer les details de retrait apres validation.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
-              <div className="rounded-[1.25rem] border border-border/70 bg-muted/15 p-4">
+              <div className="rounded-[1.35rem] border border-border/70 bg-white/72 p-4">
                 <p className="font-medium">Mode retenu: {getDeliveryTypeLabel(deliveryType)}</p>
-                <p className="mt-1 text-muted-foreground">
+                <p className="mt-1 leading-6 text-muted-foreground">
                   La commande sera enregistree en attente, puis confirmee par l equipe Legend Farm.
                 </p>
               </div>
@@ -513,20 +637,28 @@ export function CheckoutPageClient({
                   value={deliveryDate}
                   onChange={(event) => setDeliveryDate(event.target.value)}
                   disabled={isPending}
+                  className={controlClassName}
                 />
               </div>
             </CardContent>
           </Card>
         )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Mode de paiement</CardTitle>
-            <CardDescription>
-              {financialSummary.remainingPaymentAmount > 0
-                ? 'Le solde restant sera regle selon le mode choisi ci-dessous.'
-                : 'Le solde de cette commande sera entierement couvre par vos avantages client.'}
-            </CardDescription>
+        <Card className="surface-panel border-white/80">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full border border-primary/15 bg-primary/10 p-2 text-primary">
+                <Wallet className="h-4 w-4" />
+              </div>
+              <div>
+                <CardTitle>Mode de paiement</CardTitle>
+                <CardDescription>
+                  {financialSummary.remainingPaymentAmount > 0
+                    ? 'Le solde restant sera regle selon le mode choisi ci-dessous.'
+                    : 'Le solde de cette commande sera entierement couvert par vos avantages client.'}
+                </CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             {SUPPORTED_CHECKOUT_PAYMENT_METHODS.map((option) => (
@@ -538,19 +670,26 @@ export function CheckoutPageClient({
               >
                 <div className="space-y-1 text-sm">
                   <p className="font-medium">{option.label}</p>
-                  <p className="text-muted-foreground">{option.description}</p>
+                  <p className="leading-6 text-muted-foreground">{option.description}</p>
                 </div>
               </SelectableCard>
             ))}
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Promotions et avantages</CardTitle>
-            <CardDescription>
-              Appliquez un code promo, utilisez vos points et votre credit client sans jamais figer les prix dans l interface.
-            </CardDescription>
+        <Card className="surface-panel border-white/80">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full border border-primary/15 bg-primary/10 p-2 text-primary">
+                <Gift className="h-4 w-4" />
+              </div>
+              <div>
+                <CardTitle>Promotions et avantages</CardTitle>
+                <CardDescription>
+                  Appliquez vos avantages sans jamais figer les prix dans l interface.
+                </CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="grid gap-4 md:grid-cols-2">
@@ -561,6 +700,7 @@ export function CheckoutPageClient({
                   onChange={(event) => setPromoCode(event.target.value)}
                   disabled={isPending}
                   placeholder="LFS10"
+                  className={controlClassName}
                 />
               </label>
 
@@ -574,11 +714,12 @@ export function CheckoutPageClient({
                   onChange={(event) => setPointsToRedeem(event.target.value)}
                   disabled={isPending || profile.loyalty_points <= 0}
                   placeholder="0"
+                  className={controlClassName}
                 />
               </label>
             </div>
 
-            <label className="flex items-start gap-3 rounded-[1.25rem] border border-border/70 bg-muted/20 p-4 text-sm">
+            <label className="flex items-start gap-3 rounded-[1.35rem] border border-border/70 bg-white/72 p-4 text-sm">
               <input
                 type="checkbox"
                 checked={useAccountCredit}
@@ -586,24 +727,15 @@ export function CheckoutPageClient({
                 disabled={isPending || profile.credit_balance <= 0}
                 className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
               />
-              <span className="text-muted-foreground">
+              <span className="leading-6 text-muted-foreground">
                 Utiliser mon credit client disponible ({formatGNF(profile.credit_balance)}).
               </span>
             </label>
 
             <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-[1.25rem] border border-border/70 bg-muted/15 p-4 text-sm">
-                <p className="text-muted-foreground">Points disponibles</p>
-                <p className="mt-1 font-medium">{profile.loyalty_points}</p>
-              </div>
-              <div className="rounded-[1.25rem] border border-border/70 bg-muted/15 p-4 text-sm">
-                <p className="text-muted-foreground">Valeur d un point</p>
-                <p className="mt-1 font-medium">{formatGNF(loyaltyPointValue)}</p>
-              </div>
-              <div className="rounded-[1.25rem] border border-border/70 bg-muted/15 p-4 text-sm">
-                <p className="text-muted-foreground">Points estimes apres commande</p>
-                <p className="mt-1 font-medium">{estimatedPointsEarned}</p>
-              </div>
+              <SummaryMetric label="Points disponibles" value={String(profile.loyalty_points)} />
+              <SummaryMetric label="Valeur d un point" value={formatGNF(loyaltyPointValue)} />
+              <SummaryMetric label="Points estimes" value={String(estimatedPointsEarned)} />
             </div>
 
             {financialSummary.error ? (
@@ -613,7 +745,7 @@ export function CheckoutPageClient({
             ) : null}
 
             {financialSummary.appliedPromotions.length > 0 ? (
-              <div className="space-y-3 rounded-[1.25rem] border border-primary/20 bg-primary/5 p-4 text-sm">
+              <div className="space-y-3 rounded-[1.35rem] border border-primary/20 bg-primary/5 p-4 text-sm">
                 <p className="font-medium">Promotions appliquees</p>
                 {financialSummary.appliedPromotions.map((promotion) => (
                   <div
@@ -632,8 +764,8 @@ export function CheckoutPageClient({
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
+        <Card className="surface-panel border-white/80">
+          <CardHeader className="pb-4">
             <CardTitle>Note de commande</CardTitle>
             <CardDescription>
               Ajoutez une precision utile pour l equipe Legend Farm si besoin.
@@ -649,15 +781,15 @@ export function CheckoutPageClient({
               onChange={(event) => setCustomerNotes(event.target.value)}
               disabled={isPending}
               placeholder="Informations complementaires, preferences de contact, consignes utiles..."
-              className="min-h-28 w-full rounded-[1rem] border border-input bg-background px-4 py-3 text-sm ring-offset-background transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className={textAreaClassName}
             />
           </CardContent>
         </Card>
       </section>
 
       <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-        <Card>
-          <CardHeader>
+        <Card className="surface-panel-strong border-white/80">
+          <CardHeader className="pb-4">
             <div className="flex flex-wrap items-center gap-2">
               <CardTitle>Recapitulatif final</CardTitle>
               <Badge variant="secondary">{summary.totalQuantity} article(s)</Badge>
@@ -675,46 +807,46 @@ export function CheckoutPageClient({
               return (
                 <div
                   key={item.product.id}
-                  className="grid gap-3 rounded-[1.25rem] border border-border/70 p-3"
+                  className="rounded-[1.35rem] border border-border/70 bg-white/72 p-3"
                 >
-                  <div className="grid grid-cols-[4.5rem_1fr] gap-3">
-                    <ProductVisual
-                      name={item.product.name}
-                      imageUrl={getProductPrimaryImage(item.product)}
-                      className="h-20"
-                    />
-                    <div className="space-y-1 text-sm">
-                      <p className="font-medium">{item.product.name}</p>
-                      <p className="text-muted-foreground">
-                        {item.quantity} x {item.product.unit}
-                      </p>
-                      <p className="text-muted-foreground">
-                        {formatGNF(unitPrice)} / unite
-                      </p>
+                  <div className="grid gap-3">
+                    <div className="grid grid-cols-[5rem_1fr] gap-3">
+                      <ProductVisual
+                        name={item.product.name}
+                        imageUrl={getProductPrimaryImage(item.product)}
+                        className="h-24"
+                      />
+                      <div className="space-y-1 text-sm">
+                        <p className="font-medium">{item.product.name}</p>
+                        <p className="text-muted-foreground">
+                          {item.quantity} x {item.product.unit}
+                        </p>
+                        <p className="text-muted-foreground">{formatGNF(unitPrice)} / unite</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Total ligne</span>
-                    <span className="font-medium">{formatGNF(lineTotal)}</span>
-                  </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Total ligne</span>
+                      <span className="font-medium">{formatGNF(lineTotal)}</span>
+                    </div>
 
-                  {validation.status !== 'valid' ? (
-                    <p
-                      className={
-                        validation.status === 'invalid'
-                          ? 'text-sm text-destructive'
-                          : 'text-sm text-muted-foreground'
-                      }
-                    >
-                      {validation.message}
-                    </p>
-                  ) : null}
+                    {validation.status !== 'valid' ? (
+                      <p
+                        className={
+                          validation.status === 'invalid'
+                            ? 'text-sm text-destructive'
+                            : 'text-sm text-muted-foreground'
+                        }
+                      >
+                        {validation.message}
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
               )
             })}
 
-            <div className="space-y-3 border-t border-border/70 pt-4 text-sm">
+            <div className="space-y-3 rounded-[1.35rem] border border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(246,250,243,0.98))] p-4 text-sm">
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Sous-total</span>
                 <span>{formatGNF(summary.subtotal)}</span>
@@ -745,11 +877,11 @@ export function CheckoutPageClient({
                 <span className="text-muted-foreground">Paiement</span>
                 <span>{getPaymentMethodLabel(paymentMethod)}</span>
               </div>
-              <div className="flex items-center justify-between border-t border-border/70 pt-3 font-medium">
+              <div className="flex items-center justify-between border-t border-border/60 pt-3 font-semibold">
                 <span>Total commande</span>
                 <span>{formatGNF(financialSummary.totalAmount)}</span>
               </div>
-              <div className="flex items-center justify-between font-medium">
+              <div className="flex items-center justify-between font-semibold text-primary">
                 <span>Reste a regler</span>
                 <span>{formatGNF(financialSummary.remainingPaymentAmount)}</span>
               </div>
@@ -781,6 +913,17 @@ export function CheckoutPageClient({
               <Button asChild type="button" variant="outline">
                 <Link href="/cart">Retour au panier</Link>
               </Button>
+            </div>
+
+            <div className="grid gap-3 text-sm text-muted-foreground">
+              <div className="flex gap-3 rounded-[1.2rem] border border-border/70 bg-white/65 px-4 py-3">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
+                <p>La commande reste simple: verification serveur, reference generee et suivi accessible ensuite.</p>
+              </div>
+              <div className="flex gap-3 rounded-[1.2rem] border border-border/70 bg-white/65 px-4 py-3">
+                <ShieldCheck className="mt-0.5 h-4 w-4 text-primary" />
+                <p>Aucun montant n est fige dans l interface: tout est recalcule depuis la base Supabase.</p>
+              </div>
             </div>
           </CardContent>
         </Card>

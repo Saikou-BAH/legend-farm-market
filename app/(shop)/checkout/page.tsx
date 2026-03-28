@@ -18,59 +18,98 @@ export default async function CheckoutPage() {
 
   if (!isConfigured) {
     return (
-      <main className="container py-12">
-        <EmptyState
-          title="Checkout indisponible"
-          description="Ajoutez la configuration Supabase complete pour activer la creation reelle de commande."
-        />
+      <main className="container py-10 md:py-12">
+        <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
+          <EmptyState
+            title="Checkout indisponible"
+            description="Ajoutez la configuration Supabase complete pour activer la creation reelle de commande."
+          />
+        </section>
       </main>
     )
   }
 
   if (!isAuthenticated) {
     return (
-      <main className="container py-12">
-        <EmptyState
-          title="Connexion requise"
-          description="Connectez-vous avec un compte client pour acceder au checkout."
-        />
+      <main className="container py-10 md:py-12">
+        <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
+          <EmptyState
+            title="Connexion requise"
+            description="Connectez-vous avec un compte client pour acceder au checkout."
+          />
+        </section>
       </main>
     )
   }
 
   if (!profile) {
     return (
-      <main className="container py-12">
-        <EmptyState
-          title="Profil client manquant"
-          description="Le compte est connecte, mais aucun profil client exploitable n est encore rattache a cet utilisateur."
-        />
+      <main className="container py-10 md:py-12">
+        <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
+          <EmptyState
+            title="Profil client manquant"
+            description="Le compte est connecte, mais aucun profil client exploitable n est encore rattache a cet utilisateur."
+          />
+        </section>
       </main>
     )
   }
 
   if (profile.is_blacklisted) {
     return (
-      <main className="container py-12">
-        <EmptyState
-          title="Commande temporairement indisponible"
-          description="Ce compte client ne peut pas creer de nouvelle commande pour le moment. Contactez l equipe Legend Farm."
-        />
+      <main className="container py-10 md:py-12">
+        <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
+          <EmptyState
+            title="Commande temporairement indisponible"
+            description="Ce compte client ne peut pas creer de nouvelle commande pour le moment. Contactez l equipe Legend Farm."
+          />
+        </section>
       </main>
     )
   }
 
   return (
-    <main className="container space-y-8 py-12">
-      <div className="space-y-3">
-        <Badge>Commande securisee</Badge>
-        <h1 className="font-serif text-4xl">Finaliser ma commande</h1>
-        <p className="max-w-3xl text-muted-foreground">
-          Verifiez votre panier, choisissez votre mode de retrait et confirmez votre commande.
-          Le stock, les prix et les frais de livraison sont reverifies cote serveur au moment
-          de la validation.
-        </p>
-      </div>
+    <main className="container space-y-8 py-10 md:py-12">
+      <section className="surface-panel section-grid rounded-[2.2rem] px-6 py-8 md:px-10">
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge>Commande securisee</Badge>
+            <Badge variant="outline">Validation serveur</Badge>
+          </div>
+          <div className="space-y-3">
+            <h1 className="font-serif text-4xl md:text-5xl">
+              Finaliser ma commande avec une experience nette et rassurante
+            </h1>
+            <p className="max-w-3xl text-base leading-7 text-muted-foreground">
+              Verifiez votre panier, choisissez votre mode de retrait et confirmez votre commande.
+              Le stock, les prix, les avantages client et les frais de livraison sont reverifies cote serveur au moment de la validation.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="rounded-[1.3rem] border border-border/70 bg-white/72 p-4 text-sm">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Profil
+            </p>
+            <p className="mt-2 font-serif text-2xl">Client connecte</p>
+          </div>
+          <div className="rounded-[1.3rem] border border-border/70 bg-white/72 p-4 text-sm">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Livraison
+            </p>
+            <p className="mt-2 font-serif text-2xl">
+              {deliveryZones.length > 0 ? `${deliveryZones.length} zone(s)` : 'Retrait ferme'}
+            </p>
+          </div>
+          <div className="rounded-[1.3rem] border border-border/70 bg-white/72 p-4 text-sm">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Avantages
+            </p>
+            <p className="mt-2 font-serif text-2xl">{activePromotions.length} promo(s)</p>
+          </div>
+        </div>
+      </section>
 
       <CheckoutPageClient
         activePromotions={activePromotions}
