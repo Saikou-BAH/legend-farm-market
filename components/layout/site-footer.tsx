@@ -20,7 +20,7 @@ export async function SiteFooter() {
             </div>
             <p className="mt-4 max-w-md text-sm leading-7 text-white/68">
               Oeufs frais, poulets reformes et fiente directement depuis la ferme.
-              Commandez en ligne ou par WhatsApp, livraison a Conakry ou retrait a
+              Commandez en ligne ou par WhatsApp, livraison a domicile ou retrait a
               la ferme.
             </p>
             <div className="mt-5 flex flex-wrap gap-2 text-xs text-white/70">
@@ -30,7 +30,7 @@ export async function SiteFooter() {
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5">
                 <Truck className="h-3.5 w-3.5 text-[#b8e27f]" />
-                Livraison a Conakry
+                Livraison a domicile
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5">
                 <MapPin className="h-3.5 w-3.5 text-[#b8e27f]" />

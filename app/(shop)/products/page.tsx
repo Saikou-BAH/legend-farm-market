@@ -62,7 +62,7 @@ export default async function ProductsPage({
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
               Oeufs frais, poulets reformes et fiente. Prix en GNF, disponibilite
-              a jour. Livraison a Conakry ou retrait a la ferme.
+              a jour. Livraison a domicile ou retrait a la ferme.
             </p>
           </div>
         </div>

@@ -23,7 +23,7 @@ import { getHomePageData, getPublicShopProfile } from '@/lib/actions/shop'
 export const metadata: Metadata = {
   title: 'Accueil',
   description:
-    'Oeufs frais, poulets reformes et fiente directement depuis la ferme. Commandez en ligne, livraison a Conakry ou retrait a la ferme.',
+    'Oeufs frais, poulets reformes et fiente directement depuis la ferme. Commandez en ligne, livraison a domicile ou retrait a la ferme.',
 }
 
 const categories = [
@@ -90,7 +90,7 @@ const whyItems = [
     icon: Truck,
     title: 'Livraison ou retrait',
     description:
-      'Livraison dans plusieurs quartiers de Conakry ou retrait directement a la ferme selon votre preference.',
+      'Livraison a domicile ou retrait directement a la ferme selon votre preference.',
   },
   {
     icon: WalletCards,
@@ -123,8 +123,8 @@ const howToOrderSteps = [
 
 const faqItems = [
   {
-    q: 'Livrez-vous a Conakry ?',
-    a: 'Oui. Nous livrons dans plusieurs zones de Conakry. Consultez la page Livraison pour voir les quartiers desservis et les frais par zone.',
+    q: 'Livrez-vous a domicile ?',
+    a: 'Oui. Nous livrons a domicile dans plusieurs zones. Consultez la page Livraison pour voir les zones desservies et les frais par zone.',
   },
   {
     q: 'Peut-on commander par WhatsApp ?',
@@ -166,14 +166,14 @@ export default async function HomePage() {
               <div className="space-y-5">
                 <Badge variant="secondary" className="gap-2">
                   <span className="h-2 w-2 rounded-full bg-green-500" />
-                  Conakry · Livraison locale · Retrait a la ferme
+                  Livraison locale · Retrait a la ferme
                 </Badge>
                 <h1 className="max-w-2xl font-serif text-5xl leading-[1.05] md:text-6xl xl:text-[4rem]">
                   Oeufs frais, poulets et produits de ferme directement chez vous.
                 </h1>
                 <p className="max-w-xl text-lg leading-8 text-muted-foreground">
                   Commandez sur le site ou par WhatsApp. Livraison a domicile a
-                  Conakry ou retrait directement a la ferme.
+                  livraison ou retrait directement a la ferme.
                 </p>
               </div>
 

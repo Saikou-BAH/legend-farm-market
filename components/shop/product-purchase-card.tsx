@@ -74,7 +74,7 @@ export function ProductPurchaseCard({
             <Truck className="h-4 w-4 text-primary" />
             <p className="mt-3 font-medium">Livraison ou retrait</p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
-              Domicile a Conakry ou retrait a la ferme.
+              Livraison a domicile ou retrait a la ferme.
             </p>
           </div>
         </div>

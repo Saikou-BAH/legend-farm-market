@@ -11,7 +11,7 @@ import { formatGNF } from '@/lib/utils'
 export const metadata: Metadata = {
   title: 'Livraison',
   description:
-    'Livraison a domicile a Conakry ou retrait a la ferme. Zones desservies, frais et delais de livraison Legend Farm.',
+    'Livraison a domicile ou retrait a la ferme. Zones desservies, frais et delais de livraison Legend Farm.',
 }
 
 export default async function DeliveryPage() {
@@ -33,7 +33,7 @@ export default async function DeliveryPage() {
                 Livraison a domicile ou retrait a la ferme
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-                Nous livrons dans plusieurs quartiers de Conakry. Vous pouvez
+                Nous livrons a domicile dans plusieurs zones. Vous pouvez
                 aussi retirer votre commande directement a la ferme, gratuitement,
                 selon votre disponibilite.
               </p>
@@ -44,7 +44,7 @@ export default async function DeliveryPage() {
                 <Truck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <div>
                   <p className="font-medium">Livraison a domicile</p>
-                  <p className="mt-1 text-muted-foreground">Conakry · frais selon la zone</p>
+                  <p className="mt-1 text-muted-foreground">Livraison · frais selon la zone</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 rounded-2xl border border-border/70 bg-white/72 px-4 py-4 text-sm">

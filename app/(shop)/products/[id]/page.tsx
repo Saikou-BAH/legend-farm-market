@@ -46,7 +46,7 @@ function getProductHighlights(name: string, category: string) {
   return [
     'Ramasses regulierement a la ferme. Fraicheur garantie a la date de ponte.',
     'Prix lisibles en GNF avec possibilite d acheter par plateau, demi-plateau ou a l unite.',
-    'Livraison a domicile a Conakry ou retrait directement a la ferme.',
+    'Livraison a domicile ou retrait directement a la ferme.',
   ]
 }
 
@@ -66,7 +66,7 @@ export async function generateMetadata({
     title: product.name,
     description:
       product.description ??
-      `Commandez ${product.name} directement depuis Legend Farm. Prix en GNF, livraison a Conakry ou retrait a la ferme.`,
+      `Commandez ${product.name} directement depuis Legend Farm. Prix en GNF, livraison a domicile ou retrait a la ferme.`,
   }
 }
 
@@ -282,7 +282,7 @@ export default async function ProductDetailsPage({
                     <div>
                       <p className="font-medium text-foreground">Livraison ou retrait</p>
                       <p className="mt-1 leading-6 text-muted-foreground">
-                        A domicile a Conakry ou directement a la ferme selon votre choix.
+                        Livraison a domicile ou retrait directement a la ferme selon votre choix.
                       </p>
                     </div>
                   </CardContent>

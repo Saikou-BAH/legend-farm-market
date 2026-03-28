@@ -28,7 +28,7 @@ export async function SiteHeader() {
                   <ShieldCheck className="h-3.5 w-3.5 text-primary" />
                   Oeufs · Poulets · Fiente
                 </span>
-                <span className="hidden md:inline">Livraison a Conakry · Retrait a la ferme</span>
+                <span className="hidden md:inline">Livraison a domicile · Retrait a la ferme</span>
               </div>
               {shopPhone ? (
                 <a href={`tel:${shopPhone}`} className="transition-colors hover:text-foreground">
