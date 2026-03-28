@@ -571,6 +571,7 @@ export async function getPublicShopProfile() {
     shopEmail: 'contact@legendfarm.gn',
     shopPhone: null as string | null,
     shopAddress: 'Conakry, Guinee',
+    heroImageUrl: null as string | null,
   }
 
   if (!env.hasSupabase()) {
@@ -584,7 +585,7 @@ export async function getPublicShopProfile() {
   const { data } = await supabase
     .from('shop_settings')
     .select('key, value')
-    .in('key', ['shop_name', 'shop_email', 'shop_phone', 'shop_address'])
+    .in('key', ['shop_name', 'shop_email', 'shop_phone', 'shop_address', 'hero_image_url'])
 
   const settings = new Map((data ?? []).map((row) => [row.key, row.value]))
 
@@ -598,6 +599,8 @@ export async function getPublicShopProfile() {
       normalizeCatalogFilter(settings.get('shop_phone')) ?? fallbackProfile.shopPhone,
     shopAddress:
       normalizeCatalogFilter(settings.get('shop_address')) ?? fallbackProfile.shopAddress,
+    heroImageUrl:
+      normalizeCatalogFilter(settings.get('hero_image_url')) ?? fallbackProfile.heroImageUrl,
   }
 }
 

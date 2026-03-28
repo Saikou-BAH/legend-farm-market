@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -10,6 +11,7 @@ import {
   MapPin,
   MessageCircle,
   ShieldCheck,
+  Star,
   Truck,
   WalletCards,
 } from 'lucide-react'
@@ -121,6 +123,30 @@ const howToOrderSteps = [
   },
 ]
 
+const clientReviews = [
+  {
+    name: 'Mariama D.',
+    role: 'Cliente reguliere',
+    rating: 5,
+    text: 'Les oeufs sont toujours frais et bien emballes. Je commande par WhatsApp chaque semaine, c est simple et rapide. Livraison ponctuelle.',
+    initial: 'M',
+  },
+  {
+    name: 'Ibrahima S.',
+    role: 'Revendeur, Ratoma',
+    rating: 5,
+    text: 'Je prends des plateaux en grande quantite pour les revendre. Le tarif est correct et la qualite est stable. Je recommande.',
+    initial: 'I',
+  },
+  {
+    name: 'Fatoumata K.',
+    role: 'Particulier, Kipé',
+    rating: 5,
+    text: 'J ai commande des poulets reformes, tres bonne viande. On m a bien explique la disponibilite et la livraison s est faite sans probleme.',
+    initial: 'F',
+  },
+]
+
 const faqItems = [
   {
     q: 'Livrez-vous a domicile ?',
@@ -158,27 +184,45 @@ export default async function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="container pt-8 md:pt-12">
-        <div className="surface-panel section-grid relative overflow-hidden rounded-[2.5rem] px-6 py-10 md:px-10 md:py-14">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(184,226,127,0.22),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(125,173,255,0.14),transparent_24%)]" />
+        <div className={`section-grid relative overflow-hidden rounded-[2.5rem] px-6 py-10 md:px-10 md:py-14 ${shopProfile.heroImageUrl ? 'bg-[#0d2b1a]' : 'surface-panel'}`}>
+          {/* Background photo */}
+          {shopProfile.heroImageUrl ? (
+            <>
+              <Image
+                src={shopProfile.heroImageUrl}
+                alt="Legend Farm"
+                fill
+                priority
+                className="object-cover object-center opacity-40"
+                sizes="(max-width: 1400px) 100vw, 1400px"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(7,30,18,0.72)_0%,rgba(9,40,24,0.55)_50%,rgba(7,28,16,0.65)_100%)]" />
+            </>
+          ) : (
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(184,226,127,0.22),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(125,173,255,0.14),transparent_24%)]" />
+          )}
 
-          <div className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div className={`relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center ${shopProfile.heroImageUrl ? 'text-white' : ''}`}>
             <div className="space-y-8 hero-fade-up">
               <div className="space-y-5">
-                <Badge variant="secondary" className="gap-2">
-                  <span className="h-2 w-2 rounded-full bg-green-500" />
+                <Badge
+                  variant={shopProfile.heroImageUrl ? 'outline' : 'secondary'}
+                  className={`gap-2 ${shopProfile.heroImageUrl ? 'border-white/20 bg-white/10 text-white' : ''}`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-green-400" />
                   Livraison locale · Retrait a la ferme
                 </Badge>
                 <h1 className="max-w-2xl font-serif text-5xl leading-[1.05] md:text-6xl xl:text-[4rem]">
                   Oeufs frais, poulets et produits de ferme directement chez vous.
                 </h1>
-                <p className="max-w-xl text-lg leading-8 text-muted-foreground">
-                  Commandez sur le site ou par WhatsApp. Livraison a domicile a
-                  livraison ou retrait directement a la ferme.
+                <p className={`max-w-xl text-lg leading-8 ${shopProfile.heroImageUrl ? 'text-white/75' : 'text-muted-foreground'}`}>
+                  Commandez sur le site ou par WhatsApp. Livraison a domicile
+                  ou retrait directement a la ferme.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <Button asChild size="lg">
+                <Button asChild size="lg" className={shopProfile.heroImageUrl ? 'bg-white text-[#0d2b1a] hover:bg-white/90' : undefined}>
                   <Link href="/products">
                     Voir la boutique
                     <ArrowRight className="h-4 w-4" />
@@ -188,7 +232,8 @@ export default async function HomePage() {
                   phone={shopProfile.shopPhone}
                   label="Commander sur WhatsApp"
                   size="lg"
-                  variant="outline"
+                  variant={shopProfile.heroImageUrl ? 'outline' : 'outline'}
+                  className={shopProfile.heroImageUrl ? 'border-white/30 text-white hover:bg-white/10' : undefined}
                   message="Bonjour Legend Farm, je voudrais passer une commande."
                 />
               </div>
@@ -435,6 +480,45 @@ export default async function HomePage() {
               message="Bonjour Legend Farm, je voudrais passer une commande."
             />
           </div>
+        </div>
+      </section>
+
+      {/* ── AVIS CLIENTS ────────────────────────────────── */}
+      <section className="container pt-16 reveal">
+        <div className="mb-8 space-y-3">
+          <Badge variant="secondary">Avis clients</Badge>
+          <h2 className="font-serif text-4xl md:text-5xl">
+            Ce que nos clients disent.
+          </h2>
+          <p className="max-w-xl text-base leading-7 text-muted-foreground">
+            Des clients qui commandent regulierement, en particulier ou pour revendre.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {clientReviews.map((review) => (
+            <Card key={review.name} className="surface-panel border-white/80">
+              <CardContent className="space-y-4 p-6">
+                <div className="flex gap-0.5">
+                  {Array.from({ length: review.rating }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-sm leading-7 text-foreground/85">
+                  &ldquo;{review.text}&rdquo;
+                </p>
+                <div className="flex items-center gap-3 border-t border-border/60 pt-4">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/12 font-semibold text-primary">
+                    {review.initial}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">{review.name}</p>
+                    <p className="text-xs text-muted-foreground">{review.role}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
