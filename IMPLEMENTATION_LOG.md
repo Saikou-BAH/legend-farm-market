@@ -104,3 +104,6 @@
 - Enrichissement du dashboard analytics admin avec des visualisations comparatives simples et des exports CSV de pilotage.
 - Ajout de tests smoke sur le moteur de pricing checkout pour verrouiller promotions, points, credit client et calcul du montant final.
 - Realignement final de la roadmap, de l audit final, de la checklist pre-production et du script `verify:readiness` avec l etat reel du code livre.
+- Refonte visuelle majeure de la vitrine publique avec une direction "ferme moderne du futur": nouvelle home a `/`, hero premium, surfaces glass legeres, palette plus haut de gamme, header/footer redesignes, catalogue renforce, cartes produit plus vendeuses, fiche produit plus premium et pages de reassurance harmonisees.
+- Modernisation du design system frontend sans casser la logique metier: ajustement global des tokens visuels dans `app/globals.css`, boutons, cartes, badges, inputs, et harmonisation du rendu sur mobile et desktop.
+- Verification finale de la refonte frontend: `npm run lint` OK, `npm run build` OK, `npm run test:smoke` OK.
