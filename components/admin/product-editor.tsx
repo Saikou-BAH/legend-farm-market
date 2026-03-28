@@ -14,7 +14,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from '@/hooks/use-toast'
-import type { Product } from '@/types'
+import type { AvailabilityStatus, Product } from '@/types'
+
+const availabilityStatusOptions: { value: AvailabilityStatus; label: string; description: string }[] = [
+  { value: 'available', label: 'Disponible', description: 'Visible et commandable dans la boutique' },
+  { value: 'out_of_stock', label: 'Epuise', description: 'Visible mais non commandable — stock epuise' },
+  { value: 'unavailable', label: 'Indisponible', description: 'Visible mais retire temporairement de la vente' },
+  { value: 'coming_soon', label: 'Bientot disponible', description: 'Visible en avant-premiere — commande non ouverte' },
+]
 
 interface ProductEditorProps {
   product?: Product
@@ -37,6 +44,9 @@ interface ProductFormState {
   sortOrder: string
   isAvailable: boolean
   isFeatured: boolean
+  availabilityStatus: AvailabilityStatus
+  availabilityLabel: string
+  restockNote: string
 }
 
 function createFormState(product?: Product): ProductFormState {
@@ -57,6 +67,9 @@ function createFormState(product?: Product): ProductFormState {
     sortOrder: product ? String(product.sort_order) : '0',
     isAvailable: product?.is_available ?? true,
     isFeatured: product?.is_featured ?? false,
+    availabilityStatus: product?.availability_status ?? 'available',
+    availabilityLabel: product?.availability_label ?? '',
+    restockNote: product?.restock_note ?? '',
   }
 }
 
@@ -362,41 +375,88 @@ export function ProductEditor({ product }: ProductEditorProps) {
             </div>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-2">
-            <label className="flex items-start gap-3 rounded-[1.25rem] border border-border/70 bg-muted/25 p-4 text-sm">
-              <input
-                type="checkbox"
-                checked={form.isAvailable}
+          {/* Availability status */}
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="product-availability-status">
+                Etat de disponibilite
+              </Label>
+              <select
+                id="product-availability-status"
+                value={form.availabilityStatus}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
-                    isAvailable: event.target.checked,
+                    availabilityStatus: event.target.value as AvailabilityStatus,
+                    // Sync is_available for backward compat
+                    isAvailable: event.target.value === 'available' || event.target.value === 'coming_soon',
                   }))
                 }
-                className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
-              />
-              <span className="text-muted-foreground">
-                Produit disponible a la vente sur la boutique.
-              </span>
-            </label>
+                className="flex h-10 w-full rounded-2xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {availabilityStatusOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label} — {opt.description}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            <label className="flex items-start gap-3 rounded-[1.25rem] border border-border/70 bg-muted/25 p-4 text-sm">
-              <input
-                type="checkbox"
-                checked={form.isFeatured}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    isFeatured: event.target.checked,
-                  }))
-                }
-                className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
-              />
-              <span className="text-muted-foreground">
-                Produit mis en avant sur la vitrine.
-              </span>
-            </label>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-2">
+                <Label htmlFor="product-availability-label">
+                  Label personnalise (optionnel)
+                </Label>
+                <Input
+                  id="product-availability-label"
+                  value={form.availabilityLabel}
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      availabilityLabel: event.target.value,
+                    }))
+                  }
+                  placeholder="Ex : Disponible fin janvier"
+                  maxLength={60}
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="product-restock-note">
+                  Note de reapprovisionnement (optionnel)
+                </Label>
+                <Input
+                  id="product-restock-note"
+                  value={form.restockNote}
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      restockNote: event.target.value,
+                    }))
+                  }
+                  placeholder="Ex : Prochain lot fin mars"
+                  maxLength={120}
+                />
+              </div>
+            </div>
           </div>
+
+          <label className="flex items-start gap-3 rounded-[1.25rem] border border-border/70 bg-muted/25 p-4 text-sm">
+            <input
+              type="checkbox"
+              checked={form.isFeatured}
+              onChange={(event) =>
+                setForm((current) => ({
+                  ...current,
+                  isFeatured: event.target.checked,
+                }))
+              }
+              className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary"
+            />
+            <span className="text-muted-foreground">
+              Produit mis en avant sur la vitrine.
+            </span>
+          </label>
 
           <div className="flex flex-wrap items-center gap-3">
             <Button type="submit" disabled={isPending}>

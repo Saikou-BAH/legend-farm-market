@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { toast } from '@/hooks/use-toast'
 import { useCart } from '@/hooks/use-cart'
 import { isProductPurchasable } from '@/lib/cart'
+import { resolveAvailabilityStatus } from '@/lib/shop-catalog'
 import type { Product } from '@/types'
 
 interface AddToCartButtonProps {
@@ -22,6 +23,7 @@ export function AddToCartButton({
 }: AddToCartButtonProps) {
   const { addItem } = useCart()
   const canAdd = isProductPurchasable(product)
+  const avail = resolveAvailabilityStatus(product)
 
   return (
     <Button
@@ -40,7 +42,7 @@ export function AddToCartButton({
       }}
     >
       <ShoppingCart className="h-4 w-4" />
-      {canAdd ? 'Ajouter' : 'Indisponible'}
+      {canAdd ? 'Ajouter' : avail.buttonLabel}
     </Button>
   )
 }

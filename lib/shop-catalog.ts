@@ -1,4 +1,4 @@
-import type { Product } from '@/types'
+import type { AvailabilityStatus, Product } from '@/types'
 
 export interface CatalogFilters {
   search?: string | null
@@ -119,36 +119,121 @@ export function filterCatalogProducts(products: Product[], filters: CatalogFilte
   })
 }
 
-export function getProductAvailability(
-  product: Pick<Product, 'is_available' | 'stock_quantity' | 'stock_alert_threshold'>
-) {
-  if (!product.is_available) {
+export interface AvailabilityConfig {
+  /** Status final resolu */
+  status: AvailabilityStatus
+  /** Label court affiche dans les badges */
+  label: string
+  /** Variant Badge */
+  variant: 'default' | 'secondary' | 'outline'
+  /** Le produit peut etre ajoute au panier */
+  purchasable: boolean
+  /** Libelle bouton panier quand non commandable */
+  buttonLabel: string
+  /** Classes CSS pour le badge sur image (overlay) */
+  overlayClasses: string | null
+}
+
+/**
+ * Derives display config from the product's availability_status, with a
+ * fallback to is_available / stock_quantity for backwards compatibility.
+ */
+export function resolveAvailabilityStatus(
+  product: Pick<
+    Product,
+    | 'is_available'
+    | 'stock_quantity'
+    | 'stock_alert_threshold'
+    | 'availability_status'
+    | 'availability_label'
+  >
+): AvailabilityConfig {
+  // Explicit status set by admin takes full precedence
+  const status = product.availability_status
+
+  if (status === 'out_of_stock') {
     return {
-      label: 'Indisponible',
-      variant: 'outline' as const,
-      description: 'Ce produit n est pas actuellement ouvert a la vente.',
+      status,
+      label: product.availability_label ?? 'Epuise',
+      variant: 'outline',
+      purchasable: false,
+      buttonLabel: 'Epuise',
+      overlayClasses: 'bg-neutral-900/50',
     }
   }
 
+  if (status === 'unavailable') {
+    return {
+      status,
+      label: product.availability_label ?? 'Indisponible',
+      variant: 'outline',
+      purchasable: false,
+      buttonLabel: 'Indisponible',
+      overlayClasses: 'bg-neutral-900/50',
+    }
+  }
+
+  if (status === 'coming_soon') {
+    return {
+      status,
+      label: product.availability_label ?? 'Bientot disponible',
+      variant: 'secondary',
+      purchasable: false,
+      buttonLabel: 'Bientot disponible',
+      overlayClasses: 'bg-primary/30',
+    }
+  }
+
+  // status === 'available' — check real stock
   if (product.stock_quantity <= 0) {
     return {
-      label: 'Stock a confirmer',
-      variant: 'outline' as const,
-      description: 'La disponibilite doit etre revalidee par l equipe de la ferme.',
+      status: 'out_of_stock',
+      label: 'Epuise',
+      variant: 'outline',
+      purchasable: false,
+      buttonLabel: 'Epuise',
+      overlayClasses: 'bg-neutral-900/50',
     }
   }
 
   if (product.stock_quantity <= Math.max(product.stock_alert_threshold, 5)) {
     return {
+      status: 'available',
       label: 'Stock limite',
-      variant: 'secondary' as const,
-      description: 'Le produit est disponible mais les quantites deviennent limitees.',
+      variant: 'secondary',
+      purchasable: true,
+      buttonLabel: 'Ajouter',
+      overlayClasses: null,
     }
   }
 
   return {
+    status: 'available',
     label: 'Disponible',
-    variant: 'default' as const,
-    description: 'Produit disponible a la vente avec une disponibilite confirmee.',
+    variant: 'default',
+    purchasable: true,
+    buttonLabel: 'Ajouter',
+    overlayClasses: null,
+  }
+}
+
+/** @deprecated Use resolveAvailabilityStatus */
+export function getProductAvailability(
+  product: Pick<
+    Product,
+    | 'is_available'
+    | 'stock_quantity'
+    | 'stock_alert_threshold'
+    | 'availability_status'
+    | 'availability_label'
+  >
+) {
+  const config = resolveAvailabilityStatus(product)
+  return {
+    label: config.label,
+    variant: config.variant,
+    description: config.purchasable
+      ? 'Produit disponible a la vente.'
+      : 'Ce produit n est pas commandable actuellement.',
   }
 }

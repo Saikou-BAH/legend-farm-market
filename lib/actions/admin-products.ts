@@ -89,6 +89,8 @@ function revalidateAdminProductPaths(productId?: string) {
   }
 }
 
+type AvailabilityStatus = 'available' | 'out_of_stock' | 'unavailable' | 'coming_soon'
+
 interface ProductPayload {
   name: string
   description: string | null
@@ -106,6 +108,9 @@ interface ProductPayload {
   isAvailable: boolean
   isFeatured: boolean
   sortOrder: string | number
+  availabilityStatus?: AvailabilityStatus
+  availabilityLabel?: string | null
+  restockNote?: string | null
 }
 
 function buildProductMutation(input: ProductPayload) {
@@ -156,6 +161,9 @@ function buildProductMutation(input: ProductPayload) {
     is_available: input.isAvailable,
     is_featured: input.isFeatured,
     sort_order: parseInteger(input.sortOrder, "L'ordre d'affichage", { min: 0 }),
+    availability_status: input.availabilityStatus ?? 'available',
+    availability_label: normalizeOptionalText(input.availabilityLabel, 60),
+    restock_note: normalizeOptionalText(input.restockNote, 120),
   }
 }
 

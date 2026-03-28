@@ -36,8 +36,10 @@ export function clampCartQuantity(quantity: number) {
   return Math.max(1, Math.trunc(quantity))
 }
 
-export function isProductPurchasable(product: Pick<Product, 'is_available' | 'stock_quantity'>) {
-  return product.is_available && product.stock_quantity > 0
+export function isProductPurchasable(
+  product: Pick<Product, 'is_available' | 'stock_quantity' | 'availability_status'>
+) {
+  return product.availability_status === 'available' && product.stock_quantity > 0
 }
 
 export function getCartItemUnitPrice(item: CartItem) {
@@ -66,10 +68,10 @@ export function getCartItemLineTotal(item: CartItem) {
 }
 
 export function validateCartItem(item: CartItem): CartItemValidation {
-  if (!item.product.is_available) {
+  if (!isProductPurchasable(item.product)) {
     return {
       status: 'invalid',
-      message: "Ce produit n'est plus disponible actuellement.",
+      message: "Ce produit n'est plus disponible a la commande.",
     }
   }
 
@@ -146,7 +148,9 @@ function isProduct(value: unknown): value is Product {
     typeof record.stock_quantity === 'number' &&
     typeof record.stock_alert_threshold === 'number' &&
     typeof record.is_available === 'boolean' &&
-    typeof record.is_featured === 'boolean'
+    typeof record.is_featured === 'boolean' &&
+    // availability_status is required; allow forward-compat with older carts by checking string
+    (typeof record.availability_status === 'string' || record.availability_status == null)
   )
 }
 
@@ -175,5 +179,12 @@ export function sanitizeCartItems(value: unknown) {
     .map((item) => ({
       ...item,
       quantity: clampCartQuantity(item.quantity),
+      product: {
+        ...item.product,
+        // Back-fill for carts stored before availability_status was added
+        availability_status: item.product.availability_status ?? (item.product.is_available ? 'available' : 'unavailable'),
+        availability_label: item.product.availability_label ?? null,
+        restock_note: item.product.restock_note ?? null,
+      },
     }))
 }

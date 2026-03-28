@@ -8,6 +8,8 @@ interface ProductVisualProps {
   className?: string
   imageClassName?: string
   priority?: boolean
+  /** Disables the group-hover scale — used when the product is not purchasable */
+  disableHoverScale?: boolean
 }
 
 export function ProductVisual({
@@ -16,6 +18,7 @@ export function ProductVisual({
   className,
   imageClassName,
   priority = false,
+  disableHoverScale = false,
 }: ProductVisualProps) {
   const normalizedName = name.toLowerCase()
   const FallbackIcon = normalizedName.includes('fiante')
@@ -42,7 +45,11 @@ export function ProductVisual({
           unoptimized
           priority={priority}
           sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
-          className={cn('object-cover transition-transform duration-500 group-hover:scale-[1.03]', imageClassName)}
+          className={cn(
+            'object-cover transition-transform duration-500',
+            !disableHoverScale && 'group-hover:scale-[1.03]',
+            imageClassName
+          )}
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center">

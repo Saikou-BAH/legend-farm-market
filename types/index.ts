@@ -39,6 +39,12 @@ export type PromotionType =
   | 'buy_x_get_y'
   | 'bundle'
 
+export type AvailabilityStatus =
+  | 'available'
+  | 'out_of_stock'
+  | 'unavailable'
+  | 'coming_soon'
+
 export type AlveolesOption =
   | 'customer_brings'
   | 'farm_provides'
@@ -114,6 +120,9 @@ export interface Product {
   stock_alert_threshold: number
   is_available: boolean
   is_featured: boolean
+  availability_status: AvailabilityStatus
+  availability_label: string | null
+  restock_note: string | null
   sort_order: number
   created_at: string
   updated_at: string
