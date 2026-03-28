@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { CHECKOUT_DELIVERY_TYPES, SUPPORTED_CHECKOUT_PAYMENT_METHODS, type CreateCheckoutOrderInput } from '@/lib/checkout'
 import { getCheckoutFinancialSummary } from '@/lib/checkout-pricing'
 import { env } from '@/lib/env'
-import { sendOrderConfirmationNotification } from '@/lib/notifications'
+import { sendAdminNewOrderNotification, sendOrderConfirmationNotification } from '@/lib/notifications'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { getEarnedPoints } from '@/lib/utils/points'
 import { getLineTotal, getTieredUnitPrice } from '@/lib/utils/price'
@@ -393,7 +393,7 @@ export async function createCheckoutOrder(
       deliveryZoneData = nextZone
     }
 
-    const [minOrderSettingResult, loyaltyPointValueResult, loyaltyPointsRateResult, productRowsResult, promotionsResult] =
+    const [minOrderSettingResult, loyaltyPointValueResult, loyaltyPointsRateResult, productRowsResult, promotionsResult, shopEmailResult] =
       await Promise.all([
         serviceClient
           .from('shop_settings')
@@ -433,6 +433,11 @@ export async function createCheckoutOrder(
             items.map((item) => item.productId)
           ),
         serviceClient.from('promotions').select('*'),
+        serviceClient
+          .from('shop_settings')
+          .select('value')
+          .eq('key', 'shop_email')
+          .maybeSingle(),
       ])
 
     const minOrderSetting = minOrderSettingResult.data
@@ -862,6 +867,23 @@ export async function createCheckoutOrder(
         orderId: createdOrder.id,
         reference: createdOrder.reference,
         totalAmount,
+      })
+    }
+
+    const shopEmail =
+      typeof shopEmailResult.data?.value === 'string' && shopEmailResult.data.value.trim()
+        ? shopEmailResult.data.value.trim()
+        : null
+
+    if (shopEmail) {
+      void sendAdminNewOrderNotification({
+        shopEmail,
+        customerName: profileData.full_name ?? null,
+        orderId: createdOrder.id,
+        reference: createdOrder.reference,
+        totalAmount,
+        deliveryType: deliveryType,
+        itemsCount: validatedLines.length,
       })
     }
 
