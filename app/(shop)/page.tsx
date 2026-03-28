@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -184,30 +183,19 @@ export default async function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="container pt-8 md:pt-12">
-        <div className={`section-grid relative overflow-hidden rounded-[2.5rem] px-6 py-10 md:px-10 md:py-14 ${shopProfile.heroImageUrl ? 'bg-[#0d2b1a]' : 'surface-panel'}`}>
-          {/* Background photo */}
-          {shopProfile.heroImageUrl ? (
-            <>
-              <Image
-                src={shopProfile.heroImageUrl}
-                alt="Legend Farm"
-                fill
-                priority
-                className="object-cover object-center opacity-40"
-                sizes="(max-width: 1400px) 100vw, 1400px"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(7,30,18,0.72)_0%,rgba(9,40,24,0.55)_50%,rgba(7,28,16,0.65)_100%)]" />
-            </>
-          ) : (
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(184,226,127,0.22),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(125,173,255,0.14),transparent_24%)]" />
-          )}
+        <div
+          className="section-grid relative overflow-hidden rounded-[2.5rem] bg-[#0c2618] px-6 py-10 md:px-10 md:py-14"
+          style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+          {/* Dark overlay for readability */}
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(6,24,14,0.82)_0%,rgba(8,32,18,0.65)_55%,rgba(6,22,12,0.75)_100%)]" />
 
-          <div className={`relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center ${shopProfile.heroImageUrl ? 'text-white' : ''}`}>
+          <div className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center text-white">
             <div className="space-y-8 hero-fade-up">
               <div className="space-y-5">
                 <Badge
-                  variant={shopProfile.heroImageUrl ? 'outline' : 'secondary'}
-                  className={`gap-2 ${shopProfile.heroImageUrl ? 'border-white/20 bg-white/10 text-white' : ''}`}
+                  variant="outline"
+                  className="gap-2 border-white/20 bg-white/10 text-white"
                 >
                   <span className="h-2 w-2 rounded-full bg-green-400" />
                   Livraison locale · Retrait a la ferme
@@ -215,14 +203,14 @@ export default async function HomePage() {
                 <h1 className="max-w-2xl font-serif text-5xl leading-[1.05] md:text-6xl xl:text-[4rem]">
                   Oeufs frais, poulets et produits de ferme directement chez vous.
                 </h1>
-                <p className={`max-w-xl text-lg leading-8 ${shopProfile.heroImageUrl ? 'text-white/75' : 'text-muted-foreground'}`}>
+                <p className="max-w-xl text-lg leading-8 text-white/75">
                   Commandez sur le site ou par WhatsApp. Livraison a domicile
                   ou retrait directement a la ferme.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <Button asChild size="lg" className={shopProfile.heroImageUrl ? 'bg-white text-[#0d2b1a] hover:bg-white/90' : undefined}>
+                <Button asChild size="lg" className="bg-white text-[#0d2b1a] hover:bg-white/90">
                   <Link href="/products">
                     Voir la boutique
                     <ArrowRight className="h-4 w-4" />
@@ -232,8 +220,8 @@ export default async function HomePage() {
                   phone={shopProfile.shopPhone}
                   label="Commander sur WhatsApp"
                   size="lg"
-                  variant={shopProfile.heroImageUrl ? 'outline' : 'outline'}
-                  className={shopProfile.heroImageUrl ? 'border-white/30 text-white hover:bg-white/10' : undefined}
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10"
                   message="Bonjour Legend Farm, je voudrais passer une commande."
                 />
               </div>
