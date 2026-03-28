@@ -4,7 +4,7 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getOrdersAdminList } from '@/lib/actions/orders'
 import { adminAccessMessages } from '@/lib/shop-data'
-import { formatCurrency, formatDateTime } from '@/lib/utils'
+import { formatDateTime, formatGNF } from '@/lib/utils'
 
 export default async function AdminOrdersPage() {
   const { access, orders } = await getOrdersAdminList()
@@ -33,7 +33,7 @@ export default async function AdminOrdersPage() {
                   </p>
                 </div>
                 <OrderStatusBadge status={order.status} />
-                <p className="font-semibold">{formatCurrency(order.total_amount)}</p>
+                <p className="font-semibold">{formatGNF(order.total_amount)}</p>
               </div>
             </Link>
           ))

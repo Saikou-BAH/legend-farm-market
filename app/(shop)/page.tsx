@@ -1,5 +1,12 @@
 import Link from 'next/link'
-import { ArrowRight, Egg, ShieldCheck, ShoppingBasket, Truck } from 'lucide-react'
+import {
+  ArrowRight,
+  CircleHelp,
+  ShieldCheck,
+  ShoppingBasket,
+  Truck,
+} from 'lucide-react'
+import { ProductVisual } from '@/components/shop/product-visual'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,14 +18,44 @@ import {
 } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/empty-state'
 import { getHomePageData } from '@/lib/actions/shop'
+import {
+  getProductAvailability,
+  getProductPrimaryImage,
+  getProductStartingPrice,
+} from '@/lib/shop-catalog'
 import { homepageHighlights } from '@/lib/shop-data'
-import { formatCurrency } from '@/lib/utils'
+import { formatGNF } from '@/lib/utils'
 
 const iconMap = {
   catalog: ShoppingBasket,
   shield: ShieldCheck,
   delivery: Truck,
 }
+
+const trustPoints = [
+  {
+    title: 'Prix lisibles en GNF',
+    description:
+      'Le site affiche des montants clairs, relies aux donnees configurees par l equipe admin.',
+  },
+  {
+    title: 'Disponibilite visible',
+    description:
+      'La boutique distingue les produits disponibles, limites ou temporairement indisponibles.',
+  },
+  {
+    title: 'Contact direct',
+    description:
+      'Le client peut demander une precision ou passer par WhatsApp avant validation si besoin.',
+  },
+] as const
+
+const shoppingSteps = [
+  'Explorer le catalogue et verifier la disponibilite',
+  'Ajouter les produits utiles au panier',
+  'Choisir livraison ou retrait a la ferme',
+  'Suivre ensuite la commande depuis le compte client',
+] as const
 
 export default async function ShopHomePage() {
   const { deliveryZoneCount, featuredProducts, isConfigured, productCount, welcomePoints } =
@@ -49,7 +86,7 @@ export default async function ShopHomePage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href="/admin/dashboard">Voir le back-office</Link>
+                <Link href="/register">Creer un compte client</Link>
               </Button>
             </div>
 
@@ -90,23 +127,37 @@ export default async function ShopHomePage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {featuredProducts.length > 0 ? (
-                featuredProducts.map((product, index) => (
+                featuredProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center justify-between rounded-2xl border border-border/70 bg-background/85 px-4 py-4"
+                    className="flex items-center justify-between gap-4 rounded-2xl border border-border/70 bg-background/85 px-4 py-4"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <Egg className="h-5 w-5" />
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="h-14 w-14 overflow-hidden rounded-2xl border border-border/60">
+                        <ProductVisual
+                          name={product.name}
+                          imageUrl={getProductPrimaryImage(product)}
+                          className="h-full w-full"
+                        />
                       </div>
-                      <div>
-                        <p className="font-medium">{product.name}</p>
+                      <div className="min-w-0">
+                        <p className="truncate font-medium">{product.name}</p>
                         <p className="text-sm text-muted-foreground">
-                          {product.category} • offre {index + 1}
+                          {product.category} • {getProductAvailability(product).label.toLowerCase()}
                         </p>
                       </div>
                     </div>
-                    <p className="font-semibold">{formatCurrency(product.base_price)}</p>
+                    <div className="text-right">
+                      <p className="font-semibold">
+                        {formatGNF(getProductStartingPrice(product))}
+                      </p>
+                      <Link
+                        href={`/products/${product.id}`}
+                        className="text-sm text-primary transition-colors hover:text-primary/80"
+                      >
+                        Voir le detail
+                      </Link>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -155,6 +206,58 @@ export default async function ShopHomePage() {
             )
           })}
         </div>
+      </section>
+
+      <section className="container grid gap-6 pb-16 lg:grid-cols-[1fr_1fr]">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>Pourquoi cette boutique inspire plus confiance</CardTitle>
+            <CardDescription>
+              L objectif n est pas seulement de montrer des produits, mais d enlever les
+              doutes au moment d acheter.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {trustPoints.map((point) => (
+              <div key={point.title} className="rounded-2xl border border-border/70 p-4">
+                <p className="font-medium">{point.title}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{point.description}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="h-full border-primary/15 bg-card/95">
+          <CardHeader>
+            <CardTitle>Commander sans se perdre</CardTitle>
+            <CardDescription>
+              Le parcours a ete simplifie pour rester rassurant aussi bien sur mobile que
+              sur desktop.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {shoppingSteps.map((step, index) => (
+              <div key={step} className="flex gap-4 rounded-2xl border border-border/70 p-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
+                  {index + 1}
+                </div>
+                <p className="text-sm text-muted-foreground">{step}</p>
+              </div>
+            ))}
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button asChild variant="outline">
+                <Link href="/delivery">Comprendre la livraison</Link>
+              </Button>
+              <Button asChild variant="ghost">
+                <Link href="/contact">
+                  Besoin d aide ?
+                  <CircleHelp className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </section>
     </main>
   )

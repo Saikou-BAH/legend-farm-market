@@ -1,24 +1,29 @@
 'use server'
 
-import { getCurrentCustomerOrders } from '@/lib/actions/shop'
-import { getAdminDashboardData, getAdminOrders } from '@/lib/actions/admin-shop'
+import {
+  getCurrentCustomerOrderById,
+  getCurrentCustomerOrders,
+} from '@/lib/actions/shop'
+import {
+  getAdminDashboardData,
+  getAdminOrderById,
+  getAdminOrders,
+} from '@/lib/actions/admin-shop'
 
 export async function getCustomerOrders() {
   return getCurrentCustomerOrders()
 }
 
 export async function getCustomerOrderById(id: string) {
-  const { isAuthenticated, isConfigured, orders } = await getCurrentCustomerOrders()
-
-  return {
-    isConfigured,
-    isAuthenticated,
-    order: orders.find((order) => order.id === id) ?? null,
-  }
+  return getCurrentCustomerOrderById(id)
 }
 
 export async function getOrdersAdminList() {
   return getAdminOrders()
+}
+
+export async function getAdminOrderDetailsById(id: string) {
+  return getAdminOrderById(id)
 }
 
 export async function getOrdersDashboardSnapshot() {

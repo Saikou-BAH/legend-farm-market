@@ -1,3 +1,4 @@
+import { ProductEditor } from '@/components/admin/product-editor'
 import { ProductCard } from '@/components/shop/product-card'
 import { EmptyState } from '@/components/ui/empty-state'
 import { getAdminProducts } from '@/lib/actions/admin-shop'
@@ -14,6 +15,8 @@ export default async function AdminProductsPage() {
 
   return (
     <div className="space-y-6">
+      <ProductEditor />
+
       <div className="space-y-2">
         <h2 className="font-serif text-3xl">Produits</h2>
         <p className="text-muted-foreground">
@@ -26,11 +29,9 @@ export default async function AdminProductsPage() {
           {products.map((product) => (
             <ProductCard
               key={product.id}
-              name={product.name}
-              category={product.category}
-              unit={product.unit}
-              price={product.base_price}
-              description={product.description}
+              product={product}
+              href={`/admin/products/${product.id}`}
+              context="admin"
             />
           ))}
         </div>

@@ -1,7 +1,10 @@
+import Link from 'next/link'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getCustomerAccount } from '@/lib/actions/customers'
-import { formatCurrency } from '@/lib/utils'
+import { formatGNF } from '@/lib/utils'
 
 export default async function AccountDashboardPage() {
   const { addresses, isAuthenticated, isConfigured, profile } = await getCustomerAccount()
@@ -33,38 +36,64 @@ export default async function AccountDashboardPage() {
     )
   }
 
+  const defaultAddress = addresses.find((address) => address.is_default) ?? null
+
   return (
-    <div className="grid gap-6 md:grid-cols-3">
+    <div className="space-y-6">
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Points fidelite</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="font-serif text-3xl">{profile.loyalty_points}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge>Niveau {profile.loyalty_level}</Badge>
+              <span className="text-sm text-muted-foreground">
+                Cumulez vos achats pour progresser.
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Adresses</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="font-serif text-3xl">{addresses.length}</p>
+            <p className="text-sm text-muted-foreground">
+              {defaultAddress?.full_address ??
+                'Ajoutez une adresse de livraison pour faciliter le checkout.'}
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Credit</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="font-serif text-3xl">{formatGNF(profile.credit_balance)}</p>
+            <p className="text-sm text-muted-foreground">
+              Limite actuelle : {formatGNF(profile.credit_limit)}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
       <Card>
         <CardHeader>
-          <CardTitle>Points fidelite</CardTitle>
+          <CardTitle>Raccourcis utiles</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <p className="font-serif text-3xl">{profile.loyalty_points}</p>
-          <p className="text-sm text-muted-foreground">Niveau actuel : {profile.loyalty_level}</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Adresses</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <p className="font-serif text-3xl">{addresses.length}</p>
-          <p className="text-sm text-muted-foreground">
-            {addresses[0]?.full_address ??
-              'Ajoutez une adresse de livraison pour faciliter le checkout.'}
-          </p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Credit</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <p className="font-serif text-3xl">{formatCurrency(profile.credit_balance)}</p>
-          <p className="text-sm text-muted-foreground">
-            Limite actuelle : {formatCurrency(profile.credit_limit)}
-          </p>
+        <CardContent className="flex flex-wrap gap-3">
+          <Button asChild>
+            <Link href="/account/orders">Voir mes commandes</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/account/addresses">Gerer mes adresses</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/account/profile">Mettre a jour mon profil</Link>
+          </Button>
         </CardContent>
       </Card>
     </div>

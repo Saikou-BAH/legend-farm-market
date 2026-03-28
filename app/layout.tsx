@@ -17,12 +17,26 @@ const manrope = Manrope({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   title: {
     default: 'Legend Farm Shop',
     template: '%s | Legend Farm Shop',
   },
   description:
     'La boutique en ligne de Legend Farm pour les oeufs, volailles et produits fermiers premium.',
+  openGraph: {
+    title: 'Legend Farm Shop',
+    description:
+      'La boutique en ligne de Legend Farm pour les oeufs, volailles et produits fermiers premium.',
+    type: 'website',
+    locale: 'fr_FR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Legend Farm Shop',
+    description:
+      'La boutique en ligne de Legend Farm pour les oeufs, volailles et produits fermiers premium.',
+  },
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',

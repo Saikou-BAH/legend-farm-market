@@ -1,4 +1,5 @@
 import { CheckCircle2, Circle } from 'lucide-react'
+import { getOrderStatusLabel } from '@/lib/order-display'
 import type { OrderStatus } from '@/types'
 
 const steps: Array<{ key: OrderStatus; label: string }> = [
@@ -14,6 +15,17 @@ interface OrderTimelineProps {
 }
 
 export function OrderTimeline({ status }: OrderTimelineProps) {
+  if (status === 'cancelled' || status === 'returned') {
+    return (
+      <div className="rounded-[1.25rem] border border-border/70 bg-muted/20 p-4 text-sm">
+        <p className="font-medium">{getOrderStatusLabel(status)}</p>
+        <p className="mt-1 text-muted-foreground">
+          Cette commande a quitte le cycle normal de preparation et de livraison.
+        </p>
+      </div>
+    )
+  }
+
   const currentIndex = steps.findIndex((step) => step.key === status)
 
   return (

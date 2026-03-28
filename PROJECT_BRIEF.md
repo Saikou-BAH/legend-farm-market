@@ -8,6 +8,7 @@ Ce fichier centralise les consignes donnees par le client afin de garder une ref
 - Emplacement obligatoire : `/home/saikou/legend-farm-market`
 - Nature du projet : nouvelle boutique en ligne de la ferme `Legend Farm`
 - Stack cible : `Next.js`, `TypeScript`, `Tailwind CSS`, `shadcn/ui`, `Supabase`
+- Cible de deploiement : `Vercel`
 
 ## Regles de travail
 
@@ -20,6 +21,9 @@ Ce fichier centralise les consignes donnees par le client afin de garder une ref
 - Il faut conserver ce fichier de cadrage pour s'y referer plus tard
 - Les prix, frais, promotions et autres donnees metier ne doivent pas etre codes en dur dans l interface
 - Les valeurs metier doivent venir de Supabase et etre administrables depuis le site avec un compte admin
+- Tous les montants affiches sur le site doivent etre presentes en `GNF`
+- Le projet doit rester compatible avec un deploiement `Vercel` des le depart
+- Les variables d environnement critiques doivent etre pensees pour etre renseignees aussi dans `Vercel`
 
 ## Analyse du projet source
 

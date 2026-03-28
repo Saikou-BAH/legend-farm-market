@@ -1,9 +1,17 @@
 'use server'
 
-import { getCatalogProducts, getHomePageData } from '@/lib/actions/shop'
+import {
+  getCatalogProductById,
+  getCatalogProducts,
+  getHomePageData,
+} from '@/lib/actions/shop'
+import { getAdminProductById as getAdminProductByIdInternal } from '@/lib/actions/admin-shop'
 
-export async function getProductsCatalog() {
-  return getCatalogProducts()
+export async function getProductsCatalog(filters?: {
+  search?: string | null
+  category?: string | null
+}) {
+  return getCatalogProducts(filters)
 }
 
 export async function getFeaturedProducts() {
@@ -13,10 +21,9 @@ export async function getFeaturedProducts() {
 }
 
 export async function getProductById(id: string) {
-  const { isConfigured, products } = await getCatalogProducts()
+  return getCatalogProductById(id)
+}
 
-  return {
-    isConfigured,
-    product: products.find((product) => product.id === id) ?? null,
-  }
+export async function getAdminProductById(id: string) {
+  return getAdminProductByIdInternal(id)
 }

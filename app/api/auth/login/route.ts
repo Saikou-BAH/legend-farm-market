@@ -1,6 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
+import {
+  getDefaultAuthenticatedPath,
+  readLegendFarmAuthState,
+} from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { checkRateLimit } from '@/lib/rate-limit'
+
+async function resolveDefaultNextPath(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string,
+  userMetadata: unknown
+) {
+  const authState = readLegendFarmAuthState({ user_metadata: userMetadata })
+
+  if (authState.userType) {
+    return getDefaultAuthenticatedPath(authState.userType)
+  }
+
+  const { data: staffProfile } = await supabase
+    .from('staff_profiles')
+    .select('id')
+    .eq('id', userId)
+    .maybeSingle()
+
+  return staffProfile?.id ? '/admin/dashboard' : '/account/dashboard'
+}
 
 export async function POST(request: NextRequest) {
   const ip =
@@ -54,14 +78,20 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createClient()
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
-  if (error) {
+  if (error || !data.user) {
     return NextResponse.json(
       { error: 'Email ou mot de passe incorrect.' },
       { status: 401 }
     )
   }
 
-  return NextResponse.json({ success: true })
+  const next = await resolveDefaultNextPath(
+    supabase,
+    data.user.id,
+    data.user.user_metadata
+  )
+
+  return NextResponse.json({ success: true, next })
 }

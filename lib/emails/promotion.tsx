@@ -1,12 +1,13 @@
+import { renderEmailLayout, renderParagraph } from '@/lib/email-template'
+
 interface PromotionEmailProps {
   title: string
 }
 
-export function PromotionEmail({ title }: PromotionEmailProps) {
-  return (
-    <div>
-      <h1>Nouvelle offre Legend Farm Shop</h1>
-      <p>{title}</p>
-    </div>
-  )
+export function renderPromotionEmail({ title }: PromotionEmailProps) {
+  return renderEmailLayout({
+    title: 'Nouvelle offre Legend Farm Shop',
+    preview: title,
+    bodyHtml: renderParagraph(title),
+  })
 }

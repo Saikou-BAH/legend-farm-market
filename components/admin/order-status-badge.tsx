@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge'
+import { getOrderStatusLabel } from '@/lib/order-display'
 import type { OrderStatus } from '@/types'
 
 interface OrderStatusBadgeProps {
@@ -6,5 +7,12 @@ interface OrderStatusBadgeProps {
 }
 
 export function OrderStatusBadge({ status }: OrderStatusBadgeProps) {
-  return <Badge variant="secondary">{status}</Badge>
+  const variant =
+    status === 'delivered'
+      ? 'default'
+      : status === 'cancelled' || status === 'returned'
+        ? 'outline'
+        : 'secondary'
+
+  return <Badge variant={variant}>{getOrderStatusLabel(status)}</Badge>
 }

@@ -1,3 +1,4 @@
+import { CustomerAddressesManager } from '@/components/account/customer-addresses-manager'
 import { EmptyState } from '@/components/ui/empty-state'
 import { getCustomerAccount } from '@/lib/actions/customers'
 
@@ -13,23 +14,5 @@ export default async function AccountAddressesPage() {
     )
   }
 
-  if (addresses.length === 0) {
-    return (
-      <EmptyState
-        title="Aucune adresse enregistree"
-        description="Ajoutez une adresse Maison, Bureau ou point de retrait pour accelerer le checkout."
-      />
-    )
-  }
-
-  return (
-    <div className="space-y-4">
-      {addresses.map((address) => (
-        <div key={address.id} className="rounded-2xl border border-border/70 p-4">
-          <p className="font-medium">{address.label ?? 'Adresse'}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{address.full_address}</p>
-        </div>
-      ))}
-    </div>
-  )
+  return <CustomerAddressesManager addresses={addresses} />
 }

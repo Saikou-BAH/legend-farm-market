@@ -22,3 +22,85 @@
 - Refactor des layouts pour separer l enveloppe publique, l espace client et le back-office au lieu d un layout unique pour tout.
 - Nettoyage de l integration Sentry vers `instrumentation.ts` / `instrumentation-client.ts` et ajout de `app/global-error.tsx` pour eviter les warnings de configuration de Next.js 15.
 - Verification complete : `npm install` execute, puis `npm run build` valide avec succes sur la nouvelle structure.
+- Convention monetaire verrouillee : les montants affiches passent explicitement par un helper `formatGNF()` pour standardiser la devise sur tout le site.
+- Ajout de `SITE_OVERVIEW.md` pour decrire clairement ce qu'est `Legend Farm Shop`, les espaces disponibles sur le site et les grandes regles produit.
+- Correction de `.env.local` : ajout de `NEXT_PUBLIC_APP_URL`, normalisation des variables Sentry et suppression de l erreur de syntaxe sur `NEXT_PUBLIC_SENTRY_DSN`.
+- Cible `Vercel` verrouillee dans la documentation projet pour garder le deploiement en tete pendant la suite de l implementation.
+- Ajout d un systeme securise de gestion des utilisateurs cote administration via `scripts/manage-users.ts`.
+- Ajout du document `docs/USER_MANAGEMENT_LEGEND_FARM.md` pour expliquer les commandes, les regles de securite, les scenarios courants et les limites connues.
+- Ajout de la migration `supabase/migrations/002_staff_profiles_phone.sql` pour prendre en charge le telephone staff sans inventer de donnees hors schema.
+- Mise a jour de `types/index.ts` et de `package.json` pour aligner la CLI avec le schema et exposer `npm run users`.
+- Branchement reel du front d authentification : `login`, `register`, `forgot-password` et nouvelle page `reset-password`.
+- Ajout des routes API `register`, `forgot-password` et `logout` avec validations, rate limiting et usage controle de Supabase.
+- Ajout du helper partage `lib/auth.ts` pour la validation email/mot de passe, le parsing des metadata `legend_farm` et les redirections internes sures.
+- Enforcement du flag `force_password_change` dans `middleware.ts` pour obliger le passage par `/reset-password` tant que le mot de passe n a pas ete remplace.
+- Ajout d un vrai logout dans les navigations client et admin.
+- Correction de compatibilite Next.js 15 sur les pages auth utilisant `useSearchParams()` via des frontieres `Suspense` dediees pour permettre le prerender et le build de production.
+- Mise a jour de `docs/USER_MANAGEMENT_LEGEND_FARM.md` pour refleter l existence du vrai parcours frontend `/forgot-password` -> `/reset-password` et l application effective du flag `force_password_change`.
+- Ajustement du parcours auth pour conserver le parametre `next` dans le flux `forgot-password` -> `reset-password` et rediriger correctement le staff vers `/admin/dashboard` apres connexion quand aucun `next` n est fourni.
+- Demarrage effectif de la Phase 0 de stabilisation: lectures directes par `id` pour les commandes client/admin, les clients admin et les produits admin au lieu de recherches locales dans des listes deja chargees.
+- Alignement initial des types utiles avec le schema shop pour les produits (paliers de prix) et les commandes (champs de detail + lignes de commande).
+- Mise a jour de `.env.example` avec les variables Upstash utilisees par le rate limiting distribue en production.
+- Ajout de `docs/PHASE_0_TECHNICAL_BASELINE.md` pour documenter les routes fonctionnelles, partielles et placeholders, les tables effectivement branchees, les tables encore non utilisees et les helpers a conserver pour les phases suivantes.
+- Clarification explicite des placeholders de phase 0 sur les pages retours, avis, analytics, emails et details encore non branches, afin d eviter toute confusion entre structure preparee et fonctionnalite deja livree.
+- Demarrage du premier lot "catalogue vendeur" : recherche publique, filtre par categorie, compteur de resultats et cartes produits plus credibles sans simuler un panier qui n est pas encore branche.
+- Ajout de `lib/shop-catalog.ts` pour centraliser les helpers de vitrine publique : image principale, disponibilite, paliers de prix, prix de depart et filtrage du catalogue.
+- Ajout de `components/shop/product-visual.tsx` pour afficher proprement les vraies images produits lorsqu elles existent, avec fallback visuel si aucun media n est encore configure.
+- Refonte de `components/shop/product-card.tsx` pour supprimer le faux bouton "Ajouter", introduire des badges utiles et rendre le detail produit accessible clairement cote boutique comme cote admin.
+- Refonte de `/products` pour supporter `searchParams`, categorie active, reinitialisation des filtres et messages d etat plus explicites.
+- Refonte de `/products/[id]` pour afficher une vraie fiche produit: medias, disponibilite, paliers de prix, stock visible et points de contact utiles en attendant le panier complet.
+- Amelioration de l accueil public: suppression du CTA back-office cote client, featured products relies aux vraies fiches produit et tarification de depart calculee depuis les paliers.
+- Amelioration de la navigation publique en retirant le lien back-office du header principal et en rendant le footer pilote par `shop_settings` pour les coordonnees de contact.
+- Mise a jour de `docs/ROADMAP_SITE_ECOMMERCE_LEGEND_FARM.md` avec un statut reel par phase pour distinguer clairement ce qui est deja livre, en cours ou non commence.
+- Demarrage concret de la phase medias produits: ajout du helper `lib/product-media.ts`, de server actions admin dediees aux images produit et d'un vrai gestionnaire visuel sur la fiche admin produit.
+- Ajout de `components/admin/product-media-manager.tsx` pour permettre a un admin d envoyer, supprimer, reordonner et definir l image principale d un produit depuis le back-office.
+- Ajout de la migration `supabase/migrations/003_product_media_storage.sql` pour creer le bucket `product-media` et rendre la lecture publique des images possible cote boutique.
+- Mise a jour de `.env.example` avec `SENTRY_AUTH_TOKEN` afin d aligner les variables documentees sur la configuration de build utilisee localement.
+- Demarrage concret de la phase panier: ajout d'un panier local persistant avec `CartProvider`, hook `useCart`, calculs de sous-total, validations de disponibilite et badge panier dynamique dans le header.
+- Ajout de composants client dedies au panier: `AddToCartButton`, `CartStatusButton`, `CartPageClient` et `CheckoutPreview`.
+- Le detail produit permet maintenant un vrai ajout au panier avec choix de quantite, et les cartes produit boutique proposent un ajout rapide sans toucher au back-office.
+- La page `/cart` est devenue une vraie page de gestion de lignes panier avec modification de quantite, suppression, vidage et blocage du passage checkout si des lignes sont invalides.
+- La page `/checkout` affiche maintenant un recap transitoire du panier pour preparer la phase suivante sans pretendre creer deja une commande.
+- Remplacement du recap transitoire de checkout par un vrai flux client de creation de commande: choix livraison/retrait, choix d une adresse enregistree, choix de zone, creneau optionnel, date souhaitee, notes et mode de paiement supporte.
+- Ajout de `lib/order-display.ts` et `lib/checkout.ts` pour centraliser les libelles metier, les options de paiement/livraison et le payload de checkout.
+- Ajout de `lib/actions/checkout.ts` pour creer de vraies commandes en base a partir du panier, avec verification serveur du profil client, du stock, des produits, des frais de livraison et du montant minimum avant insertion dans `orders` et `order_items`.
+- La creation de commande s appuie sur `SUPABASE_SERVICE_ROLE_KEY` cote serveur pour fiabiliser les insertions et le nettoyage en cas d echec des lignes de commande, sans exposer cette cle au client.
+- Refonte de `/order-confirmation/[id]` et `/track/[id]` pour afficher les vraies donnees de commande en base au lieu de placeholders.
+- Amelioration des libelles de statut, livraison et paiement sur les vues commandes client/admin et gestion explicite des commandes annulees ou retournees dans la timeline.
+- Nettoyage du composant mort `CheckoutPreview`, devenu obsolete apres branchement du vrai checkout.
+- Verification finale: `npm run build` valide en production apres branchement complet du checkout et des pages de confirmation/suivi.
+- Demarrage concret de la phase 6 paiement: ajout de la migration `supabase/migrations/004_payment_transactions.sql` pour creer l historique transactionnel de paiement et recalculer automatiquement `orders.payment_status` depuis la base.
+- Ajout de `lib/payment-transactions.ts` et extension des types/metadonnees pour partager les calculs de net encaisse, remboursements et libelles transactionnels entre les vues client et admin.
+- Le checkout tente maintenant de creer une transaction initiale `pending` pour chaque nouvelle commande quand la migration des transactions de paiement est appliquee.
+- Ajout de `lib/actions/admin-order-payments.ts` pour permettre a un staff actif d enregistrer manuellement un encaissement, un acompte, un echec, une annulation ou un remboursement sans passer par Supabase Studio.
+- Ajout de `components/admin/order-payment-manager.tsx` sur la fiche admin commande pour afficher l historique de paiement, suivre le net encaisse et saisir une nouvelle transaction manuelle avec validations metier.
+- Ajout de `components/shop/order-payment-summary.tsx` pour rendre le suivi de paiement lisible cote client dans le detail de commande.
+- Les lectures de commande client/admin recuperent maintenant aussi les transactions de paiement lorsque la table existe, tout en restant resilientes si la migration n est pas encore appliquee.
+- Verification finale: `npm run build` valide en production apres ajout du modele transactionnel de paiement et de l outillage admin associe.
+- Durcissement final de la phase 6: blocage des encaissements reussis sur commandes annulees/retournees, rattachement des transactions admin au vrai `customer_id` de la commande et clarification UI de la strategie de lancement sans provider externe.
+- Ajout de `docs/PHASE_6_PAYMENT_MODEL.md` pour documenter la strategie de lancement, les moyens de paiement reels supportes, les regles de calcul de `payment_status`, les cas succes/echec/annulation/partiel et les limites assumees du modele actuel.
+- La phase 6 est maintenant consideree comme finalisee pour le lancement sans provider externe, avec un socle transactionnel interne propre et un build de production valide.
+- Finalisation de la phase 7 cote compte client: ajout des composants `components/account/customer-profile-form.tsx` et `components/account/customer-addresses-manager.tsx` pour rendre le profil et les adresses vraiment modifiables depuis l interface.
+- Branchement des pages `/account/profile` et `/account/addresses` sur les nouvelles mutations serveur `updateCurrentCustomerProfile`, `createCustomerAddress`, `updateCustomerAddress`, `setDefaultCustomerAddress` et `deleteCustomerAddress`.
+- Amelioration du dashboard client avec raccourcis utiles post-achat et mise en avant de l adresse par defaut afin de rendre l espace client reellement exploitable au quotidien.
+- Verification finale: `npm run build` valide en production apres branchement complet du profil client et de la gestion des adresses.
+- Finalisation pratique de la phase 8 cote back-office: mutations admin pour produits, commandes, paiements, clients, promotions, parametres et campagnes email, avec permissions staff plus fines cote action.
+- Ajout d un journal admin recent via la migration `supabase/migrations/005_admin_activity_logs.sql`, helper `recordAdminActivity()` et affichage direct sur le dashboard admin.
+- Finalisation pratique de la phase 9 cote communication client: page contact, WhatsApp, emails de bienvenue, confirmation commande, statut commande, notifications de retour en stock et campagnes email admin relies au code.
+- Le rendu HTML des emails a ete simplifie pour supprimer la dependance fragile a `react-dom/server` et garder une build Next.js propre.
+- Durcissement anti-abus: rate limit ajoute sur les notifications de retour en stock et echappement HTML renforce sur le formulaire de contact.
+- Finalisation visible de la phase 10: navigation mobile ajoutee, home plus rassurante, page `/delivery` et page `/legal` mises en place pour soutenir la confiance et la clarte.
+- Finalisation de la phase 11 pour le lancement actuel: ajout de `app/robots.ts`, `app/sitemap.ts`, enrichissement de `metadata`, ajout de tests utilitaires `node:test` et du script `npm run test:smoke`.
+- Ajout du script `npm run verify:readiness` et de la checklist `docs/PREPRODUCTION_CHECKLIST_LEGEND_FARM.md` pour cadrer la phase 12 avant mise en ligne.
+- Remplacement des placeholders analytics par un tableau de bord admin simple mais reel, base sur commandes, paiements, clients, promotions et categories.
+- Remplacement des placeholders retours par un flux minimal mais reel: creation cote client, liste cote admin et traitement cote admin.
+- Verification outillee finale executee: `npm run test:smoke` OK, `npm run verify:readiness` OK avec warnings non bloquants sur Resend/Upstash, `npm run build` OK.
+- Ajout de `docs/FINAL_AUDIT_LEGEND_FARM_MARKET_2026-03-28.md` pour consigner l etat final, les verifications effectuees, les warnings restants et les prerequis externes de lancement.
+- Finalisation des avis clients de bout en bout: composant client pour laisser un avis sur une commande livree, affichage public sur la fiche produit et moderation admin avec publication et reponse.
+- Finalisation du checkout et des calculs financiers avances: prise en charge des promotions actives, utilisation des points fidelite, utilisation du credit client et recalcul serveur robuste des montants finaux.
+- Ajout de la migration `supabase/migrations/006_loyalty_checkout_settings.sql` pour initialiser proprement la valeur d un point fidelite cote boutique.
+- Enrichissement du compte client et de l admin fidelite avec un historique recent des transactions, et attribution automatique des points d achat lors du passage d une commande a l etat `delivered`.
+- Finalisation des retours ligne par ligne via `return_items`, avec creation cote client a partir des vraies lignes de commande et detail enrichi cote admin.
+- Enrichissement du dashboard analytics admin avec des visualisations comparatives simples et des exports CSV de pilotage.
+- Ajout de tests smoke sur le moteur de pricing checkout pour verrouiller promotions, points, credit client et calcul du montant final.
+- Realignement final de la roadmap, de l audit final, de la checklist pre-production et du script `verify:readiness` avec l etat reel du code livre.

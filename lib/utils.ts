@@ -18,6 +18,10 @@ export function formatCurrency(
   }).format(amount)
 }
 
+export function formatGNF(amount: number) {
+  return formatCurrency(amount, 'GNF', 'fr-FR')
+}
+
 export function formatNumber(value: number, decimals: number = 0) {
   return new Intl.NumberFormat('fr-FR', {
     minimumFractionDigits: decimals,

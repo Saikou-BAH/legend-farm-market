@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import { CustomerSegmentBadge } from '@/components/admin/customer-segment-badge'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getCustomersAdminList } from '@/lib/actions/customers'
 import { adminAccessMessages } from '@/lib/shop-data'
-import { formatCurrency } from '@/lib/utils'
+import { formatGNF } from '@/lib/utils'
 
 export default async function AdminCustomersPage() {
   const { access, customers } = await getCustomersAdminList()
@@ -22,15 +23,16 @@ export default async function AdminCustomersPage() {
       <CardContent className="space-y-4">
         {customers.length > 0 ? (
           customers.map((customer) => (
-            <div
+            <Link
               key={customer.id}
+              href={`/admin/customers/${customer.id}`}
               className="grid gap-2 rounded-2xl border border-border/70 p-4 md:grid-cols-[1fr_0.6fr_0.4fr_0.5fr]"
             >
               <p className="font-medium">{customer.full_name}</p>
               <CustomerSegmentBadge type={customer.customer_type} />
               <p className="text-sm text-primary">{customer.loyalty_level}</p>
-              <p className="font-medium">{formatCurrency(customer.credit_balance)}</p>
-            </div>
+              <p className="font-medium">{formatGNF(customer.credit_balance)}</p>
+            </Link>
           ))
         ) : (
           <EmptyState

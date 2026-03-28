@@ -2,7 +2,7 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getDeliveryZonesAdminList } from '@/lib/actions/delivery'
 import { adminAccessMessages } from '@/lib/shop-data'
-import { formatCurrency } from '@/lib/utils'
+import { formatGNF } from '@/lib/utils'
 
 export default async function AdminDeliveriesPage() {
   const { access, zones } = await getDeliveryZonesAdminList()
@@ -29,7 +29,7 @@ export default async function AdminDeliveriesPage() {
               <p className="text-sm text-muted-foreground">
                 {zone.estimated_delay ?? 'Delai a definir'}
               </p>
-              <p className="font-medium">{formatCurrency(zone.delivery_fee)}</p>
+              <p className="font-medium">{formatGNF(zone.delivery_fee)}</p>
             </div>
           ))
         ) : (

@@ -22,6 +22,10 @@ export const env = {
     return this.hasSupabase() && Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)
   },
 
+  hasBrevo() {
+    return Boolean(process.env.BREVO_API_KEY && process.env.BREVO_FROM_EMAIL)
+  },
+
   supabaseUrl() {
     return requireEnv(process.env.NEXT_PUBLIC_SUPABASE_URL, 'NEXT_PUBLIC_SUPABASE_URL')
   },
@@ -38,5 +42,17 @@ export const env = {
       process.env.SUPABASE_SERVICE_ROLE_KEY,
       'SUPABASE_SERVICE_ROLE_KEY'
     )
+  },
+
+  brevoApiKey() {
+    return requireEnv(process.env.BREVO_API_KEY, 'BREVO_API_KEY')
+  },
+
+  brevoFromEmail() {
+    return requireEnv(process.env.BREVO_FROM_EMAIL, 'BREVO_FROM_EMAIL')
+  },
+
+  brevoFromName() {
+    return process.env.BREVO_FROM_NAME ?? 'Legend Farm'
   },
 }

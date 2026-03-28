@@ -1,14 +1,22 @@
 import Link from 'next/link'
-import { ShoppingCart, Sprout, User } from 'lucide-react'
+import { Sprout, User } from 'lucide-react'
+import { MobileNav } from '@/components/layout/mobile-nav'
+import { WhatsAppButton } from '@/components/shop/whatsapp-button'
+import { getPublicShopProfile } from '@/lib/actions/shop'
+import { CartStatusButton } from '@/components/shop/cart-status-button'
 import { Button } from '@/components/ui/button'
 
 const navItems = [
+  { href: '/', label: 'Accueil' },
   { href: '/products', label: 'Boutique' },
+  { href: '/delivery', label: 'Livraison' },
+  { href: '/contact', label: 'Contact' },
   { href: '/account/dashboard', label: 'Mon compte' },
-  { href: '/admin/dashboard', label: 'Back-office' },
 ]
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const { shopPhone } = await getPublicShopProfile()
+
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
@@ -37,17 +45,21 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <MobileNav phone={shopPhone} />
+          <div className="hidden lg:block">
+            <WhatsAppButton
+              phone={shopPhone}
+              label="WhatsApp"
+              variant="ghost"
+              message="Bonjour Legend Farm, j'aimerais avoir des informations."
+            />
+          </div>
           <Button asChild variant="ghost" size="icon">
             <Link href="/account/dashboard" aria-label="Mon compte">
               <User className="h-4 w-4" />
             </Link>
           </Button>
-          <Button asChild size="sm">
-            <Link href="/cart">
-              <ShoppingCart className="h-4 w-4" />
-              Panier
-            </Link>
-          </Button>
+          <CartStatusButton />
         </div>
       </div>
     </header>

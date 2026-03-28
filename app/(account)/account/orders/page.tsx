@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import { OrderStatusBadge } from '@/components/admin/order-status-badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/empty-state'
 import { getCustomerOrders } from '@/lib/actions/orders'
-import { formatCurrency, formatDateTime } from '@/lib/utils'
+import { formatDateTime, formatGNF } from '@/lib/utils'
 
 export default async function AccountOrdersPage() {
   const { isAuthenticated, isConfigured, orders } = await getCustomerOrders()
@@ -46,10 +47,8 @@ export default async function AccountOrdersPage() {
                   {formatDateTime(order.created_at)}
                 </p>
               </div>
-              <p className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-                {order.status}
-              </p>
-              <p className="font-semibold">{formatCurrency(order.total_amount)}</p>
+              <OrderStatusBadge status={order.status} />
+              <p className="font-semibold">{formatGNF(order.total_amount)}</p>
             </CardContent>
           </Card>
         </Link>

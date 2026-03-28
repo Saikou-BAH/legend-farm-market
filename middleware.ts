@@ -1,9 +1,11 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { readLegendFarmAuthState } from '@/lib/auth'
 import { env } from '@/lib/env'
 
 const customerProtectedPrefixes = ['/account', '/orders', '/checkout']
 const adminPrefixes = ['/admin']
+const forcePasswordAllowedPrefixes = ['/reset-password', '/auth/callback']
 
 function matchesPrefix(pathname: string, prefixes: string[]) {
   return prefixes.some(
@@ -58,8 +60,23 @@ export async function middleware(request: NextRequest) {
   if (!user && (needsCustomerSession || needsAdminSession)) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    url.searchParams.set('next', pathname)
+    url.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
     return NextResponse.redirect(url)
+  }
+
+  if (user && !pathname.startsWith('/api/')) {
+    const authState = readLegendFarmAuthState(user)
+
+    if (
+      authState.forcePasswordChange &&
+      !matchesPrefix(pathname, forcePasswordAllowedPrefixes)
+    ) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/reset-password'
+      url.searchParams.set('reason', 'force_password_change')
+      url.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
+      return NextResponse.redirect(url)
+    }
   }
 
   if (user && needsAdminSession) {
