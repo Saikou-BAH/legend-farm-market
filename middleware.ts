@@ -79,16 +79,22 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (user && needsAdminSession) {
+  if (user && (needsAdminSession || needsCustomerSession)) {
     const { data: staffProfile } = await supabase
       .from('staff_profiles')
       .select('id, is_active')
       .eq('id', user.id)
       .maybeSingle()
 
-    if (!staffProfile?.is_active) {
+    if (needsAdminSession && !staffProfile?.is_active) {
       const url = request.nextUrl.clone()
       url.pathname = '/'
+      return NextResponse.redirect(url)
+    }
+
+    if (needsCustomerSession && staffProfile?.is_active) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/dashboard'
       return NextResponse.redirect(url)
     }
   }
