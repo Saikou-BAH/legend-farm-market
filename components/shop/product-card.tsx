@@ -30,7 +30,7 @@ export function ProductCard({
   const startingPrice = getProductStartingPrice(product)
   const hasTieredPricing = tierCount > 0
   const description =
-    product.description ?? 'Description a completer depuis le back-office.'
+    product.description ?? 'La description de ce produit sera disponible prochainement.'
 
   return (
     <Card className="group surface-panel h-full overflow-hidden border-white/80 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_70px_rgba(20,60,42,0.16)]">
@@ -86,19 +86,19 @@ export function ProductCard({
               </p>
               <p className="mt-2 text-sm font-medium text-foreground">
                 {context === 'admin'
-                  ? `${product.stock_quantity} en stock visible`
+                  ? `${product.stock_quantity} en stock`
                   : product.stock_quantity > 0 && product.stock_quantity <= 10
                     ? `Plus que ${product.stock_quantity} disponible${product.stock_quantity > 1 ? 's' : ''}`
                     : hasTieredPricing
-                      ? `${tierCount} paliers de prix disponibles`
-                      : `Vente a l unite par ${product.unit}`}
+                      ? `${tierCount} paliers de quantite`
+                      : `Vendu par ${product.unit}`}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {context === 'admin'
-                  ? 'Pilotage back-office immediat'
+                  ? 'Visible dans le catalogue'
                   : product.stock_quantity > 0 && product.stock_quantity <= 10
-                    ? 'Stock limité, commandez vite'
-                    : 'Disponibilite et prix relus au checkout'}
+                    ? 'Stock limite, commandez vite'
+                    : 'Disponibilite confirmee au panier'}
               </p>
             </div>
           </div>

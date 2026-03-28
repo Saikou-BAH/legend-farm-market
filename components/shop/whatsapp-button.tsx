@@ -7,6 +7,7 @@ interface WhatsAppButtonProps {
   message?: string | null
   label?: string
   variant?: 'default' | 'outline' | 'secondary' | 'ghost'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
   className?: string
 }
 
@@ -15,6 +16,7 @@ export function WhatsAppButton({
   message,
   label = 'WhatsApp',
   variant = 'outline',
+  size,
   className,
 }: WhatsAppButtonProps) {
   const href = getWhatsAppHref(phone, message)
@@ -24,7 +26,7 @@ export function WhatsAppButton({
   }
 
   return (
-    <Button asChild variant={variant} className={className}>
+    <Button asChild variant={variant} size={size} className={className}>
       <a href={href} target="_blank" rel="noreferrer">
         <MessageCircle className="h-4 w-4" />
         {label}

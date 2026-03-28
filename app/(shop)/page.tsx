@@ -3,72 +3,144 @@ import Link from 'next/link'
 import {
   ArrowRight,
   Bird,
+  CheckCircle2,
+  ChevronDown,
   Egg,
   Leaf,
+  MapPin,
+  MessageCircle,
   ShieldCheck,
-  Sparkles,
   Truck,
   WalletCards,
 } from 'lucide-react'
 import { ProductCard } from '@/components/shop/product-card'
-import { ProductVisual } from '@/components/shop/product-visual'
+import { WhatsAppButton } from '@/components/shop/whatsapp-button'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { EmptyState } from '@/components/ui/empty-state'
 import { getHomePageData, getPublicShopProfile } from '@/lib/actions/shop'
-import {
-  getProductAvailability,
-  getProductPrimaryImage,
-  getProductStartingPrice,
-} from '@/lib/shop-catalog'
-import { formatGNF, formatNumber } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Accueil',
   description:
-    'Legend Farm Shop presente une experience premium pour commander des oeufs, poulets reformes et solutions agricoles avec un parcours clair et moderne.',
+    'Oeufs frais, poulets reformes et fiente directement depuis la ferme. Commandez en ligne, livraison a Conakry ou retrait a la ferme.',
 }
 
-const featuredFamilies = [
+const categories = [
   {
     title: 'Oeufs',
     description:
-      'Fraicheur, confiance quotidienne et presentation propre pour un achat simple et rassurant.',
+      'Plateaux de 30, demi-plateaux ou a l unite. Ramasses regulierement, fraicheur garantie a la date de ponte.',
     icon: Egg,
+    href: '/products?category=Oeufs',
   },
   {
     title: 'Poulets reformes',
     description:
-      'Un produit utile et accessible, presente avec la meme rigueur que les references premium.',
+      'Poulets de ponte en fin de cycle. Viande savoureuse, prix accessibles. Disponibilite variable selon les lots.',
     icon: Bird,
+    href: '/products?category=Poulets',
   },
   {
-    title: 'Fiante',
+    title: 'Fiente',
     description:
-      'Une solution agricole rentable et professionnelle, montree comme un intrant propre et utile.',
+      'Engrais organique naturel issu de l elevage. Ideal pour le maraichage, les jardins et les cultures agricoles.',
     icon: Leaf,
+    href: '/products?category=Fiente',
   },
 ]
 
-const sellingPoints = [
+const reassuranceItems = [
   {
-    title: 'Qualite visible',
-    description:
-      'Une vitrine plus nette, plus lisible et plus rassurante pour mettre les produits en confiance.',
-    icon: ShieldCheck,
+    icon: WalletCards,
+    label: 'Prix en GNF',
+    detail: 'Aucune devise etrangere',
   },
   {
+    icon: Truck,
+    label: 'Livraison a domicile',
+    detail: 'Zones disponibles a Conakry',
+  },
+  {
+    icon: MapPin,
+    label: 'Retrait a la ferme',
+    detail: 'Gratuit, sur rendez-vous',
+  },
+  {
+    icon: MessageCircle,
+    label: 'WhatsApp disponible',
+    detail: 'Reponse rapide',
+  },
+]
+
+const whyItems = [
+  {
+    icon: ShieldCheck,
+    title: 'Fraicheur suivie',
+    description:
+      'Les oeufs sont ramasses regulierement a la ferme. Chaque lot est connu et tracable de la production a votre table.',
+  },
+  {
+    icon: CheckCircle2,
     title: 'Commande simple',
     description:
-      'Catalogue clair, panier persistant et etapes d achat plus fluides de la selection au suivi.',
-    icon: WalletCards,
+      'Sur le site ou par WhatsApp. Vous choisissez vos produits, on confirme la disponibilite et on s occupe du reste.',
   },
   {
-    title: 'Logistique claire',
-    description:
-      'Livraison locale, retrait ferme et informations utiles visibles sans surcharge.',
     icon: Truck,
+    title: 'Livraison ou retrait',
+    description:
+      'Livraison dans plusieurs quartiers de Conakry ou retrait directement a la ferme selon votre preference.',
+  },
+  {
+    icon: WalletCards,
+    title: 'Prix clairs en GNF',
+    description:
+      'Tous les tarifs sont affiches en francs guineans. Pas de conversion, pas de surprises au moment de payer.',
+  },
+]
+
+const howToOrderSteps = [
+  {
+    step: '1',
+    title: 'Je choisis',
+    description:
+      'Parcourez le catalogue, ajoutez vos produits au panier. Vous pouvez aussi envoyer directement un message WhatsApp avec votre commande.',
+  },
+  {
+    step: '2',
+    title: 'Je confirme',
+    description:
+      'Validez votre panier en choisissant livraison a domicile ou retrait a la ferme. Nous confirmons la disponibilite rapidement.',
+  },
+  {
+    step: '3',
+    title: 'Je recois',
+    description:
+      'La commande est livree a l adresse indiquee ou preparee pour que vous la recuperiez directement a la ferme.',
+  },
+]
+
+const faqItems = [
+  {
+    q: 'Livrez-vous a Conakry ?',
+    a: 'Oui. Nous livrons dans plusieurs zones de Conakry. Consultez la page Livraison pour voir les quartiers desservis et les frais par zone.',
+  },
+  {
+    q: 'Peut-on commander par WhatsApp ?',
+    a: "Oui, c est possible. Envoyez-nous un message avec la liste de ce que vous souhaitez. Nous confirmons la disponibilite et organisons la livraison ou le retrait selon votre preference.",
+  },
+  {
+    q: 'Ou retirer sa commande ?',
+    a: 'Le retrait se fait directement a la ferme. Contactez-nous avant de venir pour confirmer l horaire et la disponibilite de votre commande.',
+  },
+  {
+    q: 'Comment savoir si un produit est disponible ?',
+    a: 'La disponibilite est affichee sur chaque fiche produit du catalogue. Pour les poulets reformes, la disponibilite depend des lots de ponte. Contactez-nous pour confirmer si vous avez un doute.',
+  },
+  {
+    q: 'Quels sont les delais de livraison ?',
+    a: 'En general, les commandes sont livrees dans les 24 a 48 heures apres confirmation. Les delais par zone sont disponibles sur la page Livraison.',
   },
 ]
 
@@ -78,177 +150,240 @@ export default async function HomePage() {
     getPublicShopProfile(),
   ])
 
-  const heroProducts = homeData.featuredProducts.slice(0, 3)
+  const featuredProducts = homeData.featuredProducts.slice(0, 6)
+  const hasProducts = featuredProducts.length > 0
 
   return (
     <main className="pb-24">
+
+      {/* ── HERO ─────────────────────────────────────────── */}
       <section className="container pt-8 md:pt-12">
-        <div className="surface-panel section-grid relative overflow-hidden rounded-[2.5rem] px-6 py-8 md:px-10 md:py-12">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(184,226,127,0.2),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(125,173,255,0.16),transparent_24%)]" />
-          <div className="relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-            <div className="space-y-8">
+        <div className="surface-panel section-grid relative overflow-hidden rounded-[2.5rem] px-6 py-10 md:px-10 md:py-14">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(184,226,127,0.22),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(125,173,255,0.14),transparent_24%)]" />
+
+          <div className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="space-y-8 hero-fade-up">
               <div className="space-y-5">
-                <Badge variant="secondary">Ferme moderne du futur</Badge>
-                <div className="space-y-4">
-                  <h1 className="max-w-4xl font-serif text-5xl leading-[1.02] md:text-6xl xl:text-7xl">
-                    Des produits fermiers presentes comme une{' '}
-                    <span className="text-gradient-brand">marque premium</span>.
-                  </h1>
-                  <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-                    Legend Farm Shop transforme la vente d oeufs, de poulets reformes
-                    et de fiante en une experience plus propre, plus claire, plus
-                    moderne et plus rassurante.
-                  </p>
-                </div>
+                <Badge variant="secondary" className="gap-2">
+                  <span className="h-2 w-2 rounded-full bg-green-500" />
+                  Conakry · Livraison locale · Retrait a la ferme
+                </Badge>
+                <h1 className="max-w-2xl font-serif text-5xl leading-[1.05] md:text-6xl xl:text-[4rem]">
+                  Oeufs frais, poulets et produits de ferme directement chez vous.
+                </h1>
+                <p className="max-w-xl text-lg leading-8 text-muted-foreground">
+                  Commandez sur le site ou par WhatsApp. Livraison a domicile a
+                  Conakry ou retrait directement a la ferme.
+                </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
                 <Button asChild size="lg">
                   <Link href="/products">
-                    Explorer la boutique
+                    Voir la boutique
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link href="/contact">Parler a la ferme</Link>
-                </Button>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                <Card className="bg-white/72">
-                  <CardContent className="p-5">
-                    <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                      Catalogue public
-                    </p>
-                    <p className="mt-3 font-serif text-3xl">
-                      {homeData.productCount ? formatNumber(homeData.productCount) : '0'}
-                    </p>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      produits visibles en ligne
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card className="bg-white/72">
-                  <CardContent className="p-5">
-                    <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                      Livraison
-                    </p>
-                    <p className="mt-3 font-serif text-3xl">
-                      {homeData.deliveryZoneCount
-                        ? formatNumber(homeData.deliveryZoneCount)
-                        : '0'}
-                    </p>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      zones actuellement configurees
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card className="bg-white/72">
-                  <CardContent className="p-5">
-                    <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                      Fidelisation
-                    </p>
-                    <p className="mt-3 font-serif text-3xl">
-                      {homeData.welcomePoints ? formatNumber(homeData.welcomePoints) : '0'}
-                    </p>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      points de bienvenue a l inscription
-                    </p>
-                  </CardContent>
-                </Card>
+                <WhatsAppButton
+                  phone={shopProfile.shopPhone}
+                  label="Commander sur WhatsApp"
+                  size="lg"
+                  variant="outline"
+                  message="Bonjour Legend Farm, je voudrais passer une commande."
+                />
               </div>
             </div>
 
-            <div className="grid gap-4">
-              <div className="surface-panel-strong relative overflow-hidden rounded-[2rem] px-6 py-6 text-white">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_32%)]" />
-                <div className="relative space-y-5">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-full border border-white/15 bg-white/10 p-3">
-                      <Sparkles className="h-5 w-5" />
+            <div className="surface-panel-strong rounded-[2rem] p-6 text-white hero-fade-up hero-fade-up-delay-2">
+              <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-white/60">
+                Ce qu on vend
+              </p>
+              <div className="space-y-3">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.title}
+                    href={cat.href}
+                    className="flex items-start gap-4 rounded-[1.2rem] border border-white/10 bg-white/[0.07] px-4 py-4 transition-colors hover:bg-white/[0.14]"
+                  >
+                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.75rem] bg-white/15">
+                      <cat.icon className="h-4 w-4" />
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
-                        Signature visuelle
-                      </p>
-                      <p className="text-lg font-medium">
-                        Nature maitrisee, logistique claire, image premium
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium leading-none">{cat.title}</p>
+                      <p className="mt-1.5 text-xs leading-5 text-white/60">
+                        {cat.description}
                       </p>
                     </div>
-                  </div>
-                  <p className="max-w-xl text-sm leading-7 text-white/76">
-                    Un site concu pour inspirer confiance immediatement: prix lisibles,
-                    parcours de commande propre, contact visible et produits presentes
-                    avec plus de desirabilite.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                {heroProducts.length > 0
-                  ? heroProducts.map((product) => {
-                      const availability = getProductAvailability(product)
-
-                      return (
-                        <Card
-                          key={product.id}
-                          className="group overflow-hidden bg-white/76 transition-transform duration-300 hover:-translate-y-1"
-                        >
-                          <ProductVisual
-                            name={product.name}
-                            imageUrl={getProductPrimaryImage(product)}
-                            className="h-36"
-                          />
-                          <CardContent className="space-y-3 p-4">
-                            <div className="space-y-2">
-                              <Badge variant={availability.variant}>{availability.label}</Badge>
-                              <h2 className="font-serif text-2xl leading-tight">
-                                {product.name}
-                              </h2>
-                            </div>
-                            <div>
-                              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                                a partir de
-                              </p>
-                              <p className="mt-1 text-lg font-semibold">
-                                {formatGNF(getProductStartingPrice(product))}
-                              </p>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      )
-                    })
-                  : featuredFamilies.map((family) => (
-                      <Card key={family.title} className="bg-white/76">
-                        <CardContent className="space-y-4 p-5">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-primary/10 text-primary">
-                            <family.icon className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <h2 className="font-serif text-2xl">{family.title}</h2>
-                            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                              {family.description}
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                    <ArrowRight className="mt-1 h-3.5 w-3.5 shrink-0 text-white/30" />
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="container pt-10">
-        <div className="grid gap-4 lg:grid-cols-3">
-          {sellingPoints.map((item) => (
-            <Card key={item.title} className="bg-white/72">
-              <CardContent className="flex gap-4 p-6">
-                <div className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] bg-primary/10 text-primary">
+      {/* ── RÉASSURANCE ─────────────────────────────────── */}
+      <section className="container pt-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {reassuranceItems.map((item, i) => (
+            <div
+              key={item.label}
+              className="reveal flex items-center gap-3 rounded-2xl border border-border/70 bg-white/72 px-4 py-3.5 text-sm"
+              style={{ animationDelay: `${i * 0.05}s` }}
+            >
+              <item.icon className="h-4 w-4 shrink-0 text-primary" />
+              <div>
+                <p className="font-medium leading-tight">{item.label}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {item.detail}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CATEGORIES ──────────────────────────────────── */}
+      <section className="container pt-16 reveal">
+        <div className="mb-8 space-y-3">
+          <Badge variant="secondary">Nos produits</Badge>
+          <h2 className="font-serif text-4xl md:text-5xl">
+            Trois produits, des prix clairs.
+          </h2>
+          <p className="max-w-xl text-base leading-7 text-muted-foreground">
+            Oeufs, poulets reformes et fiente. Des produits concrets, bien
+            presentes, avec les quantites et les tarifs en GNF.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {categories.map((cat) => (
+            <Card
+              key={cat.title}
+              className="group surface-panel overflow-hidden border-white/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(20,60,42,0.14)]"
+            >
+              <CardContent className="space-y-5 p-6">
+                <div className="flex h-13 w-13 items-center justify-center rounded-[1.1rem] bg-primary/10 text-primary">
+                  <cat.icon className="h-6 w-6" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-serif text-3xl">{cat.title}</h3>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    {cat.description}
+                  </p>
+                </div>
+                <Button asChild variant="outline" size="sm" className="w-full">
+                  <Link href={cat.href}>
+                    Voir les {cat.title.toLowerCase()}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* ── PRODUITS DU MOMENT ──────────────────────────── */}
+      <section className="container pt-16 reveal">
+        <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-3">
+            <Badge variant="secondary">
+              {hasProducts ? 'A commander maintenant' : 'Catalogue'}
+            </Badge>
+            <h2 className="font-serif text-4xl md:text-5xl">
+              {hasProducts
+                ? 'Nos produits disponibles'
+                : 'Le catalogue arrive bientot'}
+            </h2>
+            <p className="max-w-2xl text-base leading-7 text-muted-foreground">
+              {hasProducts
+                ? 'Retrouvez les produits actuellement disponibles avec leurs prix en GNF et les quantites en stock.'
+                : 'Nous preparons la mise en ligne de notre catalogue. En attendant, vous pouvez commander directement par WhatsApp.'}
+            </p>
+          </div>
+          {hasProducts ? (
+            <Button asChild variant="outline">
+              <Link href="/products">
+                Voir tout le catalogue
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          ) : null}
+        </div>
+
+        {hasProducts ? (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {featuredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                href={`/products/${product.id}`}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="surface-panel overflow-hidden rounded-[2rem] px-6 py-10 md:px-10 md:py-12">
+            <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+              <div className="space-y-4">
+                <p className="font-serif text-2xl text-foreground">
+                  Commandez des maintenant par WhatsApp
+                </p>
+                <p className="max-w-xl text-sm leading-7 text-muted-foreground">
+                  Notre boutique en ligne est en cours de preparation. En
+                  attendant, ecrivez-nous sur WhatsApp avec votre commande —
+                  oeufs, poulets reformes ou fiente — et nous organisons la
+                  livraison ou le retrait ensemble.
+                </p>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                    Oeufs frais — plateaux, demi-plateaux ou a l unite
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                    Poulets reformes — selon disponibilite des lots
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                    Fiente — pour jardins, maraichage et cultures
+                  </li>
+                </ul>
+              </div>
+              <div className="flex flex-wrap gap-3 md:flex-col">
+                <WhatsAppButton
+                  phone={shopProfile.shopPhone}
+                  label="Commander sur WhatsApp"
+                  message="Bonjour Legend Farm, je voudrais passer une commande."
+                />
+                <Button asChild variant="outline">
+                  <Link href="/contact">Nous contacter</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ── POURQUOI LEGEND FARM ────────────────────────── */}
+      <section className="container pt-16 reveal">
+        <div className="mb-8 space-y-3">
+          <Badge variant="secondary">Pourquoi nous choisir</Badge>
+          <h2 className="font-serif text-4xl md:text-5xl">
+            Une ferme locale, une commande simple.
+          </h2>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          {whyItems.map((item) => (
+            <Card key={item.title} className="surface-panel border-white/80">
+              <CardContent className="flex gap-5 p-6">
+                <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-[1rem] bg-primary/10 text-primary">
                   <item.icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="font-serif text-2xl">{item.title}</h2>
+                  <h3 className="font-serif text-2xl">{item.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
                     {item.description}
                   </p>
@@ -259,126 +394,107 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="container pt-16">
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3">
-            <Badge variant="secondary">Produits phares</Badge>
-            <div className="space-y-3">
-              <h2 className="font-serif text-4xl md:text-5xl">
-                Une selection nette, premium et vendeuse
-              </h2>
-              <p className="max-w-3xl text-base leading-7 text-muted-foreground">
-                Chaque produit gagne en lisibilite, en desirabilite et en
-                reassurance pour transformer plus facilement l intention d achat.
-              </p>
-            </div>
+      {/* ── COMMENT COMMANDER ───────────────────────────── */}
+      <section className="container pt-16 reveal">
+        <div className="surface-panel-strong rounded-[2rem] px-8 py-10 text-white md:px-12 md:py-12">
+          <div className="mb-10 space-y-3">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-white/60">
+              Tres simple
+            </p>
+            <h2 className="font-serif text-4xl">Comment passer une commande</h2>
           </div>
-          <Button asChild variant="outline">
-            <Link href="/products">
-              Voir tout le catalogue
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
 
-        <div className="mt-8">
-          {homeData.featuredProducts.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {homeData.featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} href={`/products/${product.id}`} />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              title={
-                homeData.isConfigured
-                  ? 'Ajoutez vos produits phares'
-                  : 'Supabase n est pas encore configure'
-              }
-              description={
-                homeData.isConfigured
-                  ? 'La home mettra automatiquement en avant vos produits des que le catalogue sera publie.'
-                  : 'Renseignez la connexion Supabase puis publiez vos premiers produits.'
-              }
-            />
-          )}
-        </div>
-      </section>
-
-      <section className="container pt-16">
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <Card className="surface-panel-strong rounded-[2rem] text-white">
-            <CardContent className="space-y-5 p-8">
-              <Badge className="w-fit bg-white/12 text-white">Pourquoi ca rassure</Badge>
-              <h2 className="max-w-md font-serif text-4xl leading-tight">
-                Une ferme qui parait plus organisee, plus moderne et plus credible.
-              </h2>
-              <p className="max-w-lg text-sm leading-7 text-white/76">
-                La boutique montre la disponibilite, les moyens de contact, les
-                conditions de livraison et les prix en GNF sans laisser le client dans
-                le doute. Le resultat est plus premium, mais aussi plus vendeur.
-              </p>
-              <div className="grid gap-3 text-sm text-white/78">
-                <div className="rounded-[1.2rem] border border-white/12 bg-white/6 px-4 py-3">
-                  Contact visible, WhatsApp accessible, parcours lisible.
+          <div className="grid gap-6 md:grid-cols-3">
+            {howToOrderSteps.map((step) => (
+              <div key={step.step} className="space-y-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 font-serif text-lg font-semibold">
+                  {step.step}
                 </div>
-                <div className="rounded-[1.2rem] border border-white/12 bg-white/6 px-4 py-3">
-                  Commande suivie, panier persistant et confirmation plus claire.
-                </div>
-                <div className="rounded-[1.2rem] border border-white/12 bg-white/6 px-4 py-3">
-                  Presentation propre des oeufs, poulets reformes et solutions agricoles.
+                <div>
+                  <p className="font-semibold text-white">{step.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-white/68">
+                    {step.description}
+                  </p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            {featuredFamilies.map((family) => (
-              <Card key={family.title} className="bg-white/74">
-                <CardContent className="space-y-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-primary/10 text-primary">
-                    <family.icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-serif text-3xl">{family.title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                      {family.description}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
             ))}
+          </div>
+
+          <div className="mt-10 flex flex-wrap gap-3 border-t border-white/10 pt-8">
+            <Button asChild size="lg">
+              <Link href="/products">
+                Voir la boutique
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <WhatsAppButton
+              phone={shopProfile.shopPhone}
+              label="Commander sur WhatsApp"
+              size="lg"
+              variant="secondary"
+              message="Bonjour Legend Farm, je voudrais passer une commande."
+            />
           </div>
         </div>
       </section>
 
-      <section className="container pt-16">
-        <Card className="surface-panel overflow-hidden rounded-[2rem]">
-          <CardContent className="grid gap-8 p-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="space-y-4">
-              <Badge variant="secondary">Prochain pas</Badge>
+      {/* ── FAQ ─────────────────────────────────────────── */}
+      <section className="container pt-16 reveal">
+        <div className="mb-8 space-y-3">
+          <Badge variant="secondary">FAQ</Badge>
+          <h2 className="font-serif text-4xl md:text-5xl">
+            Questions frequentes
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {faqItems.map((item) => (
+            <details
+              key={item.q}
+              className="group rounded-2xl border border-border/70 bg-white/72"
+            >
+              <summary className="flex cursor-pointer select-none items-center justify-between gap-4 px-5 py-4 font-medium">
+                {item.q}
+                <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180" />
+              </summary>
+              <p className="px-5 pb-5 pt-0 text-sm leading-7 text-muted-foreground">
+                {item.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA FINAL ───────────────────────────────────── */}
+      <section className="container pt-16 reveal">
+        <div className="surface-panel overflow-hidden rounded-[2rem]">
+          <div className="grid gap-6 p-8 md:grid-cols-[1fr_auto] md:items-center md:p-10">
+            <div className="space-y-3">
               <h2 className="font-serif text-4xl md:text-5xl">
-                Commander plus vite, avec plus de confiance.
+                Pret a commander ?
               </h2>
-              <p className="max-w-3xl text-base leading-7 text-muted-foreground">
-                {shopProfile.shopName} met maintenant en avant une presentation plus
-                haut de gamme, mais garde un langage simple, utile et credible pour
-                convertir sans surjouer.
+              <p className="max-w-xl text-base leading-7 text-muted-foreground">
+                Parcourez notre catalogue en ligne ou contactez-nous directement
+                sur WhatsApp pour organiser votre commande.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg">
                 <Link href="/products">
-                  Commencer mes achats
+                  Voir la boutique
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/contact">Contacter {shopProfile.shopName}</Link>
-              </Button>
+              <WhatsAppButton
+                phone={shopProfile.shopPhone}
+                label="WhatsApp"
+                size="lg"
+                variant="outline"
+                message="Bonjour Legend Farm, je voudrais passer une commande."
+              />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </section>
     </main>
   )

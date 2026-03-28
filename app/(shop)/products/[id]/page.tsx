@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Leaf, ShieldCheck, Sparkles, Truck } from 'lucide-react'
+import { Leaf, ShieldCheck, Truck } from 'lucide-react'
 import { EmptyState } from '@/components/ui/empty-state'
 import { ProductPurchaseCard } from '@/components/shop/product-purchase-card'
 import { ProductReviewsSection } from '@/components/shop/product-reviews-section'
@@ -27,26 +27,26 @@ import { formatGNF, formatNumber } from '@/lib/utils'
 function getProductHighlights(name: string, category: string) {
   const normalized = `${name} ${category}`.toLowerCase()
 
-  if (normalized.includes('fiante')) {
+  if (normalized.includes('fiante') || normalized.includes('fiente')) {
     return [
-      'Presentation propre et professionnelle pour un usage agricole rentable.',
-      'Lecture claire des quantites et des conditions de commande.',
-      'Produit montre comme un intrant utile, pas comme un produit secondaire.',
+      'Engrais organique naturel issu de l elevage. Efficace pour les cultures maraicheres et les jardins.',
+      'Disponible en sac ou en vrac selon les volumes souhaites. Contactez-nous pour les grandes quantites.',
+      'Livraison a domicile ou retrait a la ferme selon votre preference.',
     ]
   }
 
   if (normalized.includes('poulet')) {
     return [
-      'Produit utile et accessible avec une presentation plus serieuse.',
-      'Disponibilite et quantites relues avant validation finale.',
-      'Commande suivie pour limiter les ambiguities logistiques.',
+      'Poulets de ponte en fin de cycle. Viande ferme et savoureuse, prix accessibles.',
+      'Disponibilite variable selon les lots de ponte. Contactez-nous pour confirmer avant de commander.',
+      'Livraison organisee ou retrait a la ferme selon votre besoin.',
     ]
   }
 
   return [
-    'Presentation plus rassurante pour un achat quotidien et repetable.',
-    'Tarifs lisibles en GNF avec paliers de prix visibles.',
-    'Disponibilite et logistique expliquees plus clairement.',
+    'Ramasses regulierement a la ferme. Fraicheur garantie a la date de ponte.',
+    'Prix lisibles en GNF avec possibilite d acheter par plateau, demi-plateau ou a l unite.',
+    'Livraison a domicile a Conakry ou retrait directement a la ferme.',
   ]
 }
 
@@ -59,16 +59,14 @@ export async function generateMetadata({
   const { product } = await getProductById(id)
 
   if (!product) {
-    return {
-      title: 'Produit introuvable',
-    }
+    return { title: 'Produit introuvable' }
   }
 
   return {
     title: product.name,
     description:
       product.description ??
-      `Consultez le produit ${product.name}, sa disponibilite actuelle et ses tarifs en GNF.`,
+      `Commandez ${product.name} directement depuis Legend Farm. Prix en GNF, livraison a Conakry ou retrait a la ferme.`,
   }
 }
 
@@ -87,11 +85,11 @@ export default async function ProductDetailsPage({
     return (
       <main className="container py-12">
         <EmptyState
-          title={isConfigured ? 'Produit introuvable' : 'Supabase n est pas encore configure'}
+          title={isConfigured ? 'Produit introuvable' : 'Boutique non configuree'}
           description={
             isConfigured
-              ? 'Ce produit n existe pas encore ou n est pas disponible publiquement.'
-              : 'Connectez Supabase puis ajoutez vos produits dans l admin.'
+              ? 'Ce produit n existe pas ou n est plus disponible publiquement.'
+              : 'Configurez la connexion Supabase puis ajoutez vos produits depuis l administration.'
           }
         />
       </main>
@@ -115,7 +113,7 @@ export default async function ProductDetailsPage({
           </Link>
           <span>/</span>
           <Link href="/products" className="transition-colors hover:text-foreground">
-            Catalogue
+            Boutique
           </Link>
           <span>/</span>
           <span className="text-foreground">{product.name}</span>
@@ -127,11 +125,11 @@ export default async function ProductDetailsPage({
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(184,226,127,0.15),transparent_28%),radial-gradient(circle_at_86%_12%,rgba(146,196,255,0.12),transparent_24%)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-4">
-              <Card className="group overflow-hidden border-white/80 bg-white/72">
+              <Card className="overflow-hidden border-white/80 bg-white/72">
                 <ProductVisual
                   name={product.name}
                   imageUrl={primaryImage}
-                  className="h-[30rem]"
+                  className="h-[28rem]"
                   priority
                 />
               </Card>
@@ -141,7 +139,7 @@ export default async function ProductDetailsPage({
                   {galleryImages.map((image, index) => (
                     <Card key={`${image}-${index}`} className="overflow-hidden border-white/80 bg-white/72">
                       <ProductVisual
-                        name={`${product.name} - visuel ${index + 2}`}
+                        name={`${product.name} — photo ${index + 2}`}
                         imageUrl={image}
                         className="h-40"
                       />
@@ -156,16 +154,16 @@ export default async function ProductDetailsPage({
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">{product.category}</Badge>
                   <Badge variant={availability.variant}>{availability.label}</Badge>
-                  {product.is_featured ? <Badge>Mis en avant</Badge> : null}
+                  {product.is_featured ? <Badge>Selection Legend Farm</Badge> : null}
                 </div>
 
                 <div className="space-y-3">
-                  <h1 className="font-serif text-4xl leading-tight md:text-6xl">
+                  <h1 className="font-serif text-4xl leading-tight md:text-5xl">
                     {product.name}
                   </h1>
-                  <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
+                  <p className="max-w-2xl text-base leading-7 text-muted-foreground">
                     {product.description ??
-                      'La description detaillee sera enrichie depuis le back-office pour rassurer l acheteur.'}
+                      'La description detaillee de ce produit sera disponible prochainement.'}
                   </p>
                 </div>
               </div>
@@ -174,7 +172,7 @@ export default async function ProductDetailsPage({
                 <Card className="bg-white/72">
                   <CardContent className="p-5">
                     <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Tarif de depart
+                      Prix
                     </p>
                     <p className="mt-3 font-serif text-3xl">{formatGNF(startingPrice)}</p>
                     <p className="mt-1 text-sm text-muted-foreground">par {product.unit}</p>
@@ -183,10 +181,10 @@ export default async function ProductDetailsPage({
                 <Card className="bg-white/72">
                   <CardContent className="p-5">
                     <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Stock visible
+                      Disponible
                     </p>
                     <p className="mt-3 font-serif text-3xl">{formatNumber(product.stock_quantity)}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">quantite actuellement visible</p>
+                    <p className="mt-1 text-sm text-muted-foreground">en stock actuellement</p>
                   </CardContent>
                 </Card>
                 <Card className="bg-white/72">
@@ -195,7 +193,7 @@ export default async function ProductDetailsPage({
                       Unite
                     </p>
                     <p className="mt-3 font-serif text-3xl">{product.unit}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">cadre de vente configure</p>
+                    <p className="mt-1 text-sm text-muted-foreground">cadre de vente</p>
                   </CardContent>
                 </Card>
               </div>
@@ -204,7 +202,7 @@ export default async function ProductDetailsPage({
                 <CardHeader>
                   <CardTitle>Tarification</CardTitle>
                   <CardDescription>
-                    Les montants affiches viennent des donnees configurees dans Supabase et sont exprimes en GNF.
+                    Prix exprimes en GNF. {priceTiers.length > 0 ? 'Des paliers de quantite sont disponibles.' : 'Prix fixe par unite.'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-5">
@@ -222,8 +220,8 @@ export default async function ProductDetailsPage({
 
                   {priceTiers.length > 0 ? (
                     <div className="space-y-3">
-                      <p className="text-sm font-medium">Paliers de prix</p>
-                      <div className="space-y-3">
+                      <p className="text-sm font-medium">Prix par quantite</p>
+                      <div className="space-y-2">
                         {priceTiers.map((tier) => (
                           <div
                             key={`${tier.quantity}-${tier.price}`}
@@ -244,10 +242,7 @@ export default async function ProductDetailsPage({
               <div className="grid gap-4 md:grid-cols-2">
                 <Card className="bg-white/72">
                   <CardHeader>
-                    <CardTitle className="text-2xl">Pourquoi ce produit inspire confiance</CardTitle>
-                    <CardDescription>
-                      Une lecture plus claire pour transformer plus facilement l intention d achat.
-                    </CardDescription>
+                    <CardTitle className="text-xl">Ce qu il faut savoir</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     {highlights.map((highlight) => (
@@ -255,9 +250,7 @@ export default async function ProductDetailsPage({
                         key={highlight}
                         className="flex gap-3 rounded-[1.2rem] border border-border/70 bg-white/65 px-4 py-3"
                       >
-                        <div className="mt-0.5 text-primary">
-                          <ShieldCheck className="h-4 w-4" />
-                        </div>
+                        <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                         <p className="leading-6">{highlight}</p>
                       </div>
                     ))}
@@ -274,33 +267,33 @@ export default async function ProductDetailsPage({
               <div className="grid gap-4 md:grid-cols-3">
                 <Card className="bg-white/72">
                   <CardContent className="flex gap-3 p-5 text-sm">
-                    <Sparkles className="mt-0.5 h-4 w-4 text-primary" />
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     <div>
-                      <p className="font-medium text-foreground">Presentation premium</p>
+                      <p className="font-medium text-foreground">Qualite suivie</p>
                       <p className="mt-1 leading-6 text-muted-foreground">
-                        Des visuels et une hierarchie plus propres pour donner envie d acheter.
+                        Produit issu de notre elevage, suivi de la ferme a votre commande.
                       </p>
                     </div>
                   </CardContent>
                 </Card>
                 <Card className="bg-white/72">
                   <CardContent className="flex gap-3 p-5 text-sm">
-                    <Truck className="mt-0.5 h-4 w-4 text-primary" />
+                    <Truck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     <div>
-                      <p className="font-medium text-foreground">Logistique plus lisible</p>
+                      <p className="font-medium text-foreground">Livraison ou retrait</p>
                       <p className="mt-1 leading-6 text-muted-foreground">
-                        Livraison ou retrait ferme avec informations plus visibles.
+                        A domicile a Conakry ou directement a la ferme selon votre choix.
                       </p>
                     </div>
                   </CardContent>
                 </Card>
                 <Card className="bg-white/72">
                   <CardContent className="flex gap-3 p-5 text-sm">
-                    <Leaf className="mt-0.5 h-4 w-4 text-primary" />
+                    <Leaf className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     <div>
-                      <p className="font-medium text-foreground">Image agricole propre</p>
+                      <p className="font-medium text-foreground">Produit local</p>
                       <p className="mt-1 leading-6 text-muted-foreground">
-                        Une presentation qui valorise autant les produits alimentaires que les usages agricoles.
+                        Produit et vendu directement par Legend Farm, sans intermediaire.
                       </p>
                     </div>
                   </CardContent>

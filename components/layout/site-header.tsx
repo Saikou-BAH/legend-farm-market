@@ -26,16 +26,16 @@ export async function SiteHeader() {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-2">
                   <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-                  Ferme moderne et commande suivie
+                  Oeufs · Poulets · Fiente
                 </span>
-                <span className="hidden md:inline">Livraison locale et retrait ferme</span>
+                <span className="hidden md:inline">Livraison a Conakry · Retrait a la ferme</span>
               </div>
               {shopPhone ? (
                 <a href={`tel:${shopPhone}`} className="transition-colors hover:text-foreground">
                   {shopPhone}
                 </a>
               ) : (
-                <span>Experience fermiere premium</span>
+                <span>Conakry, Guinee</span>
               )}
             </div>
           </div>
@@ -47,10 +47,10 @@ export async function SiteHeader() {
               </div>
               <div>
                 <p className="font-serif text-lg font-semibold leading-none">
-                  Legend Farm Shop
+                  Legend Farm
                 </p>
                 <p className="mt-1 text-[0.72rem] uppercase tracking-[0.18em] text-muted-foreground">
-                  Ferme moderne du futur
+                  Produits de ferme locaux
                 </p>
               </div>
             </Link>
