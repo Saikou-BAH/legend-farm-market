@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Minus, Plus } from 'lucide-react'
+import { Minus, Package, Plus, ShieldCheck, Sparkles, Truck } from 'lucide-react'
 import { StockNotificationForm } from '@/components/shop/stock-notification-form'
 import { WhatsAppButton } from '@/components/shop/whatsapp-button'
 import { Badge } from '@/components/ui/badge'
@@ -43,19 +43,46 @@ export function ProductPurchaseCard({
   const lineTotal = getCartItemLineTotal(previewItem)
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="surface-panel border-white/80">
+      <CardHeader className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <CardTitle className="text-2xl">Commande</CardTitle>
-          <Badge variant={canAdd ? 'secondary' : 'outline'}>
+          <Badge
+            variant={canAdd ? 'secondary' : 'outline'}
+            className={canAdd ? 'bg-secondary/90' : undefined}
+          >
             {canAdd ? 'Ajout au panier actif' : 'Ajout au panier bloque'}
           </Badge>
         </div>
         <CardDescription>
-          Le panier est maintenant persistant. La creation de commande finale sera branchee a l etape checkout complete.
+          Ajoutez ce produit au panier puis finalisez votre commande avec livraison ou retrait ferme, sans perdre vos quantites.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="rounded-[1.2rem] border border-border/70 bg-white/70 p-3 text-sm">
+            <ShieldCheck className="h-4 w-4 text-primary" />
+            <p className="mt-3 font-medium">Tarifs fiables</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              Montants relus cote serveur avant validation.
+            </p>
+          </div>
+          <div className="rounded-[1.2rem] border border-border/70 bg-white/70 p-3 text-sm">
+            <Truck className="h-4 w-4 text-primary" />
+            <p className="mt-3 font-medium">Livraison claire</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              Choix entre livraison et retrait selon la configuration active.
+            </p>
+          </div>
+          <div className="rounded-[1.2rem] border border-border/70 bg-white/70 p-3 text-sm">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <p className="mt-3 font-medium">Commande suivie</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              Confirmation et suivi disponibles dans votre compte client.
+            </p>
+          </div>
+        </div>
+
         <div className="space-y-2">
           <p className="text-sm font-medium">Quantite</p>
           <div className="flex items-center gap-3">
@@ -68,7 +95,7 @@ export function ProductPurchaseCard({
             >
               <Minus className="h-4 w-4" />
             </Button>
-            <div className="min-w-20 rounded-full border border-border/70 px-4 py-2 text-center text-sm font-medium">
+            <div className="min-w-24 rounded-full border border-border/70 bg-white/80 px-4 py-2 text-center text-sm font-semibold shadow-[0_10px_24px_rgba(22,54,36,0.05)]">
               {quantity}
             </div>
             <Button
@@ -87,14 +114,31 @@ export function ProductPurchaseCard({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border/70 px-4 py-4 text-sm">
-          <div className="flex items-center justify-between">
+        {canAdd ? (
+          <div className="flex items-center gap-2 rounded-[1.2rem] border px-3 py-2 text-sm">
+            <Package className="h-4 w-4 shrink-0" />
+            {product.stock_quantity <= 10 ? (
+              <span className="text-amber-700">
+                Stock limité — {product.stock_quantity} {product.unit}
+                {product.stock_quantity > 1 ? 's' : ''} disponible
+                {product.stock_quantity > 1 ? 's' : ''}
+              </span>
+            ) : (
+              <span className="text-primary">
+                {product.stock_quantity} {product.unit}s disponibles
+              </span>
+            )}
+          </div>
+        ) : null}
+
+        <div className="rounded-[1.45rem] border border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.85),rgba(245,249,241,0.95))] px-4 py-4 text-sm">
+          <div className="flex items-center justify-between gap-3">
             <span className="text-muted-foreground">Prix unitaire actuel</span>
             <span className="font-medium">{formatGNF(unitPrice)}</span>
           </div>
-          <div className="mt-3 flex items-center justify-between">
+          <div className="mt-3 flex items-center justify-between gap-3 border-t border-border/60 pt-3">
             <span className="text-muted-foreground">Total estime</span>
-            <span className="font-semibold">{formatGNF(lineTotal)}</span>
+            <span className="text-lg font-semibold">{formatGNF(lineTotal)}</span>
           </div>
         </div>
 
@@ -122,7 +166,7 @@ export function ProductPurchaseCard({
           />
         ) : null}
 
-        <div className="space-y-3">
+        <div className="space-y-3 border-t border-border/60 pt-2">
           {shopPhone ? (
             <Button asChild variant="outline" className="w-full">
               <a href={`tel:${shopPhone}`}>Appeler la ferme</a>

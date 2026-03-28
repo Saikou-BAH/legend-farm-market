@@ -12,7 +12,7 @@ export function ProductReviewsSection({
   reviews,
 }: ProductReviewsSectionProps) {
   return (
-    <Card>
+    <Card className="surface-panel border-white/80">
       <CardHeader>
         <CardTitle>
           Avis clients
@@ -22,7 +22,7 @@ export function ProductReviewsSection({
       <CardContent className="space-y-4">
         {reviews.length > 0 ? (
           reviews.map((review) => (
-            <div key={review.id} className="rounded-2xl border border-border/70 p-4">
+            <div key={review.id} className="rounded-2xl border border-border/70 bg-white/72 p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="font-medium">{review.customer_name ?? 'Client Legend Farm'}</p>
@@ -44,7 +44,7 @@ export function ProductReviewsSection({
             </div>
           ))
         ) : (
-          <div className="rounded-2xl border border-dashed border-border/70 p-5 text-sm text-muted-foreground">
+          <div className="rounded-2xl border border-dashed border-border/70 bg-white/65 p-5 text-sm text-muted-foreground">
             Aucun avis public pour ce produit pour le moment.
           </div>
         )}

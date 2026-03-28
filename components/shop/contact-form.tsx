@@ -66,7 +66,7 @@ export function ContactForm() {
   }
 
   return (
-    <Card>
+    <Card className="surface-panel border-white/80">
       <CardHeader>
         <CardTitle>Envoyer un message</CardTitle>
         <CardDescription>
@@ -133,7 +133,7 @@ export function ContactForm() {
               onChange={(event) => setMessage(event.target.value)}
               rows={6}
               required
-              className="flex min-h-[10rem] w-full rounded-[1.25rem] border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="flex min-h-[10rem] w-full rounded-[1.25rem] border border-white/70 bg-white/80 px-4 py-3 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_10px_24px_rgba(22,54,36,0.04)] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               placeholder="Expliquez votre besoin, votre question ou votre demande de commande."
             />
           </div>

@@ -33,61 +33,86 @@ export function ProductCard({
     product.description ?? 'Description a completer depuis le back-office.'
 
   return (
-    <Card className="group h-full overflow-hidden border-border/60 transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl">
+    <Card className="group surface-panel h-full overflow-hidden border-white/80 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_70px_rgba(20,60,42,0.16)]">
       <Link href={href} className="block">
-        <ProductVisual
-          name={product.name}
-          imageUrl={primaryImage}
-          className="h-56"
-        />
-      </Link>
-      <CardContent className="space-y-4 p-6">
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary" className="w-fit">
-            {product.category}
-          </Badge>
-          <Badge variant={availability.variant} className="w-fit">
-            {availability.label}
-          </Badge>
+        <div className="relative overflow-hidden">
+          <ProductVisual
+            name={product.name}
+            imageUrl={primaryImage}
+            className="h-64"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(12,35,24,0.42)] to-transparent" />
+          <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+            <Badge variant="secondary" className="w-fit bg-white/88 text-foreground">
+              {product.category}
+            </Badge>
+            <Badge variant={availability.variant} className="w-fit">
+              {availability.label}
+            </Badge>
+          </div>
           {product.is_featured ? (
-            <Badge className="w-fit">Mis en avant</Badge>
+            <div className="absolute bottom-4 left-4 rounded-full border border-white/30 bg-[rgba(13,44,30,0.7)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur">
+              Selection Legend Farm
+            </div>
           ) : null}
         </div>
-
-        <div className="space-y-3">
+      </Link>
+      <CardContent className="space-y-5 p-6">
+        <div className="space-y-4">
           <div className="space-y-2">
             <Link href={href} className="block">
-              <h3 className="font-serif text-2xl font-semibold transition-colors group-hover:text-primary">
+              <h3 className="font-serif text-[1.9rem] font-semibold leading-tight transition-colors group-hover:text-primary">
                 {product.name}
               </h3>
             </Link>
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="min-h-[3.75rem] text-sm leading-6 text-muted-foreground">
+              {description}
+            </p>
           </div>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            {context === 'admin'
-              ? `${product.stock_quantity} en stock visible`
-              : hasTieredPricing
-                ? `${tierCount} paliers de prix disponibles`
-                : `Vente a l unite par ${product.unit}`}
-          </p>
+
+          <div className="grid gap-3 rounded-[1.35rem] border border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.74),rgba(248,249,243,0.84))] p-4 sm:grid-cols-2">
+            <div>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Tarification
+              </p>
+              <p className="mt-2 text-2xl font-semibold">{formatGNF(startingPrice)}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {hasTieredPricing ? 'tarif de depart' : 'prix actuel'} par {product.unit}
+              </p>
+            </div>
+            <div>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Lecture rapide
+              </p>
+              <p className="mt-2 text-sm font-medium text-foreground">
+                {context === 'admin'
+                  ? `${product.stock_quantity} en stock visible`
+                  : product.stock_quantity > 0 && product.stock_quantity <= 10
+                    ? `Plus que ${product.stock_quantity} disponible${product.stock_quantity > 1 ? 's' : ''}`
+                    : hasTieredPricing
+                      ? `${tierCount} paliers de prix disponibles`
+                      : `Vente a l unite par ${product.unit}`}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {context === 'admin'
+                  ? 'Pilotage back-office immediat'
+                  : product.stock_quantity > 0 && product.stock_quantity <= 10
+                    ? 'Stock limité, commandez vite'
+                    : 'Disponibilite et prix relus au checkout'}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="flex items-end justify-between gap-4">
-          <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">
-              {hasTieredPricing ? 'Tarif a partir de' : 'Prix actuel'}
-            </p>
-            <p className="text-xl font-semibold">{formatGNF(startingPrice)}</p>
-            <p className="text-xs text-muted-foreground">par {product.unit}</p>
-          </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {context === 'admin' ? (
             <Button asChild size="sm" variant="outline">
               <Link href={href}>Gerer</Link>
             </Button>
           ) : (
-            <div className="flex flex-col gap-2">
-              <AddToCartButton product={product} />
-              <Button asChild size="sm" variant="outline">
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <AddToCartButton product={product} className="flex-1" />
+              <Button asChild size="sm" variant="outline" className="flex-1">
                 <Link href={href}>Voir le detail</Link>
               </Button>
             </div>

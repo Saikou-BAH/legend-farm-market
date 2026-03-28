@@ -36,14 +36,15 @@ export function MobileNav({ phone }: MobileNavProps) {
       </Button>
 
       {open ? (
-        <div className="absolute inset-x-0 top-full z-50 border-b border-border/70 bg-background/95 shadow-lg backdrop-blur md:hidden">
-          <div className="container space-y-3 py-4">
+        <div className="absolute inset-x-0 top-full z-50 px-3 pt-3 md:hidden">
+          <div className="container">
+            <div className="surface-panel space-y-3 rounded-[1.7rem] border-white/80 px-4 py-4">
             <nav className="grid gap-2">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-2xl border border-border/60 px-4 py-3 text-sm font-medium transition-colors hover:bg-accent"
+                  className="rounded-2xl border border-border/60 bg-white/70 px-4 py-3 text-sm font-medium transition-colors hover:bg-white"
                   onClick={() => setOpen(false)}
                 >
                   {item.label}
@@ -58,6 +59,7 @@ export function MobileNav({ phone }: MobileNavProps) {
                 className="w-full justify-center"
               />
             ) : null}
+            </div>
           </div>
         </div>
       ) : null}

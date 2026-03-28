@@ -53,7 +53,7 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${manrope.variable} min-h-screen bg-background font-sans text-foreground antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
           <Toaster />
         </ThemeProvider>

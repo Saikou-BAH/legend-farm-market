@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 48 45% 97%;
-    --foreground: 145 32% 12%;
+    --background: 48 33% 97%;
+    --foreground: 152 39% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 145 32% 12%;
+    --card-foreground: 152 39% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 145 32% 12%;
-    --primary: 142 63% 30%;
+    --popover-foreground: 152 39% 12%;
+    --primary: 152 58% 23%;
     --primary-foreground: 48 50% 98%;
-    --secondary: 40 60% 92%;
-    --secondary-foreground: 145 32% 12%;
-    --muted: 42 28% 93%;
-    --muted-foreground: 145 12% 38%;
-    --accent: 32 96% 89%;
-    --accent-foreground: 145 32% 12%;
+    --secondary: 88 46% 92%;
+    --secondary-foreground: 152 39% 12%;
+    --muted: 54 20% 93%;
+    --muted-foreground: 151 13% 37%;
+    --accent: 49 94% 86%;
+    --accent-foreground: 152 39% 12%;
     --destructive: 0 73% 52%;
     --destructive-foreground: 48 50% 98%;
-    --border: 36 24% 86%;
-    --input: 36 24% 86%;
-    --ring: 142 63% 30%;
-    --radius: 1rem;
+    --border: 50 18% 84%;
+    --input: 50 18% 84%;
+    --ring: 152 58% 23%;
+    --radius: 1.2rem;
   }
 
   .dark {
@@ -58,9 +58,58 @@
 
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at top left, rgba(190, 227, 174, 0.42), transparent 28%),
+      radial-gradient(circle at 88% 10%, rgba(156, 200, 255, 0.18), transparent 20%),
+      radial-gradient(circle at 50% 100%, rgba(255, 233, 176, 0.18), transparent 28%),
+      linear-gradient(180deg, rgba(252, 252, 247, 1) 0%, rgba(246, 249, 243, 1) 54%, rgba(252, 249, 244, 1) 100%);
+    font-feature-settings: 'ss01' 1, 'cv03' 1, 'rlig' 1;
   }
 }
 
 ::selection {
   background: hsl(var(--primary) / 0.18);
+}
+
+@layer utilities {
+  .surface-panel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.76) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    box-shadow:
+      0 24px 90px rgba(18, 61, 39, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(18px);
+  }
+
+  .surface-panel-strong {
+    background:
+      linear-gradient(135deg, rgba(10, 61, 39, 0.95) 0%, rgba(18, 92, 57, 0.92) 52%, rgba(30, 122, 83, 0.88) 100%);
+    box-shadow:
+      0 30px 80px rgba(13, 57, 38, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .section-grid {
+    background-image:
+      linear-gradient(rgba(20, 76, 49, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20, 76, 49, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #0f5a39 0%, #1f8a5a 55%, #8bbb43 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .soft-divider {
+    border-image: linear-gradient(
+        90deg,
+        transparent,
+        rgba(15, 90, 57, 0.22),
+        transparent
+      )
+      1;
+  }
 }

@@ -328,6 +328,27 @@ Le script respecte volontairement les regles suivantes :
 
 ## 8. Erreurs frequentes
 
+### Commande inconnue
+
+Symptome :
+
+- `Erreur: Commande inconnue: create. Lance "npm run users help".`
+
+Cause probable :
+
+- utilisation de `create` au lieu de `create-staff`
+- utilisation de `--name` au lieu de `--full-name`
+
+Action :
+
+- la bonne commande est `create-staff` avec `--full-name`
+
+```bash
+npm run users -- create-staff --email=admin@legendfarm.gn --full-name="Prenom Nom" --role=admin
+```
+
+Note : le `--` entre `users` et `create-staff` garantit que npm transmet bien les arguments au script.
+
 ### Variable manquante
 
 Symptome :
