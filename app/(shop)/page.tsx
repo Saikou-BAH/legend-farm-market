@@ -183,75 +183,57 @@ export default async function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="container pt-8 md:pt-12">
-        <div
-          className="section-grid relative overflow-hidden rounded-[2.5rem] bg-[#0c2618] px-6 py-10 md:px-10 md:py-14"
-          style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-        >
-          {/* Dark overlay for readability */}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(6,24,14,0.82)_0%,rgba(8,32,18,0.65)_55%,rgba(6,22,12,0.75)_100%)]" />
+        <div className="section-grid relative overflow-hidden rounded-[2.5rem] bg-[#0c2618]">
+          <div className="grid min-h-[520px] lg:grid-cols-[1.1fr_0.9fr]">
 
-          <div className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center text-white">
-            <div className="space-y-8 hero-fade-up">
-              <div className="space-y-5">
-                <Badge
-                  variant="outline"
-                  className="gap-2 border-white/20 bg-white/10 text-white"
-                >
-                  <span className="h-2 w-2 rounded-full bg-green-400" />
-                  Livraison locale · Retrait a la ferme
-                </Badge>
-                <h1 className="max-w-2xl font-serif text-5xl leading-[1.05] md:text-6xl xl:text-[4rem]">
-                  Oeufs frais, poulets et produits de ferme directement chez vous.
-                </h1>
-                <p className="max-w-xl text-lg leading-8 text-white/75">
-                  Commandez sur le site ou par WhatsApp. Livraison a domicile
-                  ou retrait directement a la ferme.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <Button asChild size="lg" className="bg-white text-[#0d2b1a] hover:bg-white/90">
-                  <Link href="/products">
-                    Voir la boutique
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <WhatsAppButton
-                  phone={shopProfile.shopPhone}
-                  label="Commander sur WhatsApp"
-                  size="lg"
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10"
-                  message="Bonjour Legend Farm, je voudrais passer une commande."
-                />
+            {/* Left — texte */}
+            <div className="relative flex flex-col justify-center px-8 py-12 md:px-12 md:py-14">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(50,120,70,0.18),transparent_60%)]" />
+              <div className="relative space-y-8 hero-fade-up text-white">
+                <div className="space-y-5">
+                  <Badge variant="outline" className="gap-2 border-white/20 bg-white/10 text-white">
+                    <span className="h-2 w-2 rounded-full bg-green-400" />
+                    Livraison locale · Retrait a la ferme
+                  </Badge>
+                  <h1 className="max-w-xl font-serif text-5xl leading-[1.05] md:text-6xl">
+                    Oeufs frais, poulets et produits de ferme directement chez vous.
+                  </h1>
+                  <p className="max-w-md text-lg leading-8 text-white/72">
+                    Commandez sur le site ou par WhatsApp. Livraison a domicile
+                    ou retrait directement a la ferme.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <Button asChild size="lg" className="bg-white text-[#0d2b1a] hover:bg-white/90">
+                    <Link href="/products">
+                      Voir la boutique
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <WhatsAppButton
+                    phone={shopProfile.shopPhone}
+                    label="Commander sur WhatsApp"
+                    size="lg"
+                    variant="outline"
+                    className="border-white/30 text-white hover:bg-white/10"
+                    message="Bonjour Legend Farm, je voudrais passer une commande."
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="surface-panel-strong rounded-[2rem] p-6 text-white hero-fade-up hero-fade-up-delay-2">
-              <p className="mb-5 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-white/60">
-                Ce qu on vend
-              </p>
-              <div className="space-y-3">
-                {categories.map((cat) => (
-                  <Link
-                    key={cat.title}
-                    href={cat.href}
-                    className="flex items-start gap-4 rounded-[1.2rem] border border-white/10 bg-white/[0.07] px-4 py-4 transition-colors hover:bg-white/[0.14]"
-                  >
-                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.75rem] bg-white/15">
-                      <cat.icon className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-medium leading-none">{cat.title}</p>
-                      <p className="mt-1.5 text-xs leading-5 text-white/60">
-                        {cat.description}
-                      </p>
-                    </div>
-                    <ArrowRight className="mt-1 h-3.5 w-3.5 shrink-0 text-white/30" />
-                  </Link>
-                ))}
-              </div>
+            {/* Right — deux photos */}
+            <div className="hidden lg:grid grid-rows-2 gap-3 p-4 hero-fade-up hero-fade-up-delay-2">
+              <div
+                className="overflow-hidden rounded-[1.6rem]"
+                style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+              />
+              <div
+                className="overflow-hidden rounded-[1.6rem]"
+                style={{ backgroundImage: "url('/images/hero-bg-2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center top' }}
+              />
             </div>
+
           </div>
         </div>
       </section>
