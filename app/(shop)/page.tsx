@@ -54,12 +54,12 @@ const reassuranceItems = [
   {
     icon: WalletCards,
     label: 'Prix en GNF',
-    detail: 'Aucune devise etrangere',
+    detail: 'Tarifs clairs, sans surprise',
   },
   {
     icon: Truck,
     label: 'Livraison a domicile',
-    detail: 'Zones disponibles a Conakry',
+    detail: 'Conakry, Kindia, Coyah, Dubreka, Forecariah',
   },
   {
     icon: MapPin,
@@ -68,8 +68,8 @@ const reassuranceItems = [
   },
   {
     icon: MessageCircle,
-    label: 'WhatsApp disponible',
-    detail: 'Reponse rapide',
+    label: 'Grosses quantites',
+    detail: 'Tarif degressif, livraison organisee',
   },
 ]
 
