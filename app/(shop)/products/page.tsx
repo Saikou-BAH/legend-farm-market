@@ -13,7 +13,7 @@ import { getPublicShopProfile } from '@/lib/actions/shop'
 export const metadata: Metadata = {
   title: 'Boutique',
   description:
-    'Oeufs, poulets reformes et fiente de ferme. Parcourez les produits disponibles, prix en GNF, livraison ou retrait a la ferme.',
+    'Casiers d oeufs, poulets reformes et sacs de fiente. Disponibilite et tarifs a jour, livraison ou retrait a la ferme.',
 }
 
 function getSearchParamValue(value: string | string[] | undefined) {
@@ -61,8 +61,8 @@ export default async function ProductsPage({
               Nos produits fermiers
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-              Oeufs frais, poulets reformes et fiente. Prix en GNF, disponibilite
-              a jour. Livraison a domicile ou retrait a la ferme.
+              Casiers d oeufs de 30, poulets reformes et sacs de fiente.
+              Disponibilite a jour, prix confirmes a la commande.
             </p>
           </div>
         </div>

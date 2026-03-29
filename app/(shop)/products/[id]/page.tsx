@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Leaf, ShieldCheck, Truck } from 'lucide-react'
+import { Leaf, ShieldCheck } from 'lucide-react'
 import { EmptyState } from '@/components/ui/empty-state'
 import { ProductPurchaseCard } from '@/components/shop/product-purchase-card'
 import { ProductReviewsSection } from '@/components/shop/product-reviews-section'
@@ -29,24 +29,21 @@ function getProductHighlights(name: string, category: string) {
 
   if (normalized.includes('fiante') || normalized.includes('fiente')) {
     return [
-      'Engrais organique naturel issu de l elevage. Efficace pour les cultures maraicheres et les jardins.',
-      'Disponible en sac ou en vrac selon les volumes souhaites. Contactez-nous pour les grandes quantites.',
-      'Livraison a domicile ou retrait a la ferme selon votre preference.',
+      'Fiente seche issue de notre elevage avicole. Efficace pour les cultures maraicheres, les jardins et l agriculture.',
+      'Vendu en sac. Contactez-nous pour les grandes quantites ou les commandes en vrac.',
     ]
   }
 
   if (normalized.includes('poulet')) {
     return [
-      'Poulets de ponte en fin de cycle. Viande ferme et savoureuse, prix accessibles.',
-      'Disponibilite variable selon les lots de ponte. Contactez-nous pour confirmer avant de commander.',
-      'Livraison organisee ou retrait a la ferme selon votre besoin.',
+      'Poules de ponte en fin de cycle. Viande ferme et savoureuse, prix accessibles.',
+      'Disponibilite variable selon les lots en cours. Confirmez la disponibilite avant de commander.',
     ]
   }
 
   return [
-    'Ramasses regulierement a la ferme. Fraicheur garantie a la date de ponte.',
-    'Prix lisibles en GNF avec possibilite d acheter par plateau, demi-plateau ou a l unite.',
-    'Livraison a domicile ou retrait directement a la ferme.',
+    'Oeufs ramasses regulierement a la ferme. Date de ponte connue, fraicheur garantie.',
+    'Disponible par casier de 30, demi-casier ou a l unite selon vos besoins.',
   ]
 }
 
@@ -202,7 +199,7 @@ export default async function ProductDetailsPage({
                 <CardHeader>
                   <CardTitle>Tarification</CardTitle>
                   <CardDescription>
-                    Prix exprimes en GNF. {priceTiers.length > 0 ? 'Des paliers de quantite sont disponibles.' : 'Prix fixe par unite.'}
+                    {priceTiers.length > 0 ? 'Paliers de quantite disponibles.' : 'Prix fixe par unite.'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-5">
@@ -264,7 +261,7 @@ export default async function ProductDetailsPage({
                 />
               </div>
 
-              <div className="grid gap-4 md:grid-cols-3">
+              <div className="grid gap-4 md:grid-cols-2">
                 <Card className="bg-white/72">
                   <CardContent className="flex gap-3 p-5 text-sm">
                     <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -278,22 +275,11 @@ export default async function ProductDetailsPage({
                 </Card>
                 <Card className="bg-white/72">
                   <CardContent className="flex gap-3 p-5 text-sm">
-                    <Truck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                    <div>
-                      <p className="font-medium text-foreground">Livraison ou retrait</p>
-                      <p className="mt-1 leading-6 text-muted-foreground">
-                        Livraison a domicile ou retrait directement a la ferme selon votre choix.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="bg-white/72">
-                  <CardContent className="flex gap-3 p-5 text-sm">
                     <Leaf className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     <div>
-                      <p className="font-medium text-foreground">Produit local</p>
+                      <p className="font-medium text-foreground">Direct producteur</p>
                       <p className="mt-1 leading-6 text-muted-foreground">
-                        Produit et vendu directement par Legend Farm, sans intermediaire.
+                        Vendu directement par Legend Farm, sans intermediaire.
                       </p>
                     </div>
                   </CardContent>

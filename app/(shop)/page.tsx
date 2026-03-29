@@ -29,23 +29,23 @@ export const metadata: Metadata = {
 
 const categories = [
   {
-    title: 'Oeufs',
+    title: 'Casiers d oeufs',
     description:
-      'Plateaux de 30, demi-plateaux ou a l unite. Ramasses regulierement, fraicheur garantie a la date de ponte.',
+      'Casiers de 30 oeufs, demi-casiers ou a l unite. Ramasses a la ferme, dates de ponte connues.',
     icon: Egg,
     href: '/products?category=Oeufs',
   },
   {
     title: 'Poulets reformes',
     description:
-      'Poulets de ponte en fin de cycle. Viande savoureuse, prix accessibles. Disponibilite variable selon les lots.',
+      'Poules de ponte en fin de cycle. Viande ferme, prix accessibles. Disponibilite selon les lots en cours.',
     icon: Bird,
     href: '/products?category=Poulets',
   },
   {
-    title: 'Fiente',
+    title: 'Sacs de fiente',
     description:
-      'Engrais organique naturel issu de l elevage. Ideal pour le maraichage, les jardins et les cultures agricoles.',
+      'Fiente seche en sac, issue de notre elevage. Engrais naturel efficace pour le maraichage et les jardins.',
     icon: Leaf,
     href: '/products?category=Fiente',
   },
@@ -77,27 +77,27 @@ const reassuranceItems = [
 const whyItems = [
   {
     icon: ShieldCheck,
-    title: 'Fraicheur suivie',
+    title: 'Fraicheur garantie',
     description:
-      'Les oeufs sont ramasses regulierement a la ferme. Chaque lot est connu et tracable de la production a votre table.',
+      'Les oeufs sont ramasses a la ferme regulierement. Chaque lot est tracable, date de ponte connue.',
   },
   {
     icon: CheckCircle2,
     title: 'Commande simple',
     description:
-      'Sur le site ou par WhatsApp. Vous choisissez vos produits, on confirme la disponibilite et on s occupe du reste.',
+      'Sur le site ou par WhatsApp. Vous choisissez, on confirme la disponibilite et on s occupe du reste.',
   },
   {
-    icon: Truck,
-    title: 'Livraison ou retrait',
+    icon: Leaf,
+    title: 'Direct producteur',
     description:
-      'Livraison a domicile ou retrait directement a la ferme selon votre preference.',
+      'Pas d intermediaire. Les produits viennent directement de notre elevage jusqu a votre commande.',
   },
   {
     icon: WalletCards,
-    title: 'Prix clairs en GNF',
+    title: 'Volume et gros volumes',
     description:
-      'Tous les tarifs sont affiches en francs guineans. Pas de conversion, pas de surprises au moment de payer.',
+      'Tarif degressif a partir d un certain volume. Contactez-nous avant de valider pour organiser une commande speciale.',
   },
 ]
 
@@ -106,19 +106,19 @@ const howToOrderSteps = [
     step: '1',
     title: 'Je choisis',
     description:
-      'Parcourez le catalogue, ajoutez vos produits au panier. Vous pouvez aussi envoyer directement un message WhatsApp avec votre commande.',
+      'Parcourez le catalogue et ajoutez vos produits au panier.',
   },
   {
     step: '2',
     title: 'Je confirme',
     description:
-      'Validez votre panier en choisissant livraison a domicile ou retrait a la ferme. Nous confirmons la disponibilite rapidement.',
+      'Choisissez livraison a domicile ou retrait a la ferme. Nous confirmons la disponibilite rapidement.',
   },
   {
     step: '3',
     title: 'Je recois',
     description:
-      'La commande est livree a l adresse indiquee ou preparee pour que vous la recuperiez directement a la ferme.',
+      'La commande est livree ou preparee pour le retrait selon votre choix.',
   },
 ]
 
@@ -148,24 +148,16 @@ const clientReviews = [
 
 const faqItems = [
   {
-    q: 'Livrez-vous a domicile ?',
-    a: 'Oui. Nous livrons a domicile dans plusieurs zones. Consultez la page Livraison pour voir les zones desservies et les frais par zone.',
-  },
-  {
     q: 'Peut-on commander par WhatsApp ?',
-    a: "Oui, c est possible. Envoyez-nous un message avec la liste de ce que vous souhaitez. Nous confirmons la disponibilite et organisons la livraison ou le retrait selon votre preference.",
+    a: 'Oui. Envoyez-nous un message avec ce que vous souhaitez. Nous confirmons la disponibilite et organisons la suite.',
   },
   {
-    q: 'Ou retirer sa commande ?',
-    a: 'Le retrait se fait directement a la ferme. Contactez-nous avant de venir pour confirmer l horaire et la disponibilite de votre commande.',
+    q: 'Comment retirer sa commande a la ferme ?',
+    a: 'Contactez-nous avant de venir pour confirmer l horaire et que votre commande est prete.',
   },
   {
     q: 'Comment savoir si un produit est disponible ?',
-    a: 'La disponibilite est affichee sur chaque fiche produit du catalogue. Pour les poulets reformes, la disponibilite depend des lots de ponte. Contactez-nous pour confirmer si vous avez un doute.',
-  },
-  {
-    q: 'Quels sont les delais de livraison ?',
-    a: 'En general, les commandes sont livrees dans les 24 a 48 heures apres confirmation. Les delais par zone sont disponibles sur la page Livraison.',
+    a: 'La disponibilite est indiquee sur chaque fiche produit. Pour les poulets, elle depend des lots en cours — contactez-nous pour confirmer.',
   },
 ]
 
@@ -435,20 +427,13 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-3 border-t border-white/10 pt-8">
+          <div className="mt-10 border-t border-white/10 pt-8">
             <Button asChild size="lg">
               <Link href="/products">
                 Voir la boutique
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <WhatsAppButton
-              phone={shopProfile.shopPhone}
-              label="Commander sur WhatsApp"
-              size="lg"
-              variant="secondary"
-              message="Bonjour Legend Farm, je voudrais passer une commande."
-            />
           </div>
         </div>
       </section>
