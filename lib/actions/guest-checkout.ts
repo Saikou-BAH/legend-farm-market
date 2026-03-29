@@ -152,17 +152,20 @@ export async function createGuestCheckoutOrder(
       )
     }
 
-    const { error: itemsError } = await supabase.from('order_items').insert(
-      validatedLines.map((line) => ({
-        order_id: createdOrder.id,
-        product_id: line.productId,
-        product_name: line.productName,
-        product_unit: line.productUnit,
-        quantity: line.quantity,
-        unit_price: line.unitPrice,
-        total_price: line.totalPrice,
-      }))
-    )
+    const { data: createdItems, error: itemsError } = await supabase
+      .from('order_items')
+      .insert(
+        validatedLines.map((line) => ({
+          order_id: createdOrder.id,
+          product_id: line.productId,
+          product_name: line.productName,
+          product_unit: line.productUnit,
+          quantity: line.quantity,
+          unit_price: line.unitPrice,
+          total_price: line.totalPrice,
+        }))
+      )
+      .select('id, product_id, quantity')
 
     if (itemsError) {
       await supabase.from('orders').delete().eq('id', createdOrder.id)
@@ -171,6 +174,20 @@ export async function createGuestCheckoutOrder(
         error: "La commande n'a pas pu être finalisée. Veuillez réessayer.",
       }
     }
+
+    // ── FIFO stock consumption (best-effort) ──────────────────────────────────
+    if (createdItems && createdItems.length > 0) {
+      await Promise.allSettled(
+        createdItems.map((item) =>
+          supabase.rpc('consume_stock_fifo', {
+            p_product_id: item.product_id,
+            p_quantity: item.quantity,
+            p_order_item_id: item.id,
+          })
+        )
+      )
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     revalidatePath('/admin/orders')
     revalidatePath('/admin/dashboard')

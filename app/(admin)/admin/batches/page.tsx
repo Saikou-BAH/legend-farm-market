@@ -3,8 +3,10 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { BatchCreateForm } from '@/components/admin/batch-create-form'
+import { StockEntryForm } from '@/components/admin/stock-entry-form'
 import { getStatsByFlockBatch } from '@/lib/actions/admin-stats'
 import { getAdminProducts } from '@/lib/actions/admin-shop'
+import { getAdminActiveBatches } from '@/lib/actions/admin-batches'
 import { formatGNF, formatNumber } from '@/lib/utils'
 
 export const metadata: Metadata = {
@@ -19,9 +21,10 @@ const statusLabel: Record<string, { label: string; variant: 'default' | 'seconda
   }
 
 export default async function AdminBatchesPage() {
-  const [{ access, stats: batches }, { products }] = await Promise.all([
+  const [{ access, stats: batches }, { products }, activeBatchesForForm] = await Promise.all([
     getStatsByFlockBatch(),
     getAdminProducts(),
+    getAdminActiveBatches(),
   ])
 
   if (access.status !== 'ready') {
@@ -49,14 +52,28 @@ export default async function AdminBatchesPage() {
 
       {/* Formulaire de création */}
       <section className="space-y-4">
-        <h2 className="font-serif text-2xl">Créer une bande</h2>
+        <h2 className="font-serif text-2xl">1. Créer une bande</h2>
+        <p className="text-sm text-muted-foreground">
+          Une bande représente un lot de production (ex : Bande A, Bande Janvier 2026).
+          Elle regroupe toutes les entrées de stock issues de ce lot.
+        </p>
         <BatchCreateForm products={products} />
+      </section>
+
+      {/* Formulaire d'entrée de stock */}
+      <section className="space-y-4">
+        <h2 className="font-serif text-2xl">2. Enregistrer une entrée de stock</h2>
+        <p className="text-sm text-muted-foreground">
+          Chaque fois que vous recevez des produits, enregistrez-les ici en les liant à
+          leur bande. Le FIFO consommera les entrées les plus anciennes en premier lors des ventes.
+        </p>
+        <StockEntryForm batches={activeBatchesForForm} />
       </section>
 
       {/* Bandes actives */}
       <section className="space-y-4">
         <h2 className="font-serif text-2xl">
-          Bandes actives{' '}
+          3. Bandes actives{' '}
           <span className="font-sans text-lg font-normal text-muted-foreground">
             ({activeBatches.length})
           </span>
