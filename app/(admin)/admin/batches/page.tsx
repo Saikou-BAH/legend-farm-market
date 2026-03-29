@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { BatchCreateForm } from '@/components/admin/batch-create-form'
 import { getStatsByFlockBatch } from '@/lib/actions/admin-stats'
+import { getAdminProducts } from '@/lib/actions/admin-shop'
 import { formatGNF, formatNumber } from '@/lib/utils'
 
 export const metadata: Metadata = {
@@ -17,7 +19,10 @@ const statusLabel: Record<string, { label: string; variant: 'default' | 'seconda
   }
 
 export default async function AdminBatchesPage() {
-  const { access, stats: batches } = await getStatsByFlockBatch()
+  const [{ access, stats: batches }, { products }] = await Promise.all([
+    getStatsByFlockBatch(),
+    getAdminProducts(),
+  ])
 
   if (access.status !== 'ready') {
     return (
@@ -40,11 +45,13 @@ export default async function AdminBatchesPage() {
           production précis. Chaque vente tracée via un mouvement FIFO est reliée à la bande
           source.
         </p>
-        <p className="text-sm text-muted-foreground">
-          Pour créer une bande et ajouter des entrées de stock, utilisez le SQL Editor Supabase
-          ou l&apos;API admin — l&apos;interface de création sera ajoutée prochainement.
-        </p>
       </div>
+
+      {/* Formulaire de création */}
+      <section className="space-y-4">
+        <h2 className="font-serif text-2xl">Créer une bande</h2>
+        <BatchCreateForm products={products} />
+      </section>
 
       {/* Bandes actives */}
       <section className="space-y-4">
@@ -185,38 +192,6 @@ export default async function AdminBatchesPage() {
           </Card>
         </section>
       )}
-
-      {/* Guide SQL */}
-      <section className="space-y-3">
-        <h2 className="font-serif text-2xl">Créer une bande (SQL)</h2>
-        <Card className="bg-muted/30">
-          <CardContent className="p-5">
-            <p className="mb-3 text-sm text-muted-foreground">
-              Exemple d&apos;insertion d&apos;une bande et d&apos;une entrée de stock associée :
-            </p>
-            <pre className="overflow-x-auto rounded-xl bg-muted p-4 text-xs leading-6">
-{`-- 1. Créer la bande
-INSERT INTO flock_batches (product_id, name, batch_date, initial_quantity, remaining_quantity)
-VALUES (
-  '<uuid-produit>',
-  'Bande A - Janvier 2026',
-  '2026-01-15',
-  500,   -- quantité initiale
-  500    -- même valeur au départ
-);
-
--- 2. Ajouter une entrée de stock liée à la bande
-INSERT INTO stock_entries (product_id, flock_batch_id, quantity, remaining_qty)
-VALUES (
-  '<uuid-produit>',
-  '<uuid-bande>',
-  500,
-  500
-);`}
-            </pre>
-          </CardContent>
-        </Card>
-      </section>
 
     </div>
   )

@@ -1,5 +1,7 @@
+import Link from 'next/link'
 import { CheckoutPageClient } from '@/components/shop/checkout-page-client'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/ui/empty-state'
 import { getCheckoutPageData } from '@/lib/actions/shop'
 
@@ -32,11 +34,22 @@ export default async function CheckoutPage() {
   if (!isAuthenticated) {
     return (
       <main className="container py-10 md:py-12">
-        <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
-          <EmptyState
-            title="Connexion requise"
-            description="Connectez-vous avec un compte client pour accéder au checkout."
-          />
+        <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8 space-y-6">
+          <div className="space-y-3">
+            <h1 className="font-serif text-3xl md:text-4xl">Finaliser ma commande</h1>
+            <p className="text-muted-foreground max-w-lg">
+              Connectez-vous pour profiter de vos avantages clients (fidélité, crédit, promotions),
+              ou commandez directement sans compte.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild size="lg">
+              <Link href="/auth/login?next=/checkout">Se connecter</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/checkout/guest">Commander sans compte</Link>
+            </Button>
+          </div>
         </section>
       </main>
     )

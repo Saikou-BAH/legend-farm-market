@@ -185,11 +185,17 @@ export default async function HomePage() {
     <main className="pb-24">
 
       {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="container pt-8 md:pt-12">
+      <section
+        className="container pt-8 md:pt-12"
+        aria-label="Bienvenue chez Legend Farm — œufs frais, poulets réformés et fiente de ferme"
+      >
         <div
           className="section-grid relative overflow-hidden rounded-[2.5rem] bg-[#0c2618]"
+          role="img"
+          aria-label="Ferme Legend Farm — élevage avicole en Guinée, poulets et œufs frais"
           style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
+          <span className="sr-only">Photo de la ferme Legend Farm avec ses élevages avicoles</span>
           {/* Overlay sombre pour lisibilité sur mobile */}
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(6,24,14,0.88)_0%,rgba(8,32,18,0.75)_50%,rgba(6,22,12,0.60)_100%)]" />
 
@@ -231,7 +237,7 @@ export default async function HomePage() {
             </div>
 
             {/* Right — deux photos (desktop uniquement) */}
-            <div className="hidden lg:grid grid-rows-2 gap-3 p-4 hero-fade-up hero-fade-up-delay-2">
+            <div aria-hidden="true" className="hidden lg:grid grid-rows-2 gap-3 p-4 hero-fade-up hero-fade-up-delay-2">
               <div
                 className="overflow-hidden rounded-[1.6rem]"
                 style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
