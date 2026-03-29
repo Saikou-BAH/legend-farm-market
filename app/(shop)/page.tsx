@@ -353,13 +353,13 @@ export default async function HomePage() {
                   Commandez dès maintenant par WhatsApp
                 </p>
                 <p className="max-w-xl text-sm leading-7 text-muted-foreground">
-                  Envoyez-nous un message avec votre commande — casiers d'œufs, poulets réformés
+                  Envoyez-nous un message avec votre commande — casiers d&apos;œufs, poulets réformés
                   ou sacs de fiente — et nous organisons la livraison ou le retrait ensemble.
                 </p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary" />
-                    Casiers d'œufs de 30 — demi-casiers ou à l'unité
+                    Casiers d&apos;œufs de 30 — demi-casiers ou à l&apos;unité
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary" />

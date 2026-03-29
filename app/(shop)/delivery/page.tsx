@@ -147,7 +147,7 @@ export default async function DeliveryPage() {
                   <CardContent className="space-y-4 text-sm text-muted-foreground">
                     <p>
                       Contrainte logistique, commande en grande quantité ou besoin
-                      d'un créneau particulier ? Contactez-nous avant de valider.
+                      d&apos;un créneau particulier ? Contactez-nous avant de valider.
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <WhatsAppButton

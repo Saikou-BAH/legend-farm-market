@@ -61,7 +61,7 @@ export default async function ProductsPage({
               Nos produits fermiers
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-              Casiers d'œufs de 30, poulets réformés et sacs de fiente.
+              Casiers d&apos;œufs de 30, poulets réformés et sacs de fiente.
               Disponibilité à jour, prix confirmés à la commande.
             </p>
           </div>
@@ -184,8 +184,8 @@ export default async function ProductsPage({
               <div className="mx-auto max-w-sm space-y-4">
                 <p className="font-serif text-2xl">Boutique non configurée</p>
                 <p className="text-sm leading-7 text-muted-foreground">
-                  La connexion à la base de données n'est pas encore configurée.
-                  Renseignez les variables d'environnement Supabase pour publier
+                  La connexion à la base de données n&apos;est pas encore configurée.
+                  Renseignez les variables d&apos;environnement Supabase pour publier
                   les produits.
                 </p>
               </div>

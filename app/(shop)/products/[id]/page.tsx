@@ -246,7 +246,7 @@ export default async function ProductDetailsPage({
               <div className="grid gap-4 md:grid-cols-2">
                 <Card className="bg-white/72">
                   <CardHeader>
-                    <CardTitle className="text-xl">Ce qu'il faut savoir</CardTitle>
+                    <CardTitle className="text-xl">Ce qu&apos;il faut savoir</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     {highlights.map((highlight) => (

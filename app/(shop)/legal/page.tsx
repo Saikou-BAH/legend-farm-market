@@ -39,7 +39,7 @@ export default function LegalPage() {
                     Farm Shop et peuvent être mis à jour en fonction de la production.
                   </p>
                   <p>
-                    Une commande n'est considérée comme prise en charge qu'après création
+                    Une commande n&apos;est considérée comme prise en charge qu&apos;après création
                     effective dans le système, puis confirmation logistique si nécessaire.
                   </p>
                 </CardContent>
@@ -67,7 +67,7 @@ export default function LegalPage() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <p>
-                    En cas de problème de qualité, de quantité ou d'erreur de préparation,
+                    En cas de problème de qualité, de quantité ou d&apos;erreur de préparation,
                     contactez rapidement la ferme avec votre référence de commande.
                   </p>
                   <p>
@@ -83,7 +83,7 @@ export default function LegalPage() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <p>
-                    Le site met à disposition un formulaire de contact, l'email de la ferme
+                    Le site met à disposition un formulaire de contact, l&apos;email de la ferme
                     et un accès WhatsApp quand le numéro est configuré.
                   </p>
                   <p>
