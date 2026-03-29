@@ -19,8 +19,8 @@ export async function SiteFooter() {
               <p className="font-serif text-xl font-semibold">{shopName}</p>
             </div>
             <p className="mt-4 max-w-md text-sm leading-7 text-white/68">
-              Oeufs frais, poulets reformes et fiente directement depuis la ferme.
-              Commandez en ligne ou par WhatsApp, livraison a domicile ou retrait a
+              Œufs frais, poulets réformés et fiente directement depuis la ferme.
+              Commandez en ligne ou par WhatsApp, livraison à domicile ou retrait à
               la ferme.
             </p>
             <div className="mt-5 flex flex-wrap gap-2 text-xs text-white/70">
@@ -30,11 +30,11 @@ export async function SiteFooter() {
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5">
                 <Truck className="h-3.5 w-3.5 text-[#b8e27f]" />
-                Livraison a domicile
+                Livraison à domicile
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5">
                 <MapPin className="h-3.5 w-3.5 text-[#b8e27f]" />
-                Retrait a la ferme
+                Retrait à la ferme
               </span>
             </div>
           </div>
@@ -48,7 +48,7 @@ export async function SiteFooter() {
             <div className="mt-5">
               <WhatsAppButton
                 phone={shopPhone}
-                label="Ecrire sur WhatsApp"
+                label="Écrire sur WhatsApp"
                 message="Bonjour Legend Farm, je voudrais passer une commande."
                 className="w-full justify-center"
               />
@@ -79,7 +79,7 @@ export async function SiteFooter() {
               Contact
             </Link>
             <Link href="/legal" className="block text-white/68 transition-colors hover:text-white">
-              Mentions legales
+              Mentions légales
             </Link>
             <p className="text-white/68">Prix en GNF</p>
           </div>
@@ -99,7 +99,7 @@ export async function SiteFooter() {
         </div>
 
         <div className="border-t border-white/10 pt-5 text-sm text-white/44">
-          {shopName} · Produits de ferme locaux · Conakry, Guinee
+          {shopName} · Produits de ferme locaux · Conakry, Guinée
         </div>
       </div>
     </footer>

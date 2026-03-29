@@ -8,7 +8,7 @@ import {
   Egg,
   Leaf,
   MapPin,
-  MessageCircle,
+  Package,
   ShieldCheck,
   Star,
   Truck,
@@ -22,30 +22,33 @@ import { Card, CardContent } from '@/components/ui/card'
 import { getHomePageData, getPublicShopProfile } from '@/lib/actions/shop'
 
 export const metadata: Metadata = {
-  title: 'Accueil',
+  title: 'Legend Farm — Œufs frais, poulets réformés et fiente | Livraison locale',
   description:
-    'Oeufs frais, poulets reformes et fiente directement depuis la ferme. Commandez en ligne, livraison a domicile ou retrait a la ferme.',
+    'Casiers d\'œufs de 30, poulets réformés et sacs de fiente directement depuis la ferme. Livraison à domicile en Guinée ou retrait à la ferme.',
 }
 
 const categories = [
   {
-    title: 'Casiers d oeufs',
+    title: 'Casiers d\'œufs',
+    cta: 'Voir les œufs',
     description:
-      'Casiers de 30 oeufs, demi-casiers ou a l unite. Ramasses a la ferme, dates de ponte connues.',
+      'Casiers de 30 œufs, demi-casiers ou à l\'unité. Ramassés à la ferme, dates de ponte connues.',
     icon: Egg,
     href: '/products?category=Oeufs',
   },
   {
-    title: 'Poulets reformes',
+    title: 'Poulets réformés',
+    cta: 'Voir les poulets',
     description:
-      'Poules de ponte en fin de cycle. Viande ferme, prix accessibles. Disponibilite selon les lots en cours.',
+      'Poules de ponte en fin de cycle. Viande ferme, prix accessibles. Disponibilité selon les lots en cours.',
     icon: Bird,
     href: '/products?category=Poulets',
   },
   {
     title: 'Sacs de fiente',
+    cta: 'Voir la fiente',
     description:
-      'Fiente seche en sac, issue de notre elevage. Engrais naturel efficace pour le maraichage et les jardins.',
+      'Fiente sèche en sac, issue de notre élevage. Engrais naturel efficace pour le maraîchage et les jardins.',
     icon: Leaf,
     href: '/products?category=Fiente',
   },
@@ -59,45 +62,45 @@ const reassuranceItems = [
   },
   {
     icon: Truck,
-    label: 'Livraison a domicile',
-    detail: 'Conakry, Kindia, Coyah, Dubreka, Forecariah',
+    label: 'Livraison à domicile',
+    detail: 'Conakry, Kindia, Coyah, Dubréka, Forécariah',
   },
   {
     icon: MapPin,
-    label: 'Retrait a la ferme',
+    label: 'Retrait à la ferme',
     detail: 'Gratuit, sur rendez-vous',
   },
   {
-    icon: MessageCircle,
-    label: 'Grosses quantites',
-    detail: 'Tarif degressif, livraison organisee',
+    icon: Package,
+    label: 'Grosses quantités',
+    detail: 'Tarif dégressif, livraison organisée',
   },
 ]
 
 const whyItems = [
   {
     icon: ShieldCheck,
-    title: 'Fraicheur garantie',
+    title: 'Fraîcheur garantie',
     description:
-      'Les oeufs sont ramasses a la ferme regulierement. Chaque lot est tracable, date de ponte connue.',
+      'Les œufs sont ramassés à la ferme régulièrement. Chaque lot est traçable, date de ponte connue.',
   },
   {
     icon: CheckCircle2,
     title: 'Commande simple',
     description:
-      'Sur le site ou par WhatsApp. Vous choisissez, on confirme la disponibilite et on s occupe du reste.',
+      'Sur le site ou par WhatsApp. Vous choisissez, on confirme la disponibilité et on s\'occupe du reste.',
   },
   {
     icon: Leaf,
     title: 'Direct producteur',
     description:
-      'Pas d intermediaire. Les produits viennent directement de notre elevage jusqu a votre commande.',
+      'Pas d\'intermédiaire. Les produits viennent directement de notre élevage jusqu\'à votre commande.',
   },
   {
     icon: WalletCards,
-    title: 'Volume et gros volumes',
+    title: 'Commandes en volume',
     description:
-      'Tarif degressif a partir d un certain volume. Contactez-nous avant de valider pour organiser une commande speciale.',
+      'Tarif dégressif à partir d\'un certain volume. Contactez-nous avant de valider pour organiser une commande spéciale.',
   },
 ]
 
@@ -112,36 +115,36 @@ const howToOrderSteps = [
     step: '2',
     title: 'Je confirme',
     description:
-      'Choisissez livraison a domicile ou retrait a la ferme. Nous confirmons la disponibilite rapidement.',
+      'Choisissez livraison à domicile ou retrait à la ferme. Nous confirmons la disponibilité rapidement.',
   },
   {
     step: '3',
-    title: 'Je recois',
+    title: 'Je reçois',
     description:
-      'La commande est livree ou preparee pour le retrait selon votre choix.',
+      'La commande est livrée ou préparée pour le retrait selon votre choix.',
   },
 ]
 
 const clientReviews = [
   {
     name: 'Mariama D.',
-    role: 'Cliente reguliere',
+    role: 'Cliente régulière',
     rating: 5,
-    text: 'Les oeufs sont toujours frais et bien emballes. Je commande par WhatsApp chaque semaine, c est simple et rapide. Livraison ponctuelle.',
+    text: 'Les œufs sont toujours frais et bien emballés. Je commande par WhatsApp chaque semaine, c\'est simple et rapide. Livraison ponctuelle.',
     initial: 'M',
   },
   {
     name: 'Ibrahima S.',
     role: 'Revendeur, Ratoma',
-    rating: 5,
-    text: 'Je prends des plateaux en grande quantite pour les revendre. Le tarif est correct et la qualite est stable. Je recommande.',
+    rating: 4,
+    text: 'Je prends des casiers en grande quantité pour les revendre. Le tarif est correct et la qualité est stable. Livraison parfois un peu longue mais globalement satisfait.',
     initial: 'I',
   },
   {
     name: 'Fatoumata K.',
     role: 'Particulier, Kipé',
     rating: 5,
-    text: 'J ai commande des poulets reformes, tres bonne viande. On m a bien explique la disponibilite et la livraison s est faite sans probleme.',
+    text: 'J\'ai commandé des poulets réformés, très bonne viande. On m\'a bien expliqué la disponibilité et la livraison s\'est faite sans problème.',
     initial: 'F',
   },
 ]
@@ -149,15 +152,23 @@ const clientReviews = [
 const faqItems = [
   {
     q: 'Peut-on commander par WhatsApp ?',
-    a: 'Oui. Envoyez-nous un message avec ce que vous souhaitez. Nous confirmons la disponibilite et organisons la suite.',
+    a: 'Oui. Envoyez-nous un message avec ce que vous souhaitez. Nous confirmons la disponibilité et organisons la suite.',
   },
   {
-    q: 'Comment retirer sa commande a la ferme ?',
-    a: 'Contactez-nous avant de venir pour confirmer l horaire et que votre commande est prete.',
+    q: 'Comment retirer sa commande à la ferme ?',
+    a: 'Contactez-nous avant de venir pour confirmer l\'horaire et que votre commande est prête.',
   },
   {
     q: 'Comment savoir si un produit est disponible ?',
-    a: 'La disponibilite est indiquee sur chaque fiche produit. Pour les poulets, elle depend des lots en cours — contactez-nous pour confirmer.',
+    a: 'La disponibilité est indiquée sur chaque fiche produit. Pour les poulets, elle dépend des lots en cours — contactez-nous pour confirmer.',
+  },
+  {
+    q: 'Quels sont les délais de livraison ?',
+    a: 'En général, les commandes sont livrées dans les 24 à 48 heures après confirmation. Les délais par zone sont disponibles sur la page Livraison.',
+  },
+  {
+    q: 'Peut-on commander en grande quantité ?',
+    a: 'Oui. Nous proposons des tarifs dégressifs pour les commandes en volume. Contactez-nous directement pour organiser une commande spéciale.',
   },
 ]
 
@@ -175,24 +186,29 @@ export default async function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="container pt-8 md:pt-12">
-        <div className="section-grid relative overflow-hidden rounded-[2.5rem] bg-[#0c2618]">
+        <div
+          className="section-grid relative overflow-hidden rounded-[2.5rem] bg-[#0c2618]"
+          style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+          {/* Overlay sombre pour lisibilité sur mobile */}
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(6,24,14,0.88)_0%,rgba(8,32,18,0.75)_50%,rgba(6,22,12,0.60)_100%)]" />
+
           <div className="grid min-h-[520px] lg:grid-cols-[1.1fr_0.9fr]">
 
             {/* Left — texte */}
             <div className="relative flex flex-col justify-center px-8 py-12 md:px-12 md:py-14">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(50,120,70,0.18),transparent_60%)]" />
               <div className="relative space-y-8 hero-fade-up text-white">
                 <div className="space-y-5">
                   <Badge variant="outline" className="gap-2 border-white/20 bg-white/10 text-white">
                     <span className="h-2 w-2 rounded-full bg-green-400" />
-                    Livraison locale · Retrait a la ferme
+                    Livraison locale · Retrait à la ferme
                   </Badge>
                   <h1 className="max-w-xl font-serif text-5xl leading-[1.05] md:text-6xl">
-                    Oeufs frais, poulets et produits de ferme directement chez vous.
+                    Œufs frais, poulets et produits de ferme directement chez vous.
                   </h1>
-                  <p className="max-w-md text-lg leading-8 text-white/72">
-                    Commandez sur le site ou par WhatsApp. Livraison a domicile
-                    ou retrait directement a la ferme.
+                  <p className="max-w-md text-lg leading-8 text-white/78">
+                    Commandez sur le site ou par WhatsApp. Livraison à domicile
+                    ou retrait directement à la ferme.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3">
@@ -214,7 +230,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Right — deux photos */}
+            {/* Right — deux photos (desktop uniquement) */}
             <div className="hidden lg:grid grid-rows-2 gap-3 p-4 hero-fade-up hero-fade-up-delay-2">
               <div
                 className="overflow-hidden rounded-[1.6rem]"
@@ -251,7 +267,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── CATEGORIES ──────────────────────────────────── */}
+      {/* ── CATÉGORIES ──────────────────────────────────── */}
       <section className="container pt-16 reveal">
         <div className="mb-8 space-y-3">
           <Badge variant="secondary">Nos produits</Badge>
@@ -259,8 +275,7 @@ export default async function HomePage() {
             Trois produits, des prix clairs.
           </h2>
           <p className="max-w-xl text-base leading-7 text-muted-foreground">
-            Oeufs, poulets reformes et fiente. Des produits concrets, bien
-            presentes, avec les quantites et les tarifs en GNF.
+            Œufs, poulets réformés et fiente. Des produits concrets avec les quantités et les tarifs en GNF.
           </p>
         </div>
 
@@ -282,7 +297,7 @@ export default async function HomePage() {
                 </div>
                 <Button asChild variant="outline" size="sm" className="w-full">
                   <Link href={cat.href}>
-                    Voir les {cat.title.toLowerCase()}
+                    {cat.cta}
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </Button>
@@ -297,17 +312,17 @@ export default async function HomePage() {
         <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div className="space-y-3">
             <Badge variant="secondary">
-              {hasProducts ? 'A commander maintenant' : 'Catalogue'}
+              {hasProducts ? 'À commander maintenant' : 'Catalogue'}
             </Badge>
             <h2 className="font-serif text-4xl md:text-5xl">
               {hasProducts
                 ? 'Nos produits disponibles'
-                : 'Le catalogue arrive bientot'}
+                : 'Le catalogue arrive bientôt'}
             </h2>
             <p className="max-w-2xl text-base leading-7 text-muted-foreground">
               {hasProducts
-                ? 'Retrouvez les produits actuellement disponibles avec leurs prix en GNF et les quantites en stock.'
-                : 'Nous preparons la mise en ligne de notre catalogue. En attendant, vous pouvez commander directement par WhatsApp.'}
+                ? 'Retrouvez les produits actuellement disponibles avec leurs prix et les quantités en stock.'
+                : 'Nous préparons la mise en ligne de notre catalogue. En attendant, vous pouvez commander directement par WhatsApp.'}
             </p>
           </div>
           {hasProducts ? (
@@ -335,26 +350,24 @@ export default async function HomePage() {
             <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
               <div className="space-y-4">
                 <p className="font-serif text-2xl text-foreground">
-                  Commandez des maintenant par WhatsApp
+                  Commandez dès maintenant par WhatsApp
                 </p>
                 <p className="max-w-xl text-sm leading-7 text-muted-foreground">
-                  Notre boutique en ligne est en cours de preparation. En
-                  attendant, ecrivez-nous sur WhatsApp avec votre commande —
-                  oeufs, poulets reformes ou fiente — et nous organisons la
-                  livraison ou le retrait ensemble.
+                  Envoyez-nous un message avec votre commande — casiers d'œufs, poulets réformés
+                  ou sacs de fiente — et nous organisons la livraison ou le retrait ensemble.
                 </p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary" />
-                    Oeufs frais — plateaux, demi-plateaux ou a l unite
+                    Casiers d'œufs de 30 — demi-casiers ou à l'unité
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary" />
-                    Poulets reformes — selon disponibilite des lots
+                    Poulets réformés — selon disponibilité des lots
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary" />
-                    Fiente — pour jardins, maraichage et cultures
+                    Sacs de fiente — pour jardins, maraîchage et cultures
                   </li>
                 </ul>
               </div>
@@ -406,7 +419,7 @@ export default async function HomePage() {
         <div className="surface-panel-strong rounded-[2rem] px-8 py-10 text-white md:px-12 md:py-12">
           <div className="mb-10 space-y-3">
             <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-white/60">
-              Tres simple
+              Très simple
             </p>
             <h2 className="font-serif text-4xl">Comment passer une commande</h2>
           </div>
@@ -446,7 +459,7 @@ export default async function HomePage() {
             Ce que nos clients disent.
           </h2>
           <p className="max-w-xl text-base leading-7 text-muted-foreground">
-            Des clients qui commandent regulierement, en particulier ou pour revendre.
+            Des clients qui commandent régulièrement, en particulier ou pour revendre.
           </p>
         </div>
 
@@ -455,8 +468,16 @@ export default async function HomePage() {
             <Card key={review.name} className="surface-panel border-white/80">
               <CardContent className="space-y-4 p-6">
                 <div className="flex gap-0.5">
-                  {Array.from({ length: review.rating }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={[
+                        'h-4 w-4',
+                        i < review.rating
+                          ? 'fill-amber-400 text-amber-400'
+                          : 'fill-muted text-muted-foreground/30',
+                      ].join(' ')}
+                    />
                   ))}
                 </div>
                 <p className="text-sm leading-7 text-foreground/85">
@@ -482,7 +503,7 @@ export default async function HomePage() {
         <div className="mb-8 space-y-3">
           <Badge variant="secondary">FAQ</Badge>
           <h2 className="font-serif text-4xl md:text-5xl">
-            Questions frequentes
+            Questions fréquentes
           </h2>
         </div>
 
@@ -510,11 +531,10 @@ export default async function HomePage() {
           <div className="grid gap-6 p-8 md:grid-cols-[1fr_auto] md:items-center md:p-10">
             <div className="space-y-3">
               <h2 className="font-serif text-4xl md:text-5xl">
-                Pret a commander ?
+                Prêt à commander ?
               </h2>
               <p className="max-w-xl text-base leading-7 text-muted-foreground">
-                Parcourez notre catalogue en ligne ou contactez-nous directement
-                sur WhatsApp pour organiser votre commande.
+                Parcourez notre catalogue en ligne ou écrivez-nous sur WhatsApp pour organiser votre commande.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

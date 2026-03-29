@@ -26,16 +26,16 @@ export async function SiteHeader() {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-2">
                   <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-                  Oeufs · Poulets · Fiente
+                  Œufs · Poulets · Fiente
                 </span>
-                <span className="hidden md:inline">Livraison a domicile · Retrait a la ferme</span>
+                <span className="hidden md:inline">Livraison à domicile · Retrait à la ferme</span>
               </div>
               {shopPhone ? (
                 <a href={`tel:${shopPhone}`} className="transition-colors hover:text-foreground">
                   {shopPhone}
                 </a>
               ) : (
-                <span>Conakry, Guinee</span>
+                <span>Conakry, Guinée</span>
               )}
             </div>
           </div>

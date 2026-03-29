@@ -11,7 +11,7 @@ import { formatGNF } from '@/lib/utils'
 export const metadata: Metadata = {
   title: 'Livraison',
   description:
-    'Livraison a domicile ou retrait a la ferme. Zones desservies, frais et delais de livraison Legend Farm.',
+    'Livraison à domicile ou retrait à la ferme. Zones desservies, frais et délais de livraison Legend Farm.',
 }
 
 export default async function DeliveryPage() {
@@ -30,12 +30,12 @@ export default async function DeliveryPage() {
             <div className="space-y-4">
               <Badge variant="secondary">Livraison</Badge>
               <h1 className="max-w-2xl font-serif text-4xl md:text-5xl">
-                Livraison a domicile ou retrait a la ferme
+                Livraison à domicile ou retrait à la ferme
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-                Nous livrons a domicile dans plusieurs zones. Vous pouvez
-                aussi retirer votre commande directement a la ferme, gratuitement,
-                selon votre disponibilite.
+                Nous livrons à domicile dans plusieurs zones. Vous pouvez
+                aussi retirer votre commande directement à la ferme, gratuitement,
+                selon votre disponibilité.
               </p>
             </div>
 
@@ -43,22 +43,22 @@ export default async function DeliveryPage() {
               <div className="flex items-start gap-3 rounded-2xl border border-border/70 bg-white/72 px-4 py-4 text-sm">
                 <Truck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <div>
-                  <p className="font-medium">Livraison a domicile</p>
+                  <p className="font-medium">Livraison à domicile</p>
                   <p className="mt-1 text-muted-foreground">Livraison · frais selon la zone</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 rounded-2xl border border-border/70 bg-white/72 px-4 py-4 text-sm">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <div>
-                  <p className="font-medium">Retrait a la ferme</p>
+                  <p className="font-medium">Retrait à la ferme</p>
                   <p className="mt-1 text-muted-foreground">Gratuit · sur rendez-vous</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 rounded-2xl border border-border/70 bg-white/72 px-4 py-4 text-sm">
                 <Package className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <div>
-                  <p className="font-medium">Commande confirmee</p>
-                  <p className="mt-1 text-muted-foreground">24 a 48h apres validation</p>
+                  <p className="font-medium">Commande confirmée</p>
+                  <p className="mt-1 text-muted-foreground">24 à 48h après validation</p>
                 </div>
               </div>
             </div>
@@ -90,7 +90,7 @@ export default async function DeliveryPage() {
                             <p>Commande minimum : {formatGNF(zone.min_order_amount)}</p>
                           ) : null}
                           <p>
-                            Delai : {zone.estimated_delay ?? 'A confirmer avec la ferme'}
+                            Délai : {zone.estimated_delay ?? 'À confirmer avec la ferme'}
                           </p>
                           {zone.available_slots && zone.available_slots.length > 0 ? (
                             <p>Creneaux : {zone.available_slots.join(', ')}</p>
@@ -103,10 +103,10 @@ export default async function DeliveryPage() {
                     ))
                   ) : (
                     <div className="py-4 text-center">
-                      <p className="font-serif text-xl">Zones bientot disponibles</p>
+                      <p className="font-serif text-xl">Zones bientôt disponibles</p>
                       <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                        Les zones de livraison seront configurees prochainement. Pour
-                        organiser une livraison ou un retrait des maintenant, contactez-nous
+                        Les zones de livraison seront configurées prochainement. Pour
+                        organiser une livraison ou un retrait dès maintenant, contactez-nous
                         directement.
                       </p>
                       <div className="mt-5 flex flex-wrap justify-center gap-3">
@@ -130,12 +130,12 @@ export default async function DeliveryPage() {
               <div className="space-y-5">
                 <Card className="surface-panel border-white/80">
                   <CardHeader>
-                    <CardTitle>Comment ca se passe</CardTitle>
+                    <CardTitle>Comment ça se passe</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <p>1. Vous ajoutez vos produits au panier et validez la commande.</p>
-                    <p>2. Vous choisissez livraison a domicile ou retrait a la ferme.</p>
-                    <p>3. Nous confirmons la preparation et vous informons du suivi.</p>
+                    <p>2. Vous choisissez livraison à domicile ou retrait à la ferme.</p>
+                    <p>3. Nous confirmons la préparation et vous informons du suivi.</p>
                     <p>4. Les statuts sont disponibles dans votre espace client.</p>
                   </CardContent>
                 </Card>
@@ -146,14 +146,14 @@ export default async function DeliveryPage() {
                   </CardHeader>
                   <CardContent className="space-y-4 text-sm text-muted-foreground">
                     <p>
-                      Contrainte logistique, commande en grande quantite ou besoin
-                      d un creneau particulier ? Contactez-nous avant de valider.
+                      Contrainte logistique, commande en grande quantité ou besoin
+                      d'un créneau particulier ? Contactez-nous avant de valider.
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <WhatsAppButton
                         phone={shopProfile.shopPhone}
                         label="WhatsApp"
-                        message="Bonjour Legend Farm, j ai une question sur la livraison."
+                        message="Bonjour Legend Farm, j'ai une question sur la livraison."
                         size="sm"
                       />
                       <Link

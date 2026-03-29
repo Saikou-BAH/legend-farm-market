@@ -76,11 +76,11 @@ export default function RegisterPage() {
 
       if (payload?.requiresEmailConfirmation) {
         setSuccessMessage(
-          'Compte cree. Verifie ta boite mail pour confirmer ton inscription avant de te connecter.'
+          'Compte créé. Vérifie ta boîte mail pour confirmer ton inscription avant de te connecter.'
         )
         toast({
-          title: 'Compte cree',
-          description: 'Verifie ton email pour finaliser l inscription.',
+          title: 'Compte créé',
+          description: 'Vérifie ton email pour finaliser l\'inscription.',
         })
         setPassword('')
         setConfirmPassword('')
@@ -113,9 +113,9 @@ export default function RegisterPage() {
     <main className="container flex min-h-[70vh] items-center justify-center py-16">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle>Creer mon compte</CardTitle>
+          <CardTitle>Créer mon compte</CardTitle>
           <CardDescription>
-            Inscription client securisee avec creation du profil Legend Farm Shop.
+            Créez votre espace client pour suivre vos commandes et gérer vos informations.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
@@ -149,7 +149,7 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Telephone</Label>
+              <Label htmlFor="phone">Téléphone</Label>
               <Input
                 id="phone"
                 name="phone"
@@ -204,21 +204,21 @@ export default function RegisterPage() {
             </div>
 
             <div className="rounded-2xl border border-border/70 bg-muted/40 px-4 py-3 text-sm text-muted-foreground md:col-span-2">
-              Le mot de passe doit contenir au moins 12 caracteres, avec une minuscule, une majuscule, un chiffre et un caractere special.
+              Le mot de passe doit contenir au moins 8 caractères.
             </div>
 
             <div className="md:col-span-2">
               <Button className="w-full" type="submit" disabled={isSubmitting}>
                 <Sparkles className="h-4 w-4" />
-                {isSubmitting ? 'Creation...' : 'Creer mon compte client'}
+                {isSubmitting ? 'Création...' : 'Créer mon compte client'}
               </Button>
             </div>
           </form>
 
           <p className="text-sm text-muted-foreground">
-            Deja inscrit ?{' '}
+            Déjà inscrit ?{' '}
             <Link href="/login" className="font-medium text-primary underline-offset-4 hover:underline">
-              Retour a la connexion
+              Retour à la connexion
             </Link>
           </p>
         </CardContent>

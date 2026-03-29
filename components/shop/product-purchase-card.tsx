@@ -16,7 +16,7 @@ import {
   getCartItemUnitPrice,
   isProductPurchasable,
 } from '@/lib/cart'
-import { resolveAvailabilityStatus } from '@/lib/shop-catalog'
+import { isDisplayablePrice, resolveAvailabilityStatus } from '@/lib/shop-catalog'
 import { formatGNF } from '@/lib/utils'
 import type { Product } from '@/types'
 
@@ -55,26 +55,26 @@ export function ProductPurchaseCard({
           {canAdd
             ? 'Ajoutez ce produit au panier puis finalisez votre commande avec livraison ou retrait.'
             : avail.status === 'out_of_stock'
-              ? 'Ce produit est actuellement epuise. Inscrivez-vous pour etre prevenu lors du reapprovisionnement.'
+              ? "Ce produit est actuellement épuisé. Inscrivez-vous pour être prévenu lors du réapprovisionnement."
               : avail.status === 'coming_soon'
-                ? 'Ce produit sera disponible prochainement. Vous pouvez nous contacter pour plus d informations.'
-                : 'Ce produit n est pas disponible a la commande pour le moment. Contactez-nous pour en savoir plus.'}
+                ? "Ce produit sera disponible prochainement. Vous pouvez nous contacter pour plus d'informations."
+                : "Ce produit n'est pas disponible à la commande pour le moment. Contactez-nous pour en savoir plus."}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="rounded-[1.2rem] border border-border/70 bg-white/70 p-3 text-sm">
             <ShieldCheck className="h-4 w-4 text-primary" />
-            <p className="mt-3 font-medium">Prix verifies</p>
+            <p className="mt-3 font-medium">Prix vérifiés</p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
-              Montants confirmes cote serveur avant validation.
+              Montants confirmés côté serveur avant validation.
             </p>
           </div>
           <div className="rounded-[1.2rem] border border-border/70 bg-white/70 p-3 text-sm">
             <Truck className="h-4 w-4 text-primary" />
             <p className="mt-3 font-medium">Livraison ou retrait</p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
-              Livraison a domicile ou retrait a la ferme.
+              Livraison à domicile ou retrait à la ferme.
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ export function ProductPurchaseCard({
 
         {/* Quantity */}
         <div className="space-y-2">
-          <p className="text-sm font-medium">Quantite</p>
+          <p className="text-sm font-medium">Quantité</p>
           <div className="flex items-center gap-3">
             <Button
               type="button"
@@ -125,7 +125,7 @@ export function ProductPurchaseCard({
             <Package className="h-4 w-4 shrink-0" />
             {product.stock_quantity <= 10 ? (
               <span className="text-amber-700">
-                Stock limite — {product.stock_quantity} {product.unit}
+                Stock limité — {product.stock_quantity} {product.unit}
                 {product.stock_quantity > 1 ? 's' : ''} disponible
                 {product.stock_quantity > 1 ? 's' : ''}
               </span>
@@ -141,11 +141,15 @@ export function ProductPurchaseCard({
         <div className="rounded-[1.45rem] border border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.85),rgba(245,249,241,0.95))] px-4 py-4 text-sm">
           <div className="flex items-center justify-between gap-3">
             <span className="text-muted-foreground">Prix unitaire</span>
-            <span className="font-medium">{formatGNF(unitPrice)}</span>
+            <span className="font-medium">
+              {isDisplayablePrice(unitPrice) ? formatGNF(unitPrice) : 'Prix à confirmer'}
+            </span>
           </div>
           <div className="mt-3 flex items-center justify-between gap-3 border-t border-border/60 pt-3">
-            <span className="text-muted-foreground">Total estime</span>
-            <span className="text-lg font-semibold">{formatGNF(lineTotal)}</span>
+            <span className="text-muted-foreground">Total estimé</span>
+            <span className="text-lg font-semibold">
+              {isDisplayablePrice(lineTotal) ? formatGNF(lineTotal) : '—'}
+            </span>
           </div>
         </div>
 
@@ -157,7 +161,7 @@ export function ProductPurchaseCard({
           onClick={() => {
             const result = addItem(product, quantity)
             toast({
-              title: result.success ? 'Panier mis a jour' : 'Ajout impossible',
+              title: result.success ? 'Panier mis à jour' : 'Ajout impossible',
               description: result.message,
               variant: result.success ? 'default' : 'destructive',
             })

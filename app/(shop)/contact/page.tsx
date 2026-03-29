@@ -25,11 +25,11 @@ export default async function ContactPage() {
               <div className="space-y-4">
                 <Badge variant="secondary">Contact</Badge>
                 <h1 className="font-serif text-4xl md:text-5xl">
-                  On est disponibles pour vous repondre.
+                  On est disponibles pour vous répondre.
                 </h1>
                 <p className="max-w-xl text-lg leading-8 text-muted-foreground">
-                  Une question sur un produit, sa disponibilite, une livraison ou
-                  une commande speciale ? Remplissez le formulaire ou ecrivez-nous
+                  Une question sur un produit, sa disponibilité, une livraison ou
+                  une commande spéciale ? Remplissez le formulaire ou écrivez-nous
                   directement sur WhatsApp.
                 </p>
               </div>
@@ -41,17 +41,17 @@ export default async function ContactPage() {
               {shopPhone ? (
                 <Card className="surface-panel border-white/80">
                   <CardHeader>
-                    <CardTitle>La facon la plus rapide</CardTitle>
+                    <CardTitle>La façon la plus rapide</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 text-sm">
                     <p className="leading-7 text-muted-foreground">
-                      Pour une reponse rapide, ecrivez-nous sur WhatsApp. Nous
-                      repondons generalement dans la journee.
+                      Pour une réponse rapide, écrivez-nous sur WhatsApp. Nous
+                      répondons généralement dans la journée.
                     </p>
                     <WhatsAppButton
                       phone={shopPhone}
-                      label="Ecrire sur WhatsApp"
-                      message="Bonjour Legend Farm, j aimerais avoir des informations."
+                      label="Écrire sur WhatsApp"
+                      message="Bonjour Legend Farm, j'aimerais avoir des informations."
                       className="w-full justify-center"
                     />
                   </CardContent>
@@ -60,7 +60,7 @@ export default async function ContactPage() {
 
               <Card className="surface-panel border-white/80">
                 <CardHeader>
-                  <CardTitle>Coordonnees</CardTitle>
+                  <CardTitle>Coordonnées</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 text-sm">
                   <div>
@@ -82,7 +82,7 @@ export default async function ContactPage() {
                   </div>
                   {shopPhone ? (
                     <div>
-                      <p className="font-medium text-muted-foreground">Telephone</p>
+                      <p className="font-medium text-muted-foreground">Téléphone</p>
                       <a
                         href={`tel:${shopPhone}`}
                         className="mt-1 block text-primary hover:underline"

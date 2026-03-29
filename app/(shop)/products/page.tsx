@@ -13,7 +13,7 @@ import { getPublicShopProfile } from '@/lib/actions/shop'
 export const metadata: Metadata = {
   title: 'Boutique',
   description:
-    'Casiers d oeufs, poulets reformes et sacs de fiente. Disponibilite et tarifs a jour, livraison ou retrait a la ferme.',
+    "Casiers d'œufs, poulets réformés et sacs de fiente. Disponibilité et tarifs à jour, livraison ou retrait à la ferme.",
 }
 
 function getSearchParamValue(value: string | string[] | undefined) {
@@ -61,8 +61,8 @@ export default async function ProductsPage({
               Nos produits fermiers
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-              Casiers d oeufs de 30, poulets reformes et sacs de fiente.
-              Disponibilite a jour, prix confirmes a la commande.
+              Casiers d'œufs de 30, poulets réformés et sacs de fiente.
+              Disponibilité à jour, prix confirmés à la commande.
             </p>
           </div>
         </div>
@@ -81,7 +81,7 @@ export default async function ProductsPage({
                   <Input
                     id="catalog-search"
                     name="search"
-                    placeholder="Oeufs, poulet, fiente..."
+                    placeholder="Œufs, poulet, fiente..."
                     defaultValue={activeFilters.search ?? ''}
                     className="pl-11"
                   />
@@ -127,7 +127,7 @@ export default async function ProductsPage({
             {totalCount > 0 ? (
               <p className="text-xs text-muted-foreground">
                 {hasActiveFilters
-                  ? `${resultCount} resultat${resultCount > 1 ? 's' : ''} sur ${totalCount} produits`
+                  ? `${resultCount} résultat${resultCount > 1 ? 's' : ''} sur ${totalCount} produits`
                   : `${totalCount} produit${totalCount > 1 ? 's' : ''} disponible${totalCount > 1 ? 's' : ''}`}
               </p>
             ) : null}
@@ -151,10 +151,10 @@ export default async function ProductsPage({
             {isConfigured ? (
               hasActiveFilters ? (
                 <div className="mx-auto max-w-sm space-y-4">
-                  <p className="font-serif text-2xl">Aucun resultat</p>
+                  <p className="font-serif text-2xl">Aucun résultat</p>
                   <p className="text-sm leading-7 text-muted-foreground">
-                    Aucun produit ne correspond a cette recherche. Essayez un
-                    autre mot-cle ou retirez les filtres actifs.
+                    Aucun produit ne correspond à cette recherche. Essayez un
+                    autre mot-clé ou retirez les filtres actifs.
                   </p>
                   <Button asChild variant="outline">
                     <Link href="/products">Voir tous les produits</Link>
@@ -162,11 +162,11 @@ export default async function ProductsPage({
                 </div>
               ) : (
                 <div className="mx-auto max-w-md space-y-5">
-                  <p className="font-serif text-3xl">Catalogue en preparation</p>
+                  <p className="font-serif text-3xl">Catalogue en préparation</p>
                   <p className="text-sm leading-7 text-muted-foreground">
-                    Les produits seront disponibles ici tres prochainement. En
+                    Les produits seront disponibles ici très prochainement. En
                     attendant, vous pouvez commander directement par WhatsApp —
-                    oeufs, poulets reformes ou fiente.
+                    œufs, poulets réformés ou fiente.
                   </p>
                   <div className="flex flex-wrap justify-center gap-3">
                     <WhatsAppButton
@@ -182,10 +182,10 @@ export default async function ProductsPage({
               )
             ) : (
               <div className="mx-auto max-w-sm space-y-4">
-                <p className="font-serif text-2xl">Boutique non configuree</p>
+                <p className="font-serif text-2xl">Boutique non configurée</p>
                 <p className="text-sm leading-7 text-muted-foreground">
-                  La connexion a la base de donnees n est pas encore configuree.
-                  Renseignez les variables d environnement Supabase pour publier
+                  La connexion à la base de données n'est pas encore configurée.
+                  Renseignez les variables d'environnement Supabase pour publier
                   les produits.
                 </p>
               </div>

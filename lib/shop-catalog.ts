@@ -119,16 +119,27 @@ export function filterCatalogProducts(products: Product[], filters: CatalogFilte
   })
 }
 
+/**
+ * Prix minimum en GNF pour un affichage public.
+ * En dessous de ce seuil le prix affiche est remplace par "Prix à confirmer"
+ * pour eviter qu un prix de test ou mal saisi soit visible publiquement.
+ */
+export const MIN_DISPLAYABLE_PRICE_GNF = 500
+
+export function isDisplayablePrice(price: number) {
+  return price >= MIN_DISPLAYABLE_PRICE_GNF
+}
+
 export interface AvailabilityConfig {
-  /** Status final resolu */
+  /** Statut final résolu */
   status: AvailabilityStatus
-  /** Label court affiche dans les badges */
+  /** Label court affiché dans les badges */
   label: string
   /** Variant Badge */
   variant: 'default' | 'secondary' | 'outline'
-  /** Le produit peut etre ajoute au panier */
+  /** Le produit peut être ajouté au panier */
   purchasable: boolean
-  /** Libelle bouton panier quand non commandable */
+  /** Libellé bouton panier quand non commandable */
   buttonLabel: string
   /** Classes CSS pour le badge sur image (overlay) */
   overlayClasses: string | null
@@ -154,10 +165,10 @@ export function resolveAvailabilityStatus(
   if (status === 'out_of_stock') {
     return {
       status,
-      label: product.availability_label ?? 'Epuise',
+      label: product.availability_label ?? 'Épuisé',
       variant: 'outline',
       purchasable: false,
-      buttonLabel: 'Epuise',
+      buttonLabel: 'Épuisé',
       overlayClasses: 'bg-neutral-900/50',
     }
   }
@@ -168,7 +179,7 @@ export function resolveAvailabilityStatus(
       label: product.availability_label ?? 'Indisponible',
       variant: 'outline',
       purchasable: false,
-      buttonLabel: 'Indisponible',
+      buttonLabel: 'Non disponible',
       overlayClasses: 'bg-neutral-900/50',
     }
   }
@@ -176,10 +187,10 @@ export function resolveAvailabilityStatus(
   if (status === 'coming_soon') {
     return {
       status,
-      label: product.availability_label ?? 'Bientot disponible',
+      label: product.availability_label ?? 'Bientôt disponible',
       variant: 'secondary',
       purchasable: false,
-      buttonLabel: 'Bientot disponible',
+      buttonLabel: 'Bientôt disponible',
       overlayClasses: 'bg-primary/30',
     }
   }
@@ -188,10 +199,10 @@ export function resolveAvailabilityStatus(
   if (product.stock_quantity <= 0) {
     return {
       status: 'out_of_stock',
-      label: 'Epuise',
+      label: 'Épuisé',
       variant: 'outline',
       purchasable: false,
-      buttonLabel: 'Epuise',
+      buttonLabel: 'Épuisé',
       overlayClasses: 'bg-neutral-900/50',
     }
   }
@@ -199,7 +210,7 @@ export function resolveAvailabilityStatus(
   if (product.stock_quantity <= Math.max(product.stock_alert_threshold, 5)) {
     return {
       status: 'available',
-      label: 'Stock limite',
+      label: 'Stock limité',
       variant: 'secondary',
       purchasable: true,
       buttonLabel: 'Ajouter',

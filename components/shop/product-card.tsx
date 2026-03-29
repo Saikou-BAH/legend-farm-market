@@ -9,6 +9,7 @@ import {
   getProductPriceTiers,
   getProductPrimaryImage,
   getProductStartingPrice,
+  isDisplayablePrice,
   resolveAvailabilityStatus,
 } from '@/lib/shop-catalog'
 import { formatGNF } from '@/lib/utils'
@@ -130,7 +131,9 @@ export function ProductCard({
               <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Prix
               </p>
-              <p className="mt-2 text-2xl font-semibold">{formatGNF(startingPrice)}</p>
+              <p className="mt-2 text-2xl font-semibold">
+                {isDisplayablePrice(startingPrice) ? formatGNF(startingPrice) : 'Prix à confirmer'}
+              </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {tierCount > 0 ? 'tarif de depart' : 'prix fixe'} · par {product.unit}
               </p>

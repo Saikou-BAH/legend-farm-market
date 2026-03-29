@@ -140,24 +140,8 @@ export function normalizePhone(phone: string | null | undefined) {
 export function getPasswordValidationErrors(password: string) {
   const errors: string[] = []
 
-  if (password.length < 12) {
-    errors.push('au moins 12 caracteres')
-  }
-
-  if (!/[a-z]/.test(password)) {
-    errors.push('une minuscule')
-  }
-
-  if (!/[A-Z]/.test(password)) {
-    errors.push('une majuscule')
-  }
-
-  if (!/[0-9]/.test(password)) {
-    errors.push('un chiffre')
-  }
-
-  if (!/[^A-Za-z0-9]/.test(password)) {
-    errors.push('un caractere special')
+  if (password.length < 8) {
+    errors.push('au moins 8 caractères')
   }
 
   return errors

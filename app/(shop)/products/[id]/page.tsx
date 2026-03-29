@@ -21,6 +21,7 @@ import {
   getProductPriceTiers,
   getProductPrimaryImage,
   getProductStartingPrice,
+  isDisplayablePrice,
 } from '@/lib/shop-catalog'
 import { formatGNF, formatNumber } from '@/lib/utils'
 
@@ -29,21 +30,21 @@ function getProductHighlights(name: string, category: string) {
 
   if (normalized.includes('fiante') || normalized.includes('fiente')) {
     return [
-      'Fiente seche issue de notre elevage avicole. Efficace pour les cultures maraicheres, les jardins et l agriculture.',
-      'Vendu en sac. Contactez-nous pour les grandes quantites ou les commandes en vrac.',
+      "Fiente sèche issue de notre élevage avicole. Efficace pour les cultures maraîchères, les jardins et l'agriculture.",
+      'Vendu en sac. Contactez-nous pour les grandes quantités ou les commandes en vrac.',
     ]
   }
 
   if (normalized.includes('poulet')) {
     return [
       'Poules de ponte en fin de cycle. Viande ferme et savoureuse, prix accessibles.',
-      'Disponibilite variable selon les lots en cours. Confirmez la disponibilite avant de commander.',
+      "Disponibilité variable selon les lots en cours. Confirmez la disponibilité avant de commander.",
     ]
   }
 
   return [
-    'Oeufs ramasses regulierement a la ferme. Date de ponte connue, fraicheur garantie.',
-    'Disponible par casier de 30, demi-casier ou a l unite selon vos besoins.',
+    "Œufs ramassés régulièrement à la ferme. Date de ponte connue, fraîcheur garantie.",
+    "Disponible par casier de 30, demi-casier ou à l'unité selon vos besoins.",
   ]
 }
 
@@ -63,7 +64,7 @@ export async function generateMetadata({
     title: product.name,
     description:
       product.description ??
-      `Commandez ${product.name} directement depuis Legend Farm. Prix en GNF, livraison a domicile ou retrait a la ferme.`,
+      `Commandez ${product.name} directement depuis Legend Farm. Prix en GNF, livraison à domicile ou retrait à la ferme.`,
   }
 }
 
@@ -82,11 +83,11 @@ export default async function ProductDetailsPage({
     return (
       <main className="container py-12">
         <EmptyState
-          title={isConfigured ? 'Produit introuvable' : 'Boutique non configuree'}
+          title={isConfigured ? 'Produit introuvable' : 'Boutique non configurée'}
           description={
             isConfigured
-              ? 'Ce produit n existe pas ou n est plus disponible publiquement.'
-              : 'Configurez la connexion Supabase puis ajoutez vos produits depuis l administration.'
+              ? "Ce produit n'existe pas ou n'est plus disponible publiquement."
+              : "Configurez la connexion Supabase puis ajoutez vos produits depuis l'administration."
           }
         />
       </main>
@@ -160,7 +161,7 @@ export default async function ProductDetailsPage({
                   </h1>
                   <p className="max-w-2xl text-base leading-7 text-muted-foreground">
                     {product.description ??
-                      'La description detaillee de ce produit sera disponible prochainement.'}
+                      'La description détaillée de ce produit sera disponible prochainement.'}
                   </p>
                 </div>
               </div>
@@ -171,7 +172,9 @@ export default async function ProductDetailsPage({
                     <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                       Prix
                     </p>
-                    <p className="mt-3 font-serif text-3xl">{formatGNF(startingPrice)}</p>
+                    <p className="mt-3 font-serif text-3xl">
+                      {isDisplayablePrice(startingPrice) ? formatGNF(startingPrice) : 'À confirmer'}
+                    </p>
                     <p className="mt-1 text-sm text-muted-foreground">par {product.unit}</p>
                   </CardContent>
                 </Card>
@@ -199,25 +202,29 @@ export default async function ProductDetailsPage({
                 <CardHeader>
                   <CardTitle>Tarification</CardTitle>
                   <CardDescription>
-                    {priceTiers.length > 0 ? 'Paliers de quantite disponibles.' : 'Prix fixe par unite.'}
+                    {priceTiers.length > 0 ? 'Paliers de quantité disponibles.' : 'Prix fixe par unité.'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-5">
                   <div className="flex items-end justify-between gap-6 border-b border-border/70 pb-5">
                     <div>
                       <p className="text-sm text-muted-foreground">Prix de reference</p>
-                      <p className="mt-2 font-serif text-4xl">{formatGNF(startingPrice)}</p>
+                      <p className="mt-2 font-serif text-4xl">
+                      {isDisplayablePrice(startingPrice) ? formatGNF(startingPrice) : 'Prix à confirmer'}
+                    </p>
                       <p className="mt-1 text-sm text-muted-foreground">par {product.unit}</p>
                     </div>
                     <div className="text-right text-sm text-muted-foreground">
                       <p>Prix de base</p>
-                      <p className="font-medium text-foreground">{formatGNF(product.base_price)}</p>
+                      <p className="font-medium text-foreground">
+                        {isDisplayablePrice(product.base_price) ? formatGNF(product.base_price) : '—'}
+                      </p>
                     </div>
                   </div>
 
                   {priceTiers.length > 0 ? (
                     <div className="space-y-3">
-                      <p className="text-sm font-medium">Prix par quantite</p>
+                      <p className="text-sm font-medium">Prix par quantité</p>
                       <div className="space-y-2">
                         {priceTiers.map((tier) => (
                           <div
@@ -225,7 +232,7 @@ export default async function ProductDetailsPage({
                             className="flex items-center justify-between rounded-2xl border border-border/70 bg-white/72 px-4 py-3 text-sm"
                           >
                             <span className="text-muted-foreground">
-                              A partir de {formatNumber(tier.quantity)} {product.unit}
+                              À partir de {formatNumber(tier.quantity)} {product.unit}
                             </span>
                             <span className="font-semibold">{formatGNF(tier.price)}</span>
                           </div>
@@ -239,7 +246,7 @@ export default async function ProductDetailsPage({
               <div className="grid gap-4 md:grid-cols-2">
                 <Card className="bg-white/72">
                   <CardHeader>
-                    <CardTitle className="text-xl">Ce qu il faut savoir</CardTitle>
+                    <CardTitle className="text-xl">Ce qu'il faut savoir</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     {highlights.map((highlight) => (
@@ -266,9 +273,9 @@ export default async function ProductDetailsPage({
                   <CardContent className="flex gap-3 p-5 text-sm">
                     <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     <div>
-                      <p className="font-medium text-foreground">Qualite suivie</p>
+                      <p className="font-medium text-foreground">Qualité suivie</p>
                       <p className="mt-1 leading-6 text-muted-foreground">
-                        Produit issu de notre elevage, suivi de la ferme a votre commande.
+                        Produit issu de notre élevage, suivi de la ferme à votre commande.
                       </p>
                     </div>
                   </CardContent>
@@ -279,7 +286,7 @@ export default async function ProductDetailsPage({
                     <div>
                       <p className="font-medium text-foreground">Direct producteur</p>
                       <p className="mt-1 leading-6 text-muted-foreground">
-                        Vendu directement par Legend Farm, sans intermediaire.
+                        Vendu directement par Legend Farm, sans intermédiaire.
                       </p>
                     </div>
                   </CardContent>

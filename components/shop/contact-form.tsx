@@ -39,12 +39,12 @@ export function ContactForm() {
         | null
 
       if (!response.ok || !payload?.success) {
-        throw new Error(payload?.error || 'Impossible d envoyer votre message.')
+        throw new Error(payload?.error || "Impossible d'envoyer votre message.")
       }
 
       toast({
-        title: 'Message envoye',
-        description: 'Legend Farm a bien recu votre message.',
+        title: 'Message envoyé',
+        description: 'Legend Farm a bien reçu votre message.',
       })
       setFullName('')
       setEmail('')
@@ -70,8 +70,8 @@ export function ContactForm() {
       <CardHeader>
         <CardTitle>Envoyer un message</CardTitle>
         <CardDescription>
-          Posez votre question, demandez un conseil ou preparez une commande
-          speciale. Nous revenons vers vous par email ou telephone.
+          Posez votre question, demandez un conseil ou préparez une commande
+          spéciale. Nous revenons vers vous par email ou téléphone.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -103,7 +103,7 @@ export function ContactForm() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="grid gap-2">
-              <Label htmlFor="contact-phone">Telephone</Label>
+              <Label htmlFor="contact-phone">Téléphone</Label>
               <Input
                 id="contact-phone"
                 value={phone}
@@ -134,7 +134,7 @@ export function ContactForm() {
               rows={6}
               required
               className="flex min-h-[10rem] w-full rounded-[1.25rem] border border-white/70 bg-white/80 px-4 py-3 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_10px_24px_rgba(22,54,36,0.04)] ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              placeholder="Expliquez votre besoin, votre question ou votre demande de commande."
+              placeholder="Expliquez votre besoin, votre question ou votre demande de commande spéciale."
             />
           </div>
 

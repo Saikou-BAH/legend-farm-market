@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const metadata: Metadata = {
-  title: 'Informations legales',
+  title: 'Informations légales',
   description:
     'Informations utiles, cadre de commande, contact et bonnes pratiques pour Legend Farm Shop.',
 }
@@ -16,31 +16,31 @@ export default function LegalPage() {
           <div className="relative space-y-8">
             <section className="space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Informations legales
+                Informations légales
               </p>
               <h1 className="max-w-4xl font-serif text-4xl md:text-5xl">
                 Transparence, contact et cadre de commande
               </h1>
               <p className="max-w-3xl text-lg leading-8 text-muted-foreground">
-                Cette page regroupe les informations utiles au lancement de la boutique:
-                contact, fonctionnement general, livraison, retours et usage raisonnable
-                des services numeriques du site.
+                Cette page regroupe les informations utiles sur Legend Farm Shop :
+                contact, fonctionnement général, livraison, retours et usage raisonnable
+                des services numériques du site.
               </p>
             </section>
 
             <div className="grid gap-6 lg:grid-cols-2">
               <Card className="surface-panel border-white/80">
                 <CardHeader>
-                  <CardTitle>Commande et disponibilite</CardTitle>
+                  <CardTitle>Commande et disponibilité</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <p>
-                    Les prix et disponibilites affiches proviennent du back-office Legend
-                    Farm Shop et peuvent etre mis a jour en fonction de la production.
+                    Les prix et disponibilités affichés proviennent du back-office Legend
+                    Farm Shop et peuvent être mis à jour en fonction de la production.
                   </p>
                   <p>
-                    Une commande n est consideree comme prise en charge qu apres creation
-                    effective dans le systeme puis confirmation logistique si necessaire.
+                    Une commande n'est considérée comme prise en charge qu'après création
+                    effective dans le système, puis confirmation logistique si nécessaire.
                   </p>
                 </CardContent>
               </Card>
@@ -51,11 +51,11 @@ export default function LegalPage() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <p>
-                    Les zones, frais et creneaux de livraison sont ceux configures au moment
+                    Les zones, frais et créneaux de livraison sont ceux configurés au moment
                     de votre commande.
                   </p>
                   <p>
-                    Le retrait a la ferme peut etre propose selon la disponibilite et le type
+                    Le retrait à la ferme peut être proposé selon la disponibilité et le type
                     de commande.
                   </p>
                 </CardContent>
@@ -63,16 +63,16 @@ export default function LegalPage() {
 
               <Card className="surface-panel border-white/80">
                 <CardHeader>
-                  <CardTitle>Retours et reclamations</CardTitle>
+                  <CardTitle>Retours et réclamations</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <p>
-                    En cas de probleme de qualite, de quantite ou d erreur de preparation,
-                    contactez rapidement la ferme avec votre reference de commande.
+                    En cas de problème de qualité, de quantité ou d'erreur de préparation,
+                    contactez rapidement la ferme avec votre référence de commande.
                   </p>
                   <p>
-                    Le traitement dependra du contexte: remboursement, avoir, echange ou
-                    resolution logistique.
+                    Le traitement dépendra du contexte : remboursement, avoir, échange ou
+                    résolution logistique.
                   </p>
                 </CardContent>
               </Card>
@@ -83,12 +83,12 @@ export default function LegalPage() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <p>
-                    Le site met a disposition un formulaire de contact, l email de la ferme
-                    et un acces WhatsApp quand le numero est configure.
+                    Le site met à disposition un formulaire de contact, l'email de la ferme
+                    et un accès WhatsApp quand le numéro est configuré.
                   </p>
                   <p>
-                    Ces canaux doivent etre utilises pour les demandes commerciales,
-                    logistiques ou de service apres-vente raisonnables.
+                    Ces canaux doivent être utilisés pour les demandes commerciales,
+                    logistiques ou de service après-vente raisonnables.
                   </p>
                 </CardContent>
               </Card>
