@@ -27,7 +27,7 @@ export function ProductReviewsSection({
                 <div>
                   <p className="font-medium">{review.customer_name ?? 'Client Legend Farm'}</p>
                   <p className="text-sm text-muted-foreground">
-                    Avis publie le {formatDateTime(review.created_at)}
+                    Avis publié le {formatDateTime(review.created_at)}
                   </p>
                 </div>
                 <p className="text-sm font-medium">{review.rating}/5</p>
@@ -37,7 +37,7 @@ export function ProductReviewsSection({
               ) : null}
               {review.admin_reply ? (
                 <div className="mt-3 rounded-2xl border border-primary/20 bg-primary/5 p-3 text-sm">
-                  <p className="font-medium">Reponse de l equipe</p>
+                  <p className="font-medium">Réponse de l&apos;équipe</p>
                   <p className="mt-1 text-muted-foreground">{review.admin_reply}</p>
                 </div>
               ) : null}

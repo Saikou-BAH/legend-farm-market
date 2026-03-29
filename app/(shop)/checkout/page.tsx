@@ -22,7 +22,7 @@ export default async function CheckoutPage() {
         <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
           <EmptyState
             title="Checkout indisponible"
-            description="Ajoutez la configuration Supabase complete pour activer la creation reelle de commande."
+            description="Ajoutez la configuration Supabase complète pour activer la création réelle de commande."
           />
         </section>
       </main>
@@ -35,7 +35,7 @@ export default async function CheckoutPage() {
         <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
           <EmptyState
             title="Connexion requise"
-            description="Connectez-vous avec un compte client pour acceder au checkout."
+            description="Connectez-vous avec un compte client pour accéder au checkout."
           />
         </section>
       </main>
@@ -48,7 +48,7 @@ export default async function CheckoutPage() {
         <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
           <EmptyState
             title="Profil client manquant"
-            description="Le compte est connecte, mais aucun profil client exploitable n est encore rattache a cet utilisateur."
+            description="Le compte est connecté, mais aucun profil client exploitable n'est encore rattaché à cet utilisateur."
           />
         </section>
       </main>
@@ -61,7 +61,7 @@ export default async function CheckoutPage() {
         <section className="surface-panel rounded-[2rem] px-6 py-8 md:px-8">
           <EmptyState
             title="Commande temporairement indisponible"
-            description="Ce compte client ne peut pas creer de nouvelle commande pour le moment. Contactez l equipe Legend Farm."
+            description="Ce compte client ne peut pas créer de nouvelle commande pour le moment. Contactez l'équipe Legend Farm."
           />
         </section>
       </main>
@@ -73,16 +73,16 @@ export default async function CheckoutPage() {
       <section className="surface-panel section-grid rounded-[2.2rem] px-6 py-8 md:px-10">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge>Commande securisee</Badge>
+            <Badge>Commande sécurisée</Badge>
             <Badge variant="outline">Validation serveur</Badge>
           </div>
           <div className="space-y-3">
             <h1 className="font-serif text-4xl md:text-5xl">
-              Finaliser ma commande avec une experience nette et rassurante
+              Finaliser ma commande
             </h1>
             <p className="max-w-3xl text-base leading-7 text-muted-foreground">
-              Verifiez votre panier, choisissez votre mode de retrait et confirmez votre commande.
-              Le stock, les prix, les avantages client et les frais de livraison sont reverifies cote serveur au moment de la validation.
+              Vérifiez votre panier, choisissez votre mode de livraison et confirmez votre commande.
+              Le stock, les prix et les frais de livraison sont revérifiés côté serveur au moment de la validation.
             </p>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default async function CheckoutPage() {
             <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Profil
             </p>
-            <p className="mt-2 font-serif text-2xl">Client connecte</p>
+            <p className="mt-2 font-serif text-2xl">Client connecté</p>
           </div>
           <div className="rounded-[1.3rem] border border-border/70 bg-white/72 p-4 text-sm">
             <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">

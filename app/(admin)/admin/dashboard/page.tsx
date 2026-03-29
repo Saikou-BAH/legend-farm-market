@@ -27,17 +27,17 @@ export default async function AdminDashboardPage() {
     {
       label: 'Produits actifs',
       value: `${productsCount}`,
-      detail: 'Catalogue pilote depuis Supabase',
+      detail: 'Catalogue piloté depuis Supabase',
     },
     {
       label: 'Commandes du jour',
       value: `${ordersTodayCount}`,
-      detail: 'Compteur mis a jour a partir des commandes du jour',
+      detail: "Commandes reçues aujourd'hui",
     },
     {
       label: 'Clients',
       value: `${customersCount}`,
-      detail: 'Profils clients rattaches au shop',
+      detail: 'Profils clients rattachés au shop',
     },
     {
       label: 'Promotions actives',
@@ -69,7 +69,7 @@ export default async function AdminDashboardPage() {
                   <div>
                     <p className="font-medium">{order.reference}</p>
                     <p className="text-sm text-muted-foreground">
-                      {order.customer_name ?? 'Client non renseigne'} •{' '}
+                      {order.customer_name ?? 'Client non renseigné'} •{' '}
                       {formatDateTime(order.created_at)}
                     </p>
                   </div>
@@ -79,8 +79,8 @@ export default async function AdminDashboardPage() {
               ))
             ) : (
               <EmptyState
-                title="Aucune commande recente"
-                description="Les nouvelles commandes du shop apparaitront ici des qu elles seront creees."
+                title="Aucune commande récente"
+                description="Les nouvelles commandes apparaîtront ici dès qu'elles seront créées."
               />
             )}
           </CardContent>
@@ -105,8 +105,8 @@ export default async function AdminDashboardPage() {
               ))
             ) : (
               <EmptyState
-                title="Aucune operation journalisee"
-                description="Les mutations admin critiques apparaitront ici apres application de la migration d audit."
+                title="Aucune opération journalisée"
+                description="Les mutations admin critiques apparaîtront ici après application de la migration d'audit."
               />
             )}
           </CardContent>

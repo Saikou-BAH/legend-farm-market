@@ -208,18 +208,22 @@ export default async function ProductDetailsPage({
                 <CardContent className="space-y-5">
                   <div className="flex items-end justify-between gap-6 border-b border-border/70 pb-5">
                     <div>
-                      <p className="text-sm text-muted-foreground">Prix de reference</p>
+                      <p className="text-sm text-muted-foreground">
+                        {priceTiers.length > 0 ? 'Meilleur tarif disponible' : 'Prix unitaire'}
+                      </p>
                       <p className="mt-2 font-serif text-4xl">
-                      {isDisplayablePrice(startingPrice) ? formatGNF(startingPrice) : 'Prix à confirmer'}
-                    </p>
+                        {isDisplayablePrice(startingPrice) ? formatGNF(startingPrice) : 'Prix à confirmer'}
+                      </p>
                       <p className="mt-1 text-sm text-muted-foreground">par {product.unit}</p>
                     </div>
-                    <div className="text-right text-sm text-muted-foreground">
-                      <p>Prix de base</p>
-                      <p className="font-medium text-foreground">
-                        {isDisplayablePrice(product.base_price) ? formatGNF(product.base_price) : '—'}
-                      </p>
-                    </div>
+                    {priceTiers.length > 0 && product.base_price !== startingPrice ? (
+                      <div className="text-right text-sm text-muted-foreground">
+                        <p>Prix unitaire</p>
+                        <p className="font-medium text-foreground">
+                          {isDisplayablePrice(product.base_price) ? formatGNF(product.base_price) : '—'}
+                        </p>
+                      </div>
+                    ) : null}
                   </div>
 
                   {priceTiers.length > 0 ? (

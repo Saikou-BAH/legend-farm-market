@@ -13,7 +13,7 @@ export default async function AdminAnalyticsPage() {
     return (
       <EmptyState
         title="Analytics non disponible"
-        description="Connectez un compte staff actif avec la configuration Supabase admin complete pour lire ce tableau de bord."
+        description="Connectez un compte staff actif avec la configuration Supabase admin complète pour lire ce tableau de bord."
       />
     )
   }
@@ -28,13 +28,13 @@ export default async function AdminAnalyticsPage() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         <StatsCard
-          label="Chiffre suivi"
+          label="Chiffre d'affaires"
           value={formatGNF(totals.revenue)}
-          detail="Total base sur les commandes livrees ou payees"
+          detail="Total basé sur les commandes livrées ou payées"
         />
-        <StatsCard label="Commandes" value={`${totals.orders}`} detail="Commandes totalisees" />
+        <StatsCard label="Commandes" value={`${totals.orders}`} detail="Commandes totalisées" />
         <StatsCard label="Clients" value={`${totals.customers}`} detail="Profils clients actifs" />
-        <StatsCard label="Retours" value={`${totals.returns}`} detail="Demandes de retour enregistrees" />
+        <StatsCard label="Retours" value={`${totals.returns}`} detail="Demandes de retour enregistrées" />
         <StatsCard
           label="Promotions actives"
           value={`${totals.activePromotions}`}
@@ -68,7 +68,7 @@ export default async function AdminAnalyticsPage() {
                 )
               })
             ) : (
-              <p className="text-sm text-muted-foreground">Aucune commande a analyser.</p>
+              <p className="text-sm text-muted-foreground">Aucune commande à analyser.</p>
             )}
           </CardContent>
         </Card>
@@ -98,14 +98,14 @@ export default async function AdminAnalyticsPage() {
                 )
               })
             ) : (
-              <p className="text-sm text-muted-foreground">Aucun paiement a analyser.</p>
+              <p className="text-sm text-muted-foreground">Aucun paiement à analyser.</p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Categories les plus presentes</CardTitle>
+            <CardTitle>Catégories les plus présentes</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {topCategories.length > 0 ? (
@@ -128,7 +128,7 @@ export default async function AdminAnalyticsPage() {
                 )
               })
             ) : (
-              <p className="text-sm text-muted-foreground">Aucun produit a analyser.</p>
+              <p className="text-sm text-muted-foreground">Aucun produit à analyser.</p>
             )}
           </CardContent>
         </Card>

@@ -23,11 +23,11 @@ export const metadata: Metadata = {
     template: '%s | Legend Farm Shop',
   },
   description:
-    'La boutique en ligne de Legend Farm pour les oeufs, volailles et produits fermiers premium.',
+    'La boutique en ligne de Legend Farm — œufs frais, poulets réformés et fiente. Livraison à domicile ou retrait à la ferme.',
   openGraph: {
     title: 'Legend Farm Shop',
     description:
-      'La boutique en ligne de Legend Farm pour les oeufs, volailles et produits fermiers premium.',
+      'La boutique en ligne de Legend Farm — œufs frais, poulets réformés et fiente. Livraison à domicile ou retrait à la ferme.',
     type: 'website',
     locale: 'fr_FR',
   },
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Legend Farm Shop',
     description:
-      'La boutique en ligne de Legend Farm pour les oeufs, volailles et produits fermiers premium.',
+      'La boutique en ligne de Legend Farm — œufs frais, poulets réformés et fiente. Livraison à domicile ou retrait à la ferme.',
   },
   icons: {
     icon: '/favicon.svg',

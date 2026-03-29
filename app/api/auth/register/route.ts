@@ -20,7 +20,7 @@ async function findAuthUserByEmail(email: string) {
     const { data, error } = await serviceClient.auth.admin.listUsers({ page, perPage })
 
     if (error) {
-      throw new Error(`Impossible de verifier les comptes existants: ${error.message}`)
+      throw new Error(`Impossible de vérifier les comptes existants : ${error.message}`)
     }
 
     const existingUser = data.users.find(
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         error:
           error instanceof Error
             ? error.message
-            : 'Corps de requete invalide.',
+            : 'Corps de requête invalide.',
       },
       { status: 400 }
     )
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        error: 'Trop de tentatives. Reessayez dans quelques minutes.',
+        error: 'Trop de tentatives. Réessayez dans quelques minutes.',
         retryAfter: retryAfterSec,
       },
       { status: 429, headers: { 'Retry-After': String(retryAfterSec) } }
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
 
   if (existingUser) {
     return NextResponse.json(
-      { error: 'Un compte existe deja pour cet email.' },
+      { error: 'Un compte existe déjà pour cet email.' },
       { status: 409 }
     )
   }
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
   if (error) {
     return NextResponse.json(
       {
-        error: 'Impossible de creer le compte pour le moment.',
+        error: 'Impossible de créer le compte pour le moment.',
       },
       { status: 400 }
     )
@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
   if (!data.user) {
     return NextResponse.json(
       {
-        error: 'Supabase n a pas retourne de compte utilisateur.',
+        error: "Supabase n'a pas retourné de compte utilisateur.",
       },
       { status: 500 }
     )
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            'Le compte Auth a ete cree, mais le profil client a echoue et le rollback n a pas abouti. Une verification manuelle est necessaire.',
+            "Le compte Auth a été créé, mais le profil client a échoué et le rollback n'a pas abouti. Une vérification manuelle est nécessaire.",
         },
         { status: 500 }
       )
@@ -173,7 +173,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        error: 'Impossible de finaliser la creation du profil client.',
+        error: 'Impossible de finaliser la création du profil client.',
       },
       { status: 500 }
     )
