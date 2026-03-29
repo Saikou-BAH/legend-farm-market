@@ -146,9 +146,7 @@ export function ProductCard({
                     ? product.restock_note
                     : product.stock_quantity > 0 && product.stock_quantity <= 10
                       ? `Plus que ${product.stock_quantity} disponible${product.stock_quantity > 1 ? 's' : ''}`
-                      : tierCount > 0
-                        ? `${tierCount} paliers de quantite`
-                        : `Vendu par ${product.unit}`}
+                      : avail.label}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {context === 'admin'
@@ -157,7 +155,9 @@ export function ProductCard({
                     ? 'Non disponible a la commande'
                     : product.stock_quantity > 0 && product.stock_quantity <= 10
                       ? 'Stock limite, commandez vite'
-                      : 'Disponibilite confirmee au panier'}
+                      : tierCount > 0
+                        ? 'Prix degressif selon quantite'
+                        : 'Disponibilite confirmee au panier'}
               </p>
             </div>
           </div>
