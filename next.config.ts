@@ -44,6 +44,9 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    serverActions: {
+      bodySizeLimit: '5mb',
+    },
   },
   images: {
     remotePatterns: [
