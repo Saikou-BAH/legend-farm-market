@@ -114,7 +114,7 @@ export default async function AdminBatchesPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="grid grid-cols-2 gap-2 text-center">
                       <div className="rounded-xl border border-border/70 bg-white/65 p-3">
                         <p className="text-[0.68rem] font-semibold uppercase tracking-wide text-muted-foreground">
                           Injecté
@@ -131,13 +131,28 @@ export default async function AdminBatchesPage() {
                           {formatNumber(b.remaining_quantity)}
                         </p>
                       </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-center">
                       <div className="rounded-xl border border-border/70 bg-white/65 p-3">
                         <p className="text-[0.68rem] font-semibold uppercase tracking-wide text-muted-foreground">
-                          CA
+                          CA articles
                         </p>
                         <p className="mt-1 font-semibold text-sm">
                           {b.revenue_from_movements > 0 ? formatGNF(b.revenue_from_movements) : '—'}
                         </p>
+                      </div>
+                      <div className="rounded-xl border border-border/70 bg-white/65 p-3">
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-wide text-muted-foreground">
+                          CA + transport
+                        </p>
+                        <p className="mt-1 font-semibold text-sm text-primary">
+                          {b.total_revenue > 0 ? formatGNF(b.total_revenue) : '—'}
+                        </p>
+                        {b.delivery_fee_share > 0 && (
+                          <p className="text-[0.65rem] text-muted-foreground">
+                            dont {formatGNF(b.delivery_fee_share)} transport
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -178,7 +193,8 @@ export default async function AdminBatchesPage() {
                       <th className="px-5 py-4 font-medium">Produit</th>
                       <th className="px-5 py-4 font-medium text-right">Injecté</th>
                       <th className="px-5 py-4 font-medium text-right">Vendu</th>
-                      <th className="px-5 py-4 font-medium text-right">CA</th>
+                      <th className="px-5 py-4 font-medium text-right">CA articles</th>
+                      <th className="px-5 py-4 font-medium text-right">CA + transport</th>
                       <th className="px-5 py-4 font-medium">Statut</th>
                     </tr>
                   </thead>
@@ -192,8 +208,11 @@ export default async function AdminBatchesPage() {
                         <td className="px-5 py-4 text-muted-foreground">{b.product_name}</td>
                         <td className="px-5 py-4 text-right">{formatNumber(b.initial_quantity)}</td>
                         <td className="px-5 py-4 text-right">{formatNumber(b.consumed)}</td>
-                        <td className="px-5 py-4 text-right font-semibold">
+                        <td className="px-5 py-4 text-right">
                           {formatGNF(b.revenue_from_movements)}
+                        </td>
+                        <td className="px-5 py-4 text-right font-semibold text-primary">
+                          {formatGNF(b.total_revenue)}
                         </td>
                         <td className="px-5 py-4">
                           <Badge variant={statusLabel[b.status]?.variant ?? 'secondary'}>

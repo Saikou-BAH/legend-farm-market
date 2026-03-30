@@ -52,10 +52,10 @@ export async function getAdminActiveBatches(): Promise<AdminBatch[]> {
 }
 
 interface CreateFlockBatchInput {
-  productId: string
+  productId?: string | null
   name: string
   batchDate: string
-  initialQuantity: string | number
+  initialQuantity?: string | number | null
   costPerUnit?: string | number | null
   notes?: string | null
 }
@@ -70,10 +70,7 @@ export async function createFlockBatch(
       return { success: false, error: context.error }
     }
 
-    const productId = input.productId?.trim()
-    if (!productId) {
-      return { success: false, error: 'Le produit est obligatoire.' }
-    }
+    const productId = input.productId?.trim() || null
 
     const name = input.name?.trim()
     if (!name || name.length < 2) {
@@ -84,9 +81,13 @@ export async function createFlockBatch(
       return { success: false, error: 'La date de la bande est obligatoire.' }
     }
 
-    const initialQuantity = Number(input.initialQuantity)
-    if (!Number.isInteger(initialQuantity) || initialQuantity < 1) {
-      return { success: false, error: 'La quantité initiale doit être un entier positif.' }
+    const initialQuantity =
+      input.initialQuantity != null && input.initialQuantity !== ''
+        ? Number(input.initialQuantity)
+        : 0
+
+    if (!Number.isInteger(initialQuantity) || initialQuantity < 0) {
+      return { success: false, error: 'La quantité initiale doit être un entier positif ou zéro.' }
     }
 
     const costPerUnit =

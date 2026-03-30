@@ -1,10 +1,12 @@
 import { OrderManagementPanel } from '@/components/admin/order-management-panel'
+import { OrderInvoice } from '@/components/admin/order-invoice'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { OrderStatusBadge } from '@/components/admin/order-status-badge'
 import { OrderPaymentManager } from '@/components/admin/order-payment-manager'
 import { OrderTimeline } from '@/components/shop/order-timeline'
 import { getAdminOrderDetailsById } from '@/lib/actions/orders'
+import { getPublicShopProfile } from '@/lib/actions/shop'
 import {
   getDeliveryTypeLabel,
   getOrderStatusLabel,
@@ -20,7 +22,10 @@ export default async function AdminOrderDetailsPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const { access, order } = await getAdminOrderDetailsById(id)
+  const [{ access, order }, shopProfile] = await Promise.all([
+    getAdminOrderDetailsById(id),
+    getPublicShopProfile(),
+  ])
 
   if (access.status !== 'ready') {
     const state = adminAccessMessages[access.status]
@@ -49,11 +54,24 @@ export default async function AdminOrderDetailsPage({
         <CardContent className="space-y-3 text-sm">
           <div className="flex items-center justify-between gap-4">
             <span className="text-muted-foreground">Client</span>
-            <span className="text-right">{order.customer_name ?? 'Client non renseigne'}</span>
+            <span className="text-right">
+              {order.customer_name ?? order.guest_name ?? 'Non renseigné'}
+              {order.guest_name && (
+                <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                  Invité
+                </span>
+              )}
+            </span>
           </div>
+          {order.guest_phone && (
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Téléphone</span>
+              <span className="text-right">{order.guest_phone}</span>
+            </div>
+          )}
           <div className="flex items-center justify-between gap-4">
             <span className="text-muted-foreground">Email</span>
-            <span className="text-right">{order.customer_email ?? 'Non renseigne'}</span>
+            <span className="text-right">{order.customer_email ?? 'Non renseigné'}</span>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span className="text-muted-foreground">Date</span>
@@ -63,9 +81,33 @@ export default async function AdminOrderDetailsPage({
             <span className="text-muted-foreground">Paiement</span>
             <span className="text-right">{getPaymentStatusLabel(order.payment_status)}</span>
           </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-muted-foreground">Montant</span>
-            <span className="text-right font-medium">{formatGNF(order.total_amount)}</span>
+          <div className="border-t border-border/60 pt-2 space-y-2">
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Sous-total</span>
+              <span className="text-right">{formatGNF(order.subtotal)}</span>
+            </div>
+            {order.discount_amount > 0 && (
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-muted-foreground">Remise promo</span>
+                <span className="text-right text-green-700">− {formatGNF(order.discount_amount)}</span>
+              </div>
+            )}
+            {order.admin_discount > 0 && (
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-muted-foreground">Réduction admin</span>
+                <span className="text-right text-green-700">− {formatGNF(order.admin_discount)}</span>
+              </div>
+            )}
+            {order.delivery_fee > 0 && (
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-muted-foreground">Livraison</span>
+                <span className="text-right">{formatGNF(order.delivery_fee)}</span>
+              </div>
+            )}
+            <div className="flex items-center justify-between gap-4 font-semibold">
+              <span>Total</span>
+              <span className="text-right">{formatGNF(order.total_amount)}</span>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -166,6 +208,14 @@ export default async function AdminOrderDetailsPage({
         paymentTransactions={order.paymentTransactions}
         orderStatusLabel={getOrderStatusLabel(order.status)}
       />
+
+      <div className="xl:col-span-2">
+        <OrderInvoice
+          order={order}
+          shopName={shopProfile.shopName}
+          shopPhone={shopProfile.shopPhone ?? undefined}
+        />
+      </div>
     </div>
   )
 }

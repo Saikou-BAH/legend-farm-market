@@ -93,6 +93,7 @@ function mapOrder(row: any): Order {
     paid_at: row.paid_at,
     subtotal: toNumber(row.subtotal),
     discount_amount: toNumber(row.discount_amount),
+    admin_discount: toNumber(row.admin_discount),
     delivery_fee: toNumber(row.delivery_fee),
     total_amount: toNumber(row.total_amount),
     points_used: row.points_used ?? 0,
@@ -521,8 +522,10 @@ export async function getAdminOrderById(id: string) {
     access,
     order: {
       ...mapOrder(orderResult.data),
-      customer_name: customerName,
+      customer_name: orderResult.data.customer_id ? customerName : (orderResult.data.guest_name ?? null),
       customer_email: customerEmail,
+      guest_name: orderResult.data.guest_name ?? null,
+      guest_phone: orderResult.data.guest_phone ?? null,
       items: (itemsResult.data ?? []).map(mapOrderItem),
       paymentTransactions: paymentTransactionsResult.error
         ? []

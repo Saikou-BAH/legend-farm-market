@@ -65,23 +65,28 @@ export function BatchCreateForm({ products }: BatchCreateFormProps) {
       <CardContent>
         <form ref={formRef} onSubmit={handleSubmit} className="grid gap-5 md:grid-cols-2">
 
-          {/* Produit */}
+          {/* Produit — optionnel, une bande peut couvrir plusieurs produits */}
           <div className="space-y-2">
-            <Label htmlFor="batch-product">Produit *</Label>
+            <Label htmlFor="batch-product">
+              Produit principal{' '}
+              <span className="text-muted-foreground text-xs">optionnel</span>
+            </Label>
             <select
               id="batch-product"
               name="productId"
-              required
               disabled={isPending}
               className={selectClass}
             >
-              <option value="">Sélectionnez un produit</option>
+              <option value="">Tous produits / non précisé</option>
               {products.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
                 </option>
               ))}
             </select>
+            <p className="text-xs text-muted-foreground">
+              Le produit est précisé à chaque entrée de stock.
+            </p>
           </div>
 
           {/* Nom de la bande */}
@@ -111,20 +116,25 @@ export function BatchCreateForm({ products }: BatchCreateFormProps) {
             />
           </div>
 
-          {/* Quantité initiale */}
+          {/* Quantité initiale — optionnelle, mise à jour automatiquement via les entrées de stock */}
           <div className="space-y-2">
-            <Label htmlFor="batch-qty">Quantité initiale *</Label>
+            <Label htmlFor="batch-qty">
+              Quantité initiale{' '}
+              <span className="text-muted-foreground text-xs">optionnel</span>
+            </Label>
             <Input
               id="batch-qty"
               name="initialQuantity"
               type="number"
-              min="1"
+              min="0"
               step="1"
-              placeholder="ex : 500"
-              required
+              placeholder="ex : 500 (ou laisser vide)"
               disabled={isPending}
               className={controlClass}
             />
+            <p className="text-xs text-muted-foreground">
+              Mis à jour automatiquement à chaque entrée de stock enregistrée.
+            </p>
           </div>
 
           {/* Coût unitaire */}

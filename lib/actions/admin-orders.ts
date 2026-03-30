@@ -71,7 +71,9 @@ export async function updateAdminOrder(input: {
   paymentMethod: string | null
   adminNotes: string | null
   cancellationReason: string | null
-}): Promise<ActionResult<{ id: string }>> {
+  deliveryFee?: string | number | null
+  adminDiscount?: string | number | null
+}): Promise<ActionResult<{ id: string; totalAmount: number }>> {
   try {
     const context = await requireAdminMutationContext([...orderRoles])
 
@@ -112,9 +114,26 @@ export async function updateAdminOrder(input: {
       }
     }
 
+    const deliveryFee =
+      input.deliveryFee != null && input.deliveryFee !== ''
+        ? Math.max(0, Number(input.deliveryFee))
+        : null
+
+    const adminDiscount =
+      input.adminDiscount != null && input.adminDiscount !== ''
+        ? Math.max(0, Number(input.adminDiscount))
+        : null
+
+    if (deliveryFee !== null && !Number.isFinite(deliveryFee)) {
+      return { success: false, error: 'Le frais de livraison est invalide.' }
+    }
+    if (adminDiscount !== null && !Number.isFinite(adminDiscount)) {
+      return { success: false, error: 'La réduction admin est invalide.' }
+    }
+
     const { data: existingOrder, error: existingOrderError } = await context.supabase
       .from('orders')
-      .select('id, status, delivered_at, cancelled_at, reference, customer_id, points_earned')
+      .select('id, status, delivered_at, cancelled_at, reference, customer_id, points_earned, subtotal, discount_amount, delivery_fee, admin_discount')
       .eq('id', id)
       .maybeSingle()
 
@@ -135,7 +154,14 @@ export async function updateAdminOrder(input: {
 
     const now = new Date().toISOString()
 
-    const { error } = await context.supabase
+    // Recalcul du total si les financiers changent
+    const nextDeliveryFee = deliveryFee ?? Number(existingOrder.delivery_fee ?? 0)
+    const nextAdminDiscount = adminDiscount ?? Number(existingOrder.admin_discount ?? 0)
+    const subtotal = Number(existingOrder.subtotal ?? 0)
+    const discountAmount = Number(existingOrder.discount_amount ?? 0)
+    const nextTotal = Math.max(0, subtotal - discountAmount - nextAdminDiscount + nextDeliveryFee)
+
+    const { data: updatedOrder, error } = await context.supabase
       .from('orders')
       .update({
         status: input.status,
@@ -149,8 +175,13 @@ export async function updateAdminOrder(input: {
         cancellation_reason: input.status === 'cancelled' ? cancellationReason : null,
         cancelled_at: input.status === 'cancelled' ? existingOrder.cancelled_at ?? now : null,
         delivered_at: input.status === 'delivered' ? existingOrder.delivered_at ?? now : null,
+        delivery_fee: nextDeliveryFee,
+        admin_discount: nextAdminDiscount,
+        total_amount: nextTotal,
       })
       .eq('id', id)
+      .select('total_amount')
+      .single()
 
     if (error) {
       throw new Error(`Impossible de mettre a jour la commande: ${error.message}`)
@@ -229,6 +260,7 @@ export async function updateAdminOrder(input: {
       success: true,
       data: {
         id,
+        totalAmount: Number(updatedOrder?.total_amount ?? nextTotal),
       },
     }
   } catch (error) {

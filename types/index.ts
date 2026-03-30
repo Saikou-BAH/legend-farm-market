@@ -146,6 +146,7 @@ export interface Order {
   paid_at: string | null
   subtotal: number
   discount_amount: number
+  admin_discount: number
   delivery_fee: number
   total_amount: number
   points_used: number
@@ -203,6 +204,8 @@ export interface OrderDetail extends Order {
 export interface AdminOrderDetail extends OrderDetail {
   customer_name: string | null
   customer_email: string | null
+  guest_name: string | null
+  guest_phone: string | null
 }
 
 export interface ReturnRequest {

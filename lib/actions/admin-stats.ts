@@ -194,13 +194,15 @@ export interface FlockBatchStat {
   batch_name: string
   batch_date: string
   product_name: string
-  product_id: string
+  product_id: string | null
   initial_quantity: number
   remaining_quantity: number
   consumed: number
   cost_per_unit: number | null
   status: string
-  revenue_from_movements: number
+  revenue_from_movements: number   // CA articles (hors transport)
+  delivery_fee_share: number       // Part du transport attribuée à cette bande
+  total_revenue: number            // CA articles + part transport
 }
 
 export async function getStatsByFlockBatch() {
@@ -214,19 +216,31 @@ export async function getStatsByFlockBatch() {
 
   const supabase = await createServiceClient()
 
-  const [batchesResult, movementsResult] = await Promise.all([
+  const [batchesResult, movementsResult, ordersResult] = await Promise.all([
     supabase
       .from('flock_batches')
       .select('id, name, batch_date, product_id, initial_quantity, remaining_quantity, cost_per_unit, status, products(name)')
       .order('batch_date', { ascending: false }),
     supabase
       .from('stock_movements')
-      .select('stock_entry_id, quantity_consumed, order_items(total_price), stock_entries(flock_batch_id)'),
+      .select('stock_entry_id, quantity_consumed, order_item_id, order_items(total_price, order_id), stock_entries(flock_batch_id)'),
+    // Frais de livraison par commande (pour répartition proportionnelle)
+    supabase
+      .from('orders')
+      .select('id, subtotal, delivery_fee, admin_discount, status')
+      .neq('status', 'cancelled'),
   ])
 
   const batches = batchesResult.data ?? []
   const movements = movementsResult.data ?? []
+  const orders = ordersResult.data ?? []
 
+  // Index des commandes pour accès O(1)
+  const orderById = new Map(orders.map((o) => [o.id as string, o]))
+
+  // Première passe : articles CA par bande, et contribution par commande
+  // Structure : batchId → Map<orderId, itemsRevenue>
+  const batchOrderRevenue = new Map<string, Map<string, number>>()
   const revenueByBatch = new Map<string, number>()
 
   for (const movement of movements) {
@@ -239,9 +253,56 @@ export async function getStatsByFlockBatch() {
     const orderItem = Array.isArray(movement.order_items)
       ? movement.order_items[0]
       : movement.order_items
-    const price = toNumber(orderItem?.total_price)
+    const itemPrice = toNumber(orderItem?.total_price)
+    const orderId = orderItem?.order_id as string | null
 
-    revenueByBatch.set(batchId, (revenueByBatch.get(batchId) ?? 0) + price)
+    // CA articles par bande
+    revenueByBatch.set(batchId, (revenueByBatch.get(batchId) ?? 0) + itemPrice)
+
+    // Contribution par commande (pour répartir le transport)
+    if (orderId) {
+      if (!batchOrderRevenue.has(batchId)) {
+        batchOrderRevenue.set(batchId, new Map())
+      }
+      const orderMap = batchOrderRevenue.get(batchId)!
+      orderMap.set(orderId, (orderMap.get(orderId) ?? 0) + itemPrice)
+    }
+  }
+
+  // Deuxième passe : calculer la part du transport par bande
+  // Pour chaque commande avec un frais de livraison, distribuer
+  // proportionnellement entre les bandes selon leur CA dans cette commande.
+  //
+  // On calcule d'abord, pour chaque commande, le CA total des articles
+  // ventilé par bande.
+  const deliveryShareByBatch = new Map<string, number>()
+
+  // Construire l'index inverse : orderId → { batchId → itemsRevenue }
+  const orderBatchRevenue = new Map<string, Map<string, number>>()
+  for (const [batchId, orderMap] of batchOrderRevenue.entries()) {
+    for (const [orderId, rev] of orderMap.entries()) {
+      if (!orderBatchRevenue.has(orderId)) {
+        orderBatchRevenue.set(orderId, new Map())
+      }
+      orderBatchRevenue.get(orderId)!.set(batchId, rev)
+    }
+  }
+
+  for (const [orderId, batchMap] of orderBatchRevenue.entries()) {
+    const order = orderById.get(orderId)
+    if (!order) continue
+
+    const deliveryFee = toNumber(order.delivery_fee)
+    if (deliveryFee <= 0) continue
+
+    // Total des articles de cette commande issus de bandes tracées
+    const tracedTotal = Array.from(batchMap.values()).reduce((s, v) => s + v, 0)
+    if (tracedTotal <= 0) continue
+
+    for (const [batchId, batchRev] of batchMap.entries()) {
+      const share = (batchRev / tracedTotal) * deliveryFee
+      deliveryShareByBatch.set(batchId, (deliveryShareByBatch.get(batchId) ?? 0) + share)
+    }
   }
 
   const stats: FlockBatchStat[] = batches.map((b) => {
@@ -249,18 +310,23 @@ export async function getStatsByFlockBatch() {
       ? (b.products[0] as { name: string } | undefined)?.name ?? '—'
       : (b.products as { name: string } | null)?.name ?? '—'
 
+    const revenue = revenueByBatch.get(b.id) ?? 0
+    const deliveryShare = Math.round(deliveryShareByBatch.get(b.id) ?? 0)
+
     return {
       batch_id: b.id,
       batch_name: b.name,
       batch_date: b.batch_date as string,
       product_name: productName,
-      product_id: b.product_id,
+      product_id: b.product_id ?? null,
       initial_quantity: toNumber(b.initial_quantity),
       remaining_quantity: toNumber(b.remaining_quantity),
       consumed: toNumber(b.initial_quantity) - toNumber(b.remaining_quantity),
       cost_per_unit: b.cost_per_unit != null ? toNumber(b.cost_per_unit) : null,
       status: b.status as string,
-      revenue_from_movements: revenueByBatch.get(b.id) ?? 0,
+      revenue_from_movements: revenue,
+      delivery_fee_share: deliveryShare,
+      total_revenue: revenue + deliveryShare,
     }
   })
 

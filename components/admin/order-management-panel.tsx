@@ -35,6 +35,8 @@ interface OrderFormState {
   paymentMethod: PaymentMethod | ''
   adminNotes: string
   cancellationReason: string
+  deliveryFee: string
+  adminDiscount: string
 }
 
 const orderStatuses: OrderStatus[] = [
@@ -68,6 +70,8 @@ function createOrderFormState(order: AdminOrderDetail): OrderFormState {
     paymentMethod: order.payment_method ?? '',
     adminNotes: order.admin_notes ?? '',
     cancellationReason: order.cancellation_reason ?? '',
+    deliveryFee: order.delivery_fee > 0 ? String(order.delivery_fee) : '',
+    adminDiscount: order.admin_discount > 0 ? String(order.admin_discount) : '',
   }
 }
 
@@ -88,6 +92,8 @@ export function OrderManagementPanel({ order }: OrderManagementPanelProps) {
         id: order.id,
         ...form,
         paymentMethod: form.paymentMethod || null,
+        deliveryFee: form.deliveryFee || null,
+        adminDiscount: form.adminDiscount || null,
       })
 
       if (!result.success) {
@@ -228,6 +234,44 @@ export function OrderManagementPanel({ order }: OrderManagementPanelProps) {
                 }
                 placeholder="08h-12h"
               />
+            </div>
+          </div>
+
+          {/* ── Financiers ───────────────────────────────────────────── */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="order-delivery-fee">Frais de livraison (GNF)</Label>
+              <Input
+                id="order-delivery-fee"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="0"
+                value={form.deliveryFee}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, deliveryFee: event.target.value }))
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                Le total est recalculé automatiquement.
+              </p>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="order-admin-discount">Réduction admin (GNF)</Label>
+              <Input
+                id="order-admin-discount"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="0"
+                value={form.adminDiscount}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, adminDiscount: event.target.value }))
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                Réduction supplémentaire après la commande initiale.
+              </p>
             </div>
           </div>
 
